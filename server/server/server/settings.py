@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    # 'channels',
+    'channels',
     'api'
 ]
 
@@ -53,6 +53,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'server.urls'
+ASGI_APPLICATION = "server.routing.application"
 
 TEMPLATES = [
     {
