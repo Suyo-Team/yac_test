@@ -5,12 +5,12 @@ To run this project it's required >>
 
 # Django REST
 
-1. cd backend/DjangoRestLogin
+1. cd DjangoRestLogin
 2. run manage.py runserver
 
 # React-app
 
-1. cd front/reactapp
+1. cd reactapp
 2. npm start
 
 # Socket.io
