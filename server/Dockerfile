@@ -5,7 +5,8 @@ ENV REDIS_HOST "redis"
 
 RUN apk add --update --no-cache postgresql-client jpeg-dev
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
-      gcc libc-dev linux-headers postgresql-dev musl-dev zlib zlib-dev
+      build-base libc-dev linux-headers postgresql-dev zlib zlib-dev \
+      python3-dev libffi-dev openssl-dev
 
 RUN pip install --upgrade pip
 COPY ./requirements.txt /requirements.txt
