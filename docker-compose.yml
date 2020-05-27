@@ -8,14 +8,6 @@ services:
             - POSTGRES_PASSWORD=supersecretpassword
     redis:
         image: 'redis:latest'
-    nginx:
-        restart: always
-        build:
-            context: ./nginx
-        ports:
-            - '3050:80'
-        depends_on: 
-            - client
     client:
         stdin_open: true
         build:
@@ -23,9 +15,12 @@ services:
         volumes:
             - /app/node_modules
             - ./client:/app 
+        ports: 
+            - "4000:3000"
     server:
         build:
             context: ./server
+        restart: on-failure
         ports:
             - "8000:8000"
         volumes:
