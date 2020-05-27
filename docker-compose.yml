@@ -1,7 +1,11 @@
 version: '3'
 services:
-    postgres:
-        image: 'postgres:latest'
+    db:
+        image: 'postgres:10-alpine'
+        environment:
+            - POSTGRES_DB=server
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=supersecretpassword
     redis:
         image: 'redis:latest'
     nginx:
@@ -20,6 +24,29 @@ services:
             dockerfile: Dockerfile.dev
         volumes:
             - /app/node_modules
-            - ./client:/app  
+            - ./client:/app 
+    server:
+        build:
+            context: ./server
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./server/server:/server
+        command: >
+            sh -c "python manage.py wait_for_db &&
+                   python manage.py migrate && 
+                   python manage.py runserver 0.0.0.0:8000"
+        environment:
+            - DB_HOST=db
+            - DB_NAME=server
+            - DB_USER=postgres
+            - DB_PASS=supersecretpassword
+            - DB_PORT=5432
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+        depends_on:
+            - db
+            - redis
+
     
     
