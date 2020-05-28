@@ -39,5 +39,23 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
+    <script>
+        const chatSocket = new ReconnectingWebSocket('ws://localhost:8000/ws/chat/');
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data);
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        chatSocket.onopen = function(e) {
+            console.log('Connection opened');
+        };
+    </script>
   </body>
 </html>
