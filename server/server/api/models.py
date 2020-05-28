@@ -18,43 +18,8 @@ class Chat(models.Model):
     """
 
     private = models.BooleanField(default=True)
-    temporal = models.BooleanField(default=False)
     chat_name = models.CharField(max_length=100, blank=True, default='')
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL)
-
-    @classmethod
-    def create_chat(cls, *args, **kwargs):
-        """
-        Creates a new chat room and ensures all the attributes are coherent, i.e.
-        if it is a public chat (private=False) the chat_name must be specified
-        """
-        chat_name = kwargs.get('chat_name', '')
-        private = kwargs.get('private', True)
-        if not private and not chat_name:
-            raise ChatNameNotSpecified
-
-        return cls.objects.create(*args, **{
-            'chat_name': chat_name,
-            'private': private
-        })
-
-    def get_chat_name(self, for_user):
-        """
-        When the chat is private (only 2 users in the room, the chat_name will
-        vary for each user, this is, each user will see the name of the other
-        user he/she is chatting with, in that case, the chat_name field will be
-        left blank. But in the case it is a non private chat (more that 2 users),
-        a name for the chat must be specified
-
-        Returns a tuple (chat_name, other_user), in case it is public, other_user
-        will be None
-        """
-        if self.private:
-            # look for other user's name
-            other_user = self.users.get(~Q(id=for_user.id))
-            return other_user.name, other_user
-
-        return self.chat_name if self.chat_name else f'chat_{self.id}', None
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_chats')
 
     def join_user(self, user):
         """
@@ -68,7 +33,6 @@ class Chat(models.Model):
             raise MoreUsersThanAllowedInPrivateChat
         self.users.add(user)
 
-
 class ChatMessage(models.Model):
     """
     Chat Message, It handles only text messages
@@ -79,7 +43,7 @@ class ChatMessage(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='messages'
+        related_name='user_messages'
     )
     text = models.TextField(max_length=300, blank=True, default='')
 
@@ -90,3 +54,6 @@ class ChatMessage(models.Model):
         """
         if not isinstance(chat, Chat):
             raise InvalidChatRoom
+
+    def __str__(self):
+        return f'{self.text} - from {self.user} at {self.created}'

@@ -4,7 +4,11 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
-from api.serializers import UserSerializer, RegistrationSerializer
+from api.serializers import (
+    UserSerializer, RegistrationSerializer, ChatSerializer,
+    ChatMessageSerializer, ChatDisplaySerializer, ChatMessageDisplaySerializer
+)
+from api.models import Chat, ChatMessage
 
 
 class UserViewSet(mixins.RetrieveModelMixin,
@@ -39,4 +43,73 @@ def registration_view(request):
     return Response(data, status=status_code)
 
 
+class ChatViewSet(viewsets.ModelViewSet):
+    """ API endpoint to retrieve and create new chat instances """
+    queryset = Chat.objects.prefetch_related('users', 'chat_messages').all()
+    serializer_class = ChatSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
+    def get_serializer_class(self):
+        """ 
+        We'll use a different serializer depending on the incomming request action 
+        
+        For 'list' and 'retrieve' we'll use the ChatDisplaySerializer, for the rest of 
+        actions we'll stick with the default serializer_class
+        """
+        if self.action in  ['list', 'retrieve']:
+            return ChatDisplaySerializer
+
+        return self.serializer_class
+
+    def get_queryset(self):
+        """ 
+        Ensure we only retrieve the chats where the current 
+        user has participation on 
+        """
+        return self.request.user.user_chats.all()
+
+    def create(self, request, *args, **kwargs):
+        """
+        We are overriding this method to confirm that a chat_message was sent
+        on the body of the request if the chat is not private
+        """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        private = serializer.validated_data['private']
+        chat_name = serializer.validated_data['chat_name']
+        print(private, chat_name)
+        if not private and not chat_name:
+            return Response(
+                {'error': 'You need to specify a chat name'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class ChatMessageViewSet(viewsets.GenericViewSet, 
+                         mixins.RetrieveModelMixin,
+                         mixins.ListModelMixin,
+                         mixins.CreateModelMixin):
+    """
+    API endpoint to create and retrieve chat messages
+    """
+    queryset = ChatMessage.objects.all()
+    serializer_class = ChatMessageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action in  ['list', 'retrieve']:
+            return ChatMessageDisplaySerializer
+        return self.serializer_class
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        """ 
+        Ensures only messages that the current user has created
+        """
+        return ChatMessage.objects.filter(user=self.request.user)

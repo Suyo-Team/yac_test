@@ -3,8 +3,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
-from api.models import ChatMessage
+from api.models import ChatMessage, Chat
+from api.consumers import ChannelsGroups
 
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -29,7 +32,7 @@ def new_message(sender, instance, created, **kwargs):
                 'chat_id': instance.chat_id,
                 'event': 'new_message',
                 'user_id': instance.user.id,
-                'user_name': instance.user.name,
+                'user_name': instance.user.username,
                 'message': message
             }
         )

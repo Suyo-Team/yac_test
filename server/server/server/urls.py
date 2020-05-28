@@ -21,6 +21,8 @@ from api import views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
+router.register(r'chats', views.ChatViewSet)
+router.register(r'messages', views.ChatMessageViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
