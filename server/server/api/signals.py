@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 from api.models import ChatMessage, Chat
+from api.serializers import ChatDisplaySerializer, ChatMessageDisplaySerializer
 from api.consumers import ChannelsGroups
 
 from channels.layers import get_channel_layer
@@ -22,17 +23,32 @@ def new_message(sender, instance, created, **kwargs):
     about this event.
     """
     if created:
-        message = instance.text
+        serializer = ChatMessageDisplaySerializer(instance)
+        message_data = serializer.data
+        message_data['type'] = 'new.message'
+        message_data['event'] = 'new_message'
 
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
             ChannelsGroups.NEW_MESSAGES,
-            {
-                'type': 'new.message',
-                'chat_id': instance.chat_id,
-                'event': 'new_message',
-                'user_id': instance.user.id,
-                'user_name': instance.user.username,
-                'message': message
-            }
+            message_data
+        )
+
+
+@receiver(post_save, sender=Chat)
+def new_chat(sender, instance, created, **kwargs):
+    """
+    Whenever a new chat is created we'll broadcast a message
+    about this event.
+    """
+    if created:
+        serializer = ChatDisplaySerializer(instance)
+        chat_data = serializer.data
+        chat_data['type'] = 'new.chat'
+        chat_data['event'] = 'new_chat'
+
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            ChannelsGroups.NEW_MESSAGES,
+            chat_data
         )

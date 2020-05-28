@@ -78,7 +78,6 @@ class ChatViewSet(viewsets.ModelViewSet):
 
         private = serializer.validated_data['private']
         chat_name = serializer.validated_data['chat_name']
-        print(private, chat_name)
         if not private and not chat_name:
             return Response(
                 {'error': 'You need to specify a chat name'},

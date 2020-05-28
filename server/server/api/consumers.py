@@ -21,8 +21,10 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         Called when a connection to web socket is established. If user is
         anonymous, we reject the connection, otherwise we accept it.
         """
+        print(1)
         self.user = self.scope.get('user', None)
         if self.user.is_anonymous:
+            print(2)
             await self.close()
         else:
             await self.accept()
@@ -32,15 +34,13 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         Receive the message from the signal that tells us that a new chat
         message has been created, so we can send it back to the clients
         """
-        user_id = event.get('user_id', None)
-        if user_id:
-            username = event.get('user_name', '')
-            message = event.get('message')
-            chat_id = event.get('chat_id')
-            await self.send_json({
-                'type': 'new_message',
-                'user_id': user_id,
-                'user_name': username,
-                'message': message,
-                'chat_id': chat_id
-            })
+        # the 'event' will already contain the serialized message data
+        await self.send_json(event)
+
+    async def new_chat(self, event):
+        """
+        Receive the chat from the signal that tells us that a new chat
+        has been created, so we can send it back to the clients
+        """
+        # the 'event' will already contain the serialized chat data
+        await self.send_json(event)

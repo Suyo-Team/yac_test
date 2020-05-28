@@ -5,13 +5,16 @@ from rest_framework import serializers
 from api.models import Chat, ChatMessage
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     """
-    Simple User serializer to display User information 
+    Simple User serializer to display User information.
+
+    For the purpose of this project, we'll be using the 
+    Django predefined User model
     """
     class Meta:
         model = get_user_model()
-        fields = ['id', 'url', 'username', 'email']
+        fields = ['id', 'username', 'email']
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
