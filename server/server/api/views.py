@@ -4,12 +4,32 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+
 from api.serializers import (
     UserSerializer, RegistrationSerializer, ChatSerializer,
     ChatMessageSerializer, ChatDisplaySerializer, ChatMessageDisplaySerializer
 )
 from api.models import Chat, ChatMessage
 
+class CustomAuthToken(ObtainAuthToken):
+    """ We need to get the just logged-in user information, besides the token """
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user': {
+                'id': user.pk,
+                'username': user.username,
+                'email': user.email
+            }
+        })
 
 class UserViewSet(mixins.RetrieveModelMixin,
                   mixins.DestroyModelMixin,

@@ -5,6 +5,8 @@ import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleRounded from '@material-ui/icons/AddCircleRounded';
 
+import CheckUserAuthenticated, { getUser } from '../../components/CheckUserAuthenticated';
+
 import ChatItem from './ChatItem';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,8 +32,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Chats(props) {
+export default function Chats() {
     const classes = useStyles();
+
+    const user = getUser();
 
     const [chatsState, setChatsState] = useState({
         chats: [
@@ -48,18 +52,18 @@ export default function Chats(props) {
     });
 
     const chatsList = chatsState.chats.map(chatItem => 
-        <ChatItem id={chatItem.id} chat_name={chatItem.chat_name}/>
+        <ChatItem id={chatItem.id} key={chatItem.id} chat_name={chatItem.chat_name}/>
     );
 
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
-                <Grid container 
+                <Grid container
                     justify="space-between" 
                     alignItems="center"
                     className={classes.chatsListHeader}>
                     <Grid item>
-                        <h3>{props.username}</h3>
+                        <h3>{user.username}</h3>
                     </Grid>
                     <Grid item>
                         My chats

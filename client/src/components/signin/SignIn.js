@@ -8,8 +8,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { Link as RouterLink, useHistory } from "react-router-dom";
+import Cookies from 'universal-cookie';
 
-import { Link as RouterLink } from "react-router-dom";
+import APIKit, { setClientToken } from '../APIKit';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,17 +33,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function SignIn() {
   const classes = useStyles();
+
+  const cookies = new Cookies();
+  const history = useHistory();
 
   const [formState, setFormState] = useState({
     username: '',
     password: ''
   });
 
-  const submitLoginHandler = (e) => {
+  const submitLoginHandler = async (e) => {
     e.preventDefault();
+    
     console.log(formState);
+
+    const onSuccess = ({data}) => {
+      // Set Web Token on success
+      setClientToken(data.token);
+      // set a cookie
+      cookies.set('user', data.user);
+      history.push('/chats');
+    };
+
+    const onFailure = error => {
+      console.log(error && error.response);      
+    };
+
+    APIKit.post('/login/', formState)
+      .then(onSuccess)
+      .catch(onFailure);
   }
 
   const onInputChangeHandler = (e) => {
@@ -61,7 +84,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} 
+        <form className={classes.form}
               onSubmit={submitLoginHandler}
               noValidate>
           <TextField

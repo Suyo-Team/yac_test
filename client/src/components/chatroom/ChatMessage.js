@@ -4,7 +4,15 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     chatMessage: {
-        maxWidth: '70%',      
+        width: '70%',
+        borderRadius: '5px',
+        backgroundColor: '#4765d0',
+        color: 'white',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        padding: '5px',
+        textAlign: 'right'
     },
     chatMessageContainer: {
         padding: '10px',

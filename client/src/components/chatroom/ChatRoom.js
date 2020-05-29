@@ -142,7 +142,7 @@ export default function ChatRoom(props) {
                     <TextField 
                         id="message" 
                         name="message"
-                        label="Write your message here"
+                        label="Press ENTER to send the message"
                         className={classes.message}
                         value={messageState.message}
                         autoFocus
