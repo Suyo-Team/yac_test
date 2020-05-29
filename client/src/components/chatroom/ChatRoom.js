@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 // import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,6 +8,7 @@ import ArrowBackRounded from '@material-ui/icons/ArrowBackRounded';
 import GroupAddRounded from '@material-ui/icons/GroupAddRounded';
 import Send from '@material-ui/icons/Send';
 import TextField from '@material-ui/core/TextField';
+import useStayScrolled from 'react-stay-scrolled';
 
 import CustomLink from '../CustomLink';
 import ChatMessage from './ChatMessage';
@@ -50,18 +51,36 @@ const useStyles = makeStyles((theme) => ({
 export default function ChatRoom(props) {
     const classes = useStyles();
 
+    const inputMessage = useRef(null);
+    const chatMessagesRef = useRef();
+
+    const { stayScrolled } = useStayScrolled(chatMessagesRef);
+ 
     const [messageState, setMessageState] = useState({
         message: ''
     });
 
     const [chatMessagesState, setChatMessagesState] = useState({
-        messages: []
+        messages: [
+            {message: 'Hola'},
+            {message: 'Hola 2'},
+            {message: 'Hola 3'},
+            {message: 'Hola 4'},
+            {message: 'Hola 5'},
+            {message: 'Hola 6'},
+            {message: 'Hola 7'},
+        ]
     });
+
+    useLayoutEffect(() => {
+            stayScrolled();
+        }, [chatMessagesState.messages.length]
+    );
 
     const onChangeMessageHandler = (e) => {
         setMessageState({
             message: e.target.value
-        });
+        });        
     }
 
     const submitMessageHandler = (e) => {
@@ -75,6 +94,8 @@ export default function ChatRoom(props) {
         setMessageState({
             message: ''
         });
+
+        inputMessage.current.focus();
     }
 
     const renderChatMessages = () => {
@@ -106,12 +127,11 @@ export default function ChatRoom(props) {
                         </IconButton>
                     </Grid>
                 </Grid>
-                <Grid 
-                    container 
-                    direction="column"
-                    className={classes.chatMessages}>
+
+                <Grid container className={classes.chatMessages} ref={chatMessagesRef}>
                     {renderChatMessages()}
                 </Grid>
+
                 <Grid container className={classes.chatSubmit} justify="space-between">
                     <TextField 
                         id="message" 
@@ -121,6 +141,7 @@ export default function ChatRoom(props) {
                         value={messageState.message}
                         autoFocus
                         onChange={onChangeMessageHandler}
+                        inputRef={inputMessage}
                     />
                     <IconButton 
                         color="primary" 
