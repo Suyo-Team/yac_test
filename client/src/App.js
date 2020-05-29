@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
 
+import SingUp from './components/singup/SingUp';
+
 function App() {
   return (
     <div className="App">
-      <h1>YAC test</h1>
-      <p>Yet another chat</p>
+      <SingUp />
     </div>
   );
 }
