@@ -83,6 +83,12 @@ export default function ChatRoom(props) {
         });        
     }
 
+    const onKeyPressHandler = (e) => {
+        if (e.key === 'Enter') {
+            submitMessageHandler();
+        }
+    }
+
     const submitMessageHandler = (e) => {
         setChatMessagesState({
             messages: [
@@ -141,6 +147,7 @@ export default function ChatRoom(props) {
                         value={messageState.message}
                         autoFocus
                         onChange={onChangeMessageHandler}
+                        onKeyPress={onKeyPressHandler}                       
                         inputRef={inputMessage}
                     />
                     <IconButton 
