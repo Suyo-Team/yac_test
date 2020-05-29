@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -34,6 +34,50 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
 
+  const [formState, setFormState] = useState({
+    username: '',
+    email: '',
+    password: '',
+    password2: ''
+  });
+
+  const [validPasswordsState, setValidPasswordsState] = useState({
+    validPasswords: true
+  });
+
+  const submitRegisterHandler = (e) => {
+    e.preventDefault();
+
+    let validPasswords = false
+    if (formState.password === formState.password2) {
+      validPasswords = true
+    }
+
+    setValidPasswordsState({
+      validPasswords: validPasswords
+    })
+
+    console.log(formState);
+  }
+
+  const onInputChangeHandler = (e) => {
+    setFormState({
+      ...formState,
+      [e.target.name]: e.target.value
+    });
+  }
+
+  const showErrorInvalidPassowrds = () => {
+    if (!validPasswordsState.validPasswords) {
+      return (
+        <Grid>
+          <p>Passwords must match.</p>
+        </Grid>
+      );
+    }
+    return;
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -44,7 +88,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={submitRegisterHandler} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -55,6 +99,8 @@ export default function SignUp() {
                 label="Username"
                 name="username"
                 autoComplete="username"
+                value={formState.username}
+                onChange={onInputChangeHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -66,6 +112,8 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={formState.email}
+                onChange={onInputChangeHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -78,6 +126,8 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={formState.password}
+                onChange={onInputChangeHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -88,11 +138,14 @@ export default function SignUp() {
                 name="password2"
                 label="Confirm Password"
                 type="password"
-                id="confirm-password"
+                id="password2"
                 autoComplete="confirm-password"
+                value={formState.password2}
+                onChange={onInputChangeHandler}
               />
             </Grid>
           </Grid>
+          {showErrorInvalidPassowrds()}
           <Button
             type="submit"
             fullWidth
@@ -101,7 +154,8 @@ export default function SignUp() {
             className={classes.submit}
           >
             Sign Up
-          </Button>
+          </Button>         
+
           <Grid container justify="flex-end">
             <Grid item>
               <RouterLink to="/login">Already have an account? Sign in</RouterLink>

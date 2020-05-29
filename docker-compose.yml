@@ -16,7 +16,7 @@ services:
             - /app/node_modules
             - ./client:/app 
         ports: 
-            - "4000:3000"
+            - "3000:3000"
     server:
         build:
             context: ./server
