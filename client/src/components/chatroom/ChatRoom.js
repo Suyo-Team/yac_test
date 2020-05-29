@@ -6,8 +6,11 @@ import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackRounded from '@material-ui/icons/ArrowBackRounded';
 import GroupAddRounded from '@material-ui/icons/GroupAddRounded';
+import Send from '@material-ui/icons/Send';
+import TextField from '@material-ui/core/TextField';
 
 import CustomLink from '../CustomLink';
+import ChatMessage from './ChatMessage';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -28,18 +31,63 @@ const useStyles = makeStyles((theme) => ({
     },
     chatMessages: {
         overflowY: 'auto',
-        borderRadius: '0 0 4px 4px'
+        height: '100%',
+        padding: '5px 10px',
+    },
+    chatSubmit: {
+        borderRadius: '0 0 4px 4px',
+        padding: '5px 10px',
+        borderTop: "solid 2px grey",
+    },
+    message: {
+        width: '85%'
+    },
+    submitMessageButton: {
+        width: '15%'
     }
 }));
 
 export default function ChatRoom(props) {
     const classes = useStyles();
 
+    const [messageState, setMessageState] = useState({
+        message: ''
+    });
+
+    const [chatMessagesState, setChatMessagesState] = useState({
+        messages: []
+    });
+
+    const onChangeMessageHandler = (e) => {
+        setMessageState({
+            message: e.target.value
+        });
+    }
+
+    const submitMessageHandler = (e) => {
+        setChatMessagesState({
+            messages: [
+                ...chatMessagesState.messages,
+                {message: messageState.message}
+            ]
+        });
+
+        setMessageState({
+            message: ''
+        });
+    }
+
+    const renderChatMessages = () => {
+        return chatMessagesState.messages.map(message => 
+            <ChatMessage message={message.message} />
+        );
+    }
+
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
                 <Grid container 
-                      justify="space-between" 
+                      justify="space-between"
                       alignItems="center"
                       className={classes.chatRoomHeader}>
                     <Grid item>
@@ -58,9 +106,29 @@ export default function ChatRoom(props) {
                         </IconButton>
                     </Grid>
                 </Grid>
-                <Grid container className={classes.chatMessages}>
-                    <h1>Here go the chat messages</h1>
+                <Grid 
+                    container 
+                    direction="column"
+                    className={classes.chatMessages}>
+                    {renderChatMessages()}
                 </Grid>
+                <Grid container className={classes.chatSubmit} justify="space-between">
+                    <TextField 
+                        id="message" 
+                        name="message"
+                        label="Write your message here"
+                        className={classes.message}
+                        value={messageState.message}
+                        autoFocus
+                        onChange={onChangeMessageHandler}
+                    />
+                    <IconButton 
+                        color="primary" 
+                        className={classes.submitMessageButton}
+                        onClick={submitMessageHandler}>
+                        <Send />
+                    </IconButton>
+                </Grid>              
             </div>
         </Container>
     );
