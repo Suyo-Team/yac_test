@@ -7,22 +7,28 @@ import {
 
 import SingUp from './components/signup/SignUp';
 import SignIn from './components/signin/SignIn';
+import Chats from './components/chats/Chats';
+import ChatRoom from './components/chatroom/ChatRoom';
 
 function App() {
+
   return (
     <Router>
       <Switch>
-          <Route path="/login">
+          <Route path="/login" exact>
             <SignIn />
           </Route>
-          <Route path="/register">
+          <Route path="/register" exact>
             <SingUp />
+          </Route>          
+          <Route path="/chats" exact>
+            <Chats username='Test User' />
           </Route>
-          <Route path="/">
+          <Route path="/chatroom" exact>
+            <ChatRoom chat_name='Test Chat Name' />
+          </Route>
+          <Route path="/" exact>
             <h1>Should be redirected to login if user's not authenticated yet</h1>
-          </Route>
-          <Route path="/chat">
-            <h1>Here goes the Chat component</h1>
           </Route>
         </Switch>
     </Router>
