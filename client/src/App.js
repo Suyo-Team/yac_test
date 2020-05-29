@@ -7,6 +7,7 @@ import {
 
 import SingUp from './components/signup/SignUp';
 import SignIn from './components/signin/SignIn';
+import SignOut from './components/signout/SignOut';
 import Chats from './components/chats/Chats';
 import ChatRoom from './components/chatroom/ChatRoom';
 import CheckUserAuthenticated from './components/CheckUserAuthenticated';
@@ -21,8 +22,8 @@ function App() {
             <Route path="/login" exact>
               <SignIn />
             </Route>
-            <Route path="/login" exact>
-              <SignIn />
+            <Route path="/logout" exact>
+              <SignOut />
             </Route>
             <Route path="/register" exact>
               <SingUp />

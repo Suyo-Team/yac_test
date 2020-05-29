@@ -26,9 +26,11 @@ export default function CheckUserAuthenticated(props) {
     if (!excluded_paths.includes(location.pathname)) {
         if (user_cookie === undefined) {
             history.push('/login');
+            return null;
         }    
         if (props.redirect && props.redirect !== location.pathname) {
             history.push(props.redirect);
+            return null;
         }
     }
     // Here we could update a global state with redux, with user information
@@ -39,6 +41,13 @@ export default function CheckUserAuthenticated(props) {
 }
 
 export function getUser() {
+    // gets the user information from the cookie
     const cookies = new Cookies();
     return cookies.get('user');    
+}
+
+export function removeUser() {
+    /// remove the cookie with user information
+    const cookies = new Cookies();
+    cookies.remove('user');
 }
