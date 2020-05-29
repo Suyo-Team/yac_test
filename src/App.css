@@ -1,0 +1,95 @@
+html, body, .App, .App-header, #root{
+  height: 100vh;
+}
+
+.login{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+  .login .box{
+    width: 300px;
+  }
+  .login input{
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px 15px;
+  }
+
+.chat{
+  height: calc(100% - 90px);
+  overflow: auto;
+  background: #f6f6f6;
+  padding: 20px;
+}
+
+.contentParticipantsMessages .participants{
+  height: 100vh;
+}
+
+.contentParticipantsMessages .messages{
+  height: 100vh;
+}
+.contentSendMessage{
+  padding: 7px;
+  height: 36px;
+  background: #dfdfdf;
+}
+  .contentSendMessage input{
+    width: calc(100% - 147px);
+    margin-right: 5px;
+    display: block;
+    float: left;
+    height: 32px;
+    border: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 5px;
+  }
+  .contentSendMessage button{
+    width: 100px;
+    height: 35px;
+  }
+
+.bubbleChatMyself{
+  background-image: linear-gradient(to left, #ef4154, #e33e72);
+  border-radius: 10px;
+  padding: 10px;
+  width: max-content;
+  color: white;
+  float: right;
+  clear: both;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+  .bubbleChatMyself .user{
+    display: none;
+  }
+.bubbleChat{
+  background: #e6e6e6;
+  border-radius: 10px;
+  padding: 10px;
+  width: max-content;
+  color: black;
+  float: left;
+  clear: both;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+  .bubbleChat .user{
+    font-size: 10px;
+    opacity: 0.5;
+  }
+
+.false{
+  display: none;
+}
+
+.alert{
+  color: #b2102f;
+}
+
+.opacity{
+  opacity: 0.2;
+}

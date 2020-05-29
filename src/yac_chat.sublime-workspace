@@ -1,0 +1,1029 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"border",
+				"border-radius\tproperty"
+			],
+			[
+				"a",
+				"auto\tabc"
+			],
+			[
+				"bo",
+				"box-sizing\tproperty"
+			],
+			[
+				"padd",
+				"padding\tproperty"
+			],
+			[
+				"c",
+				"clear\tproperty"
+			],
+			[
+				"backgr",
+				"background-image\tproperty"
+			],
+			[
+				"messa",
+				"messageObject\tabc"
+			],
+			[
+				"mess",
+				"messagesList\tabc"
+			],
+			[
+				"console",
+				"console.log\tabc"
+			],
+			[
+				"Des",
+				"Description\tabc"
+			],
+			[
+				"bor",
+				"border-radius\tabc"
+			],
+			[
+				"Vue",
+				"VueFire\tabc"
+			],
+			[
+				"suppo",
+				"support_img\tabc"
+			],
+			[
+				"supp",
+				"support_img〔variable〕"
+			],
+			[
+				"func",
+				"function〔keyword〕"
+			],
+			[
+				"fun",
+				"function\tabc"
+			],
+			[
+				"trans",
+				"transition\tproperty"
+			],
+			[
+				"l",
+				"log\tabc"
+			],
+			[
+				"consol",
+				"console.log\t(Login.vue)"
+			],
+			[
+				"com",
+				"components\t(ToolBar.vue)"
+			],
+			[
+				"margin-",
+				"margin-bottom\tproperty"
+			],
+			[
+				"text-a",
+				"text-align\tproperty"
+			],
+			[
+				"bacgr",
+				"background\tproperty"
+			],
+			[
+				"s",
+				"style"
+			],
+			[
+				"Re",
+				"Request"
+			],
+			[
+				"notific",
+				"notifications"
+			],
+			[
+				"Reque",
+				"Requests"
+			],
+			[
+				"len",
+				"length"
+			],
+			[
+				"w",
+				"width"
+			],
+			[
+				"tipo_",
+				"tipo_egreso"
+			],
+			[
+				"text-",
+				"text-right"
+			],
+			[
+				"in",
+				"inline\tdisplay"
+			],
+			[
+				"ovw",
+				"overflow\tproperty"
+			],
+			[
+				"font-",
+				"font-weight\tproperty"
+			],
+			[
+				"box-",
+				"box-shadow\tproperty"
+			],
+			[
+				"texr",
+				"text-center"
+			],
+			[
+				"wid",
+				"width\tproperty"
+			],
+			[
+				"text",
+				"text-transform\tproperty"
+			],
+			[
+				"di",
+				"div\tTag"
+			],
+			[
+				"v",
+				"v-if\t<div v-if=\"\">"
+			],
+			[
+				"json",
+				"json_encode"
+			],
+			[
+				"margin",
+				"margin-bottom\tproperty"
+			],
+			[
+				"font-s",
+				"font-size\tproperty"
+			],
+			[
+				"color",
+				"color_emprendedora"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "App.css",
+			"settings":
+			{
+				"buffer_size": 894,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "App.js",
+			"settings":
+			{
+				"buffer_size": 3319,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "components/Participants.jsx",
+			"settings":
+			{
+				"buffer_size": 1082,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "components/Chat.jsx",
+			"settings":
+			{
+				"buffer_size": 517,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Firebase.jsx",
+			"settings":
+			{
+				"buffer_size": 583,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"tabs",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"stat",
+				"View: Toggle Status Bar"
+			],
+			[
+				"menu",
+				"View: Toggle Menu"
+			],
+			[
+				"file",
+				"File: New View into File"
+			],
+			[
+				"status",
+				"View: Toggle Status Bar"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"theme",
+				"UI: Select Color Scheme"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"isntall",
+				"Package Control: Install Package"
+			],
+			[
+				"isnta",
+				"Package Control: Install Package"
+			],
+			[
+				"close pro",
+				"Project: Close"
+			],
+			[
+				"mini",
+				"View: Toggle Minimap"
+			],
+			[
+				"pa",
+				"Package Control: List Packages"
+			],
+			[
+				"packa",
+				"Package Control: Remove Package"
+			],
+			[
+				"auto",
+				"AutoFileName: Quick Settings"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"stauts",
+				"Indexing Status"
+			],
+			[
+				"emmet",
+				"Emmet: Balance (inward)"
+			],
+			[
+				"tab",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"cover",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"covert",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"sh",
+				"UI: Select Color Scheme"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"re",
+				"Package Control: Remove Package"
+			],
+			[
+				"sheme",
+				"UI: Select Color Scheme"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"vu",
+				"Set Syntax: Vue Component"
+			],
+			[
+				"insk",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"FILE",
+				"File: New View into File"
+			],
+			[
+				"status ",
+				"View: Toggle Status Bar"
+			],
+			[
+				"close proj",
+				"Project: Close"
+			],
+			[
+				"open",
+				"View: Toggle Open Files in Side Bar"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 150.0,
+		"history":
+		[
+			"help",
+			"ls"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/andres/dev/js/yac_test",
+		"/home/andres/dev/js/yac_test/src",
+		"/home/andres/dev/js/yac_test/src/components"
+	],
+	"file_history":
+	[
+		"/home/andres/dev/js/yac_test/src/components/Description.jsx",
+		"/home/andres/dev/js/yac_test/src/components/SendMessage.jsx",
+		"/home/andres/dev/js/yac_test/src/index.js",
+		"/home/andres/dev/js/yac_test/src/app.jsx",
+		"/home/andres/dev/js/yac_test/src/components/description.jsx",
+		"/home/andres/dev/js/chattu/src/App.js",
+		"/home/andres/dev/js/chattu/src/App.css",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/assets/css/sass/_piaf.style.scss",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/views/user/LoginClient.vue",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/views/user/Login.vue",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/router.js",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/locales/en.json",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/locales/es.json",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/components/Listing/DataListItem.vue",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/views/app/InvoicesAdmin.vue",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/views/app/piaf/Start.vue",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/containers/TopNavClient.vue",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/views/client/Invoices.vue",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/store/modules/menu.js",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/views/app/index.vue",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/containers/TopNav.vue",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/views/app/piaf/index.vue",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/constants/config.js",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/App.vue",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/main.js",
+		"/home/andres/dev/diens/payments-invoice-diens-front/node_modules/dropzone/dist/basic.css",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/index.js",
+		"/home/andres/dev/diens/payments-invoice-diens-front/src/views/user/index.vue",
+		"/home/andres/dev/js/ep/ep/.babelrc",
+		"/home/andres/dev/js/ep/ep/package.json",
+		"/home/andres/dev/js/ep/ep2/index.html",
+		"/home/andres/dev/js/ep/ep2/src/firebase.js",
+		"/home/andres/dev/js/ep/ep2/src/main.js",
+		"/home/andres/dev/js/ep/ep2/src/App.vue",
+		"/home/andres/dev/js/ep/ep/src/App.vue",
+		"/home/andres/dev/js/ep/ep/src/main.js",
+		"/home/andres/dev/js/ep/ep/.eslintrc.js",
+		"/home/andres/dev/js/ep/ep/node_modules/eslint/conf/eslint-recommended.js",
+		"/home/andres/dev/diens/v-web-client-tsoluciona/src/App.vue",
+		"/home/andres/dev/diens/v-web-client-tsoluciona/src/views/Request.vue",
+		"/home/andres/dev/diens/v-web-client-tsoluciona/src/views/Client.vue",
+		"/home/andres/dev/diens/v-web-client-tsoluciona/src/views/Signup.vue",
+		"/home/andres/dev/diens/v-web-client-tsoluciona/src/views/Login.vue",
+		"/home/andres/dev/diens/v-web-client-tsoluciona/src/components/ToolBarGuest.vue",
+		"/home/andres/dev/diens/v-web-client-tsoluciona/src/components/ToolBar.vue",
+		"/home/andres/dev/diens/v-web-client-tsoluciona/src/main.js",
+		"/home/andres/dev/diens/v-web-client-tsoluciona/src/views/Client_internal.vue",
+		"/home/andres/dev/diens/v-web-client-tsoluciona/.env",
+		"/home/andres/.config/sublime-text-3/Packages/Emmet/Emmet.sublime-settings",
+		"/home/andres/.config/sublime-text-3/Packages/BracketHighlighter/Example.sublime-keymap",
+		"/home/andres/diens/v-web-client-tsoluciona/public/index.html",
+		"/home/andres/diens/v-web-client-tsoluciona/src/components/ToolBarGuest.vue",
+		"/home/andres/diens/v-web-client-tsoluciona/src/components/ToolBar.vue",
+		"/home/andres/diens/v-web-client-tsoluciona/src/components/ToolBarOperator.vue",
+		"/home/andres/diens/v-web-client-tsoluciona/src/App.vue",
+		"/home/andres/diens/v-web-client-tsoluciona/src/views/Request.vue",
+		"/home/andres/diens/v-web-client-tsoluciona/src/views/Client_internal.vue",
+		"/home/andres/diens/clarotsoluciona/src/components/AllNotifications.vue",
+		"/home/andres/diens/clarotsoluciona/src/views/Request.vue",
+		"/home/andres/php/htdocs/azul/application/models/Proyecto.php",
+		"/home/andres/php/htdocs/azul/theme/views/pdf/cuadre/content.php",
+		"/home/andres/php/htdocs/azul/application/models/Cuadre_diario.php",
+		"/home/andres/php/htdocs/azul/application/controllers/Api.php",
+		"/home/andres/php/htdocs/azul/theme/js/cuadre_diario.js",
+		"/home/andres/php/htdocs/azul/application/controllers/Deudores_clientes.php",
+		"/home/andres/php/htdocs/azul/theme/views/proyectos.php",
+		"/home/andres/php/htdocs/azul/application/controllers/Proyectos.php",
+		"/home/andres/php/htdocs/azul/application/controllers/Cuadre_diario.php",
+		"/home/andres/php/htdocs/azul/theme/views/cuadre_diario.php",
+		"/home/andres/php/htdocs/azul/application/models/Tipo_pago.php",
+		"/home/andres/php/htdocs/azul/theme/views/modals/proyecto.php",
+		"/home/andres/php/htdocs/azul/theme/views/content.php",
+		"/home/andres/php/htdocs/azul/application/controllers/Cuadre_mes.php",
+		"/home/andres/php/htdocs/met2/public_html/css/app.css",
+		"/home/andres/php/htdocs/met2/app/Http/Controllers/Auth/LoginController.php",
+		"/home/andres/php/htdocs/met2/resources/views/components/basic-card.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/user/tabs/user_project.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/auth/login.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/welcome.blade.php",
+		"/home/andres/php/htdocs/met2/app/Http/Controllers/HomeController.php",
+		"/home/andres/php/htdocs/met2/app/Http/Controllers/InfoController.php",
+		"/home/andres/php/htdocs/met2/app/Http/Controllers/Controller.php",
+		"/home/andres/php/htdocs/met2/resources/views/infotabs.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/home.blade.php",
+		"/home/andres/php/htdocs/met2/app/Http/Controllers/Admin/UserController.php",
+		"/home/andres/php/htdocs/met2/app/Http/Controllers/Backend/UserController.php",
+		"/home/andres/php/htdocs/met2/resources/assets/js/modal.js",
+		"/home/andres/php/htdocs/met2/app/Http/Controllers/Admin/GroupController.php",
+		"/home/andres/php/htdocs/met2/app/Exports/MentorsExport.php",
+		"/home/andres/php/htdocs/met2/app/Exports/MenteesExport.php",
+		"/home/andres/php/htdocs/met2/app/Exports/EntrepreneurExport.php",
+		"/home/andres/php/htdocs/met2/app/Http/Controllers/Admin/ExportController.php",
+		"/home/andres/php/htdocs/met2/resources/views/admin/exports/mentees.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/components/blue-navbar.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/admin/exports/index.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/admin/exports/mentors.blade.php",
+		"/home/andres/php/htdocs/met2/.env",
+		"/home/andres/php/htdocs/met2/resources/views/admin/users/index.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/components/mail/bienvenido.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/user/search/entrepreneurs/index.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/components/profile-card.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/components/search-card.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/user/user-show.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/user/user-index.blade.php",
+		"/home/andres/php/htdocs/met2/resources/assets/sass/_met-variables.scss",
+		"/home/andres/php/htdocs/met2/routes/api.php",
+		"/home/andres/php/htdocs/met2/app/Http/Controllers/UsersController.php",
+		"/home/andres/php/htdocs/met2/routes/web.php",
+		"/home/andres/php/htdocs/met2/app/Models/User.php",
+		"/etc/fstab",
+		"/etc/default/grub",
+		"/home/andres/php/htdocs/met2/node_modules/sockjs/examples/echo/index.html",
+		"/home/andres/php/htdocs/met2/resources/views/user/tracking/objectives/index.blade.php",
+		"/home/andres/php/htdocs/met2/storage/framework/views/84e661da7aef34d9cb7c847ce231925f33b95b3c.php",
+		"/home/andres/php/htdocs/met2/app/Http/Controllers/verifyController.php",
+		"/home/andres/php/htdocs/met2/resources/views/info/home-inactive.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/info/verify.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/admin/welcome/index.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/info/terminosycondiciones.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/info/politicasdeprivacidad.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/admin/groups/index.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/admin/groups/create_edit.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/admin/evaluation/index_evaluation.blade.php",
+		"/home/andres/php/htdocs/met2/resources/views/admin/evaluation/create_edit_evaluation.blade.php",
+		"/home/andres/php/htdocs/met2/app/Http/Controllers/Backend/EntrepreneurController.php",
+		"/home/andres/php/htdocs/met2/resources/lang/es/form.php",
+		"/home/andres/php/htdocs/met2/resources/views/layouts/app.blade.php",
+		"/home/andres/php/htdocs/met2/resources/assets/js/components/admin/users/EditUsersFormComponent.vue"
+	],
+	"find":
+	{
+		"height": 42.0
+	},
+	"find_in_files":
+	{
+		"height": 108.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"alert",
+			"Description",
+			"messagesList",
+			"Chat",
+			"message",
+			"nombre",
+			"mundo",
+			"calc(100vh - 300px)",
+			"ul",
+			"getMessages",
+			"child",
+			"lista",
+			"list",
+			"logo",
+			"hello",
+			"Description",
+			"app",
+			"logo-diens-black.svg",
+			"logo-",
+			"/assets",
+			".svg",
+			"pages",
+			"$background-color",
+			"body {",
+			"body",
+			".fixed-background",
+			"text-small",
+			"p",
+			"xxx",
+			"selectedItems",
+			"loadingFile",
+			"loading",
+			"fileAdded",
+			"dz-message",
+			"Vuetify",
+			"vuetify",
+			".dropzone",
+			"dropzoneOptions",
+			"dictDefaultMessage",
+			"el excel",
+			"state",
+			"changeSideMenuStatus",
+			"hangeSideMenuStatus",
+			"users",
+			"allowIndentationTabs",
+			"no-tabs",
+			"},\n",
+			"vista previa",
+			"support_img",
+			"ialog_added_image",
+			"clickaddimage",
+			"color_secondary",
+			"add_a_photo",
+			"send_trac",
+			"send_",
+			"create",
+			"ref",
+			"write",
+			"v-too",
+			"hazlo",
+			"dialog",
+			" avatar",
+			"dialog",
+			"dialog ",
+			"this",
+			"openProfile",
+			"chat",
+			"volver",
+			"colver",
+			"link_",
+			"link_standar",
+			"router-link",
+			"router-link ",
+			"volver",
+			"go_to_option",
+			"head>",
+			"alert",
+			"resetPass",
+			"recordar",
+			"md6",
+			"sm8",
+			"\t\t\t\t\t\t\t\t\txs12\n\t\t\t\t\t\t\t\t\tsm12",
+			"xs12",
+			"sm",
+			"clear",
+			"registro",
+			"formulario",
+			"registr",
+			"registra",
+			".form",
+			"form",
+			"recuperar",
+			"banners_ready",
+			"element",
+			"items",
+			"div",
+			"v-list-tile",
+			"color=\"indigo\"",
+			"indigo",
+			"@men",
+			"description",
+			"#write_message",
+			"chat",
+			"solicit",
+			"solicitud",
+			"v-card-title",
+			"Solicitud",
+			"#ffb648 !important",
+			"vue-snotify",
+			"vue-snotify/styles/material",
+			"alert",
+			"v-form",
+			"v-form ",
+			"v-form",
+			"div"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "App.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 894,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								411,
+								411
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "App.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3319,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2475,
+								2475
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Simple JSX/JSX.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": false,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": false,
+								"indentSize": 2,
+								"tabSize": 2
+							},
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1620.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "components/Participants.jsx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1082,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								458,
+								458
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Simple JSX/JSX.sublime-syntax",
+							"translate_tabs_to_spaces": false,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": false,
+								"indentSize": 4,
+								"tabSize": 4
+							},
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "components/Chat.jsx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 517,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								342,
+								342
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Simple JSX/JSX.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": false,
+								"indentSize": 4,
+								"tabSize": 4
+							},
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "Firebase.jsx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 583,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								32,
+								32
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/JSX/JSX.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 29.0
+	},
+	"input":
+	{
+		"height": 42.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SublimeLinter":
+	{
+		"height": 0.0
+	},
+	"output.doc":
+	{
+		"height": 0.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "yac_chat.sublime-project",
+	"replace":
+	{
+		"height": 54.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"topnav",
+				"src/containers/TopNav.vue"
+			],
+			[
+				".env",
+				".env"
+			],
+			[
+				"client",
+				"src/views/Client.vue"
+			],
+			[
+				"reques",
+				"src/views/Request.vue"
+			],
+			[
+				"login",
+				"src/views/Login.vue"
+			],
+			[
+				"login.",
+				"src/views/Login.vue"
+			],
+			[
+				"cuadrecontent",
+				"theme/views/pdf/cuadre/content.php"
+			],
+			[
+				"welcome",
+				"resources/views/welcome.blade.php"
+			],
+			[
+				"home",
+				"resources/views/home.blade.php"
+			],
+			[
+				"modal",
+				"resources/assets/js/modal.js"
+			],
+			[
+				"blue",
+				"resources/views/components/blue-navbar.blade.php"
+			],
+			[
+				"card",
+				"resources/views/components/search-card.blade.php"
+			],
+			[
+				"polit",
+				"resources/views/info/politicasdeprivacidad.blade.php"
+			],
+			[
+				"metva",
+				"resources/assets/sass/_met-variables.scss"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/Documentos/proyectos.sublime/painfront.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 283.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
