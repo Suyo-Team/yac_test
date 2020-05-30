@@ -1,4 +1,11 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import React, { 
+    useState, 
+    useRef, 
+    useLayoutEffect, 
+    useEffect 
+} from 'react';
+import { useParams } from "react-router-dom";
+
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -8,13 +15,14 @@ import GroupAddRounded from '@material-ui/icons/GroupAddRounded';
 import Send from '@material-ui/icons/Send';
 import TextField from '@material-ui/core/TextField';
 import useStayScrolled from 'react-stay-scrolled';
-import { useParams } from "react-router-dom";
-import APIKit from '../APIKit';
 
+import APIKit from '../APIKit';
 import CustomLink from '../CustomLink';
 import ChatMessage from './ChatMessage';
 import { getUser } from '../CheckUserAuthenticated';
 
+
+// Styles
 const useStyles = makeStyles((theme) => ({
     paper: {
       display: 'flex',
@@ -54,27 +62,41 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+
+// Main Component
 export default function ChatRoom(props) {
+
+    // Classes to style the component
     const classes = useStyles();
 
+    // Parameter taken from the url route, this will determine 
+    // which chat data we need to retrieve from server
     let { chatRoomId } = useParams();
     
+    // Get current user from cookies
     const user = getUser();
+
+    // Socket to manage messages from channels
     const socket = props.socket;
 
+    // References to some document elements
     const inputMessage = useRef(null);
     const chatMessagesRef = useRef();
 
+    // Hook to help us keep the chat messages list scrolled to bottom all the time
     const { stayScrolled } = useStayScrolled(chatMessagesRef);
- 
+    
+    // This state will manage the message that user is intending to send
     const [messageState, setMessageState] = useState({
         message: ''
     });
 
+    // State to manage the messages list in the chat
     const [chatMessagesState, setChatMessagesState] = useState({
         messages: []
     });
 
+    // State to store the chat information once retrieved from server
     const [chatState, setChatState] = useState({
         id: null,
         chat_name: '',
@@ -82,6 +104,7 @@ export default function ChatRoom(props) {
         users: [],
     });
 
+    // Fecthignt he chat information via API
     useEffect(() => {
         const fetchData = async () => {
             const result = await APIKit.get(`/chats/${chatRoomId}`);            
@@ -97,23 +120,30 @@ export default function ChatRoom(props) {
         fetchData();
     }, []);
 
+    // Stay chat messages list component scrolled to bottom 
+    // according to the messages list length
     useLayoutEffect(() => {
             stayScrolled();
         }, [chatMessagesState.messages.length]
     );
-
+    
+    // Function to handle changes in the input where the message 
+    // is being typed
     const onChangeMessageHandler = (e) => {
         setMessageState({
             message: e.target.value
         });
     }
 
+    // When pressing enter, the messages is submited
     const onKeyPressHandler = (e) => {
         if (e.key === 'Enter') {
             submitMessageHandler();
         }
     }
 
+    // Function to submit the message
+    // Validates if the input is empty
     const submitMessageHandler = async (e) => {
 
         if (messageState.message.length === 0) {
@@ -131,12 +161,27 @@ export default function ChatRoom(props) {
         }
     }
 
+    // Everytime we receive a message from teh server with the messages 
+    // information, we update the messages list state.
+    // The flow is like folows.
+    // All the messages are sent to the server via http through an API
+    // Django stores the message in the db and, using a signal to catch that action,
+    // it sends a message using a channel_layer to all the members in the group 
+    // (All the people connected to the socket).
+    // This message will contain the message serialized directly from django, with
+    // the same structure we use to submit it.
     socket.onmessage = function(e) {
+        // Parse the data to JSON
         const data = JSON.parse(e.data);
 
+        // If event is 'new_message'
         if (data.event === 'new_message') {
-            if (data.chat.toString() === chatRoomId) {
-                
+            // then we check that the chat id of the message that is being received
+            // matches the current chat room. If so, we added to the messages state, and
+            // therefore, it's being rendered to the screen
+            if (data.chat.toString() === chatRoomId) {                
+                // Delete some attributes in the object
+                // that should not be stored in the state
                 delete data.type
                 delete data.event
 
@@ -150,25 +195,28 @@ export default function ChatRoom(props) {
         }        
     };
 
+    // Helper function to map the messages list and generate 
+    // a list of ChatMessage components
     const renderChatMessages = () => {
         return chatMessagesState.messages.map(message => 
-            <ChatMessage
-                message={message.text} 
-                key={message.id} 
-                user={message.user}
-                activeUser={user}
-                created={message.created}
-            />
+            <ChatMessage message={message.text} 
+                         key={message.id} 
+                         user={message.user}
+                         activeUser={user}
+                         created={message.created} />
         );
     }
 
     return (
         <Container component="main" maxWidth="xs">
+
             <div className={classes.paper}>
+
                 <Grid container 
                       justify="space-between"
                       alignItems="center"
                       className={classes.chatRoomHeader}>
+
                     <Grid item>
                         <CustomLink tag={IconButton} 
                                     to='/chats' 
@@ -176,42 +224,46 @@ export default function ChatRoom(props) {
                             <ArrowBackRounded />
                         </CustomLink>
                     </Grid>
-                    <Grid item>
-                        {chatState.chat_name}
-                    </Grid>
+
+                    <Grid item>{chatState.chat_name}</Grid>
+
                     <Grid item>
                         <IconButton color="primary">
                             <GroupAddRounded />
                         </IconButton>
                     </Grid>
+
                 </Grid>
 
                 <div className={classes.chatMessages} 
-                    ref={chatMessagesRef}>
-
+                     ref={chatMessagesRef}>
                     {renderChatMessages()}
                 </div>
 
-                <Grid container className={classes.chatSubmit} justify="space-between">
-                    <TextField 
-                        id="message" 
-                        name="message"
-                        label="Press ENTER to send the message"
-                        className={classes.message}
-                        value={messageState.message}
-                        autoFocus
-                        onChange={onChangeMessageHandler}
-                        onKeyPress={onKeyPressHandler}                       
-                        inputRef={inputMessage}
-                    />
-                    <IconButton 
-                        color="primary" 
-                        className={classes.submitMessageButton}
-                        onClick={submitMessageHandler}>
+                <Grid container 
+                      className={classes.chatSubmit}
+                      justify="space-between">
+
+                    <TextField id="message" 
+                               name="message"
+                               label="Press ENTER to send the message"
+                               className={classes.message}
+                               value={messageState.message}
+                               autoFocus
+                               onChange={onChangeMessageHandler}
+                               onKeyPress={onKeyPressHandler}                       
+                               inputRef={inputMessage} />
+
+                    <IconButton color="primary" 
+                                className={classes.submitMessageButton}
+                                onClick={submitMessageHandler}>
                         <Send />
                     </IconButton>
+
                 </Grid>              
+
             </div>
+            
         </Container>
     );
 }

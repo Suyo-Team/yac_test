@@ -1,3 +1,11 @@
+/**
+ * Axios initial configuration:
+ * 
+ * We specify a base url to work with, and also a timeout for long requests
+ * 
+ * Code taken from:
+ * https://www.willandskill.se/en/build-a-great-login-experience-with-react-native/
+ */
 import axios from 'axios';
 
 // Create axios client, pre-configured with baseURL

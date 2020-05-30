@@ -1,5 +1,12 @@
+/**
+ * Dialog Component launched when user wants to create a new chat.
+ * It's a modal window with a form requesting soem info to configure
+ * the chat 
+ */
+
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
@@ -10,16 +17,16 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import PersonIcon from '@material-ui/icons/Person';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import { blue } from '@material-ui/core/colors';
-
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import APIKit from '../APIKit';
 
+// Sytles
 const useStyles = makeStyles({
     avatar: {
         backgroundColor: blue[100],
@@ -33,87 +40,160 @@ const useStyles = makeStyles({
     }
 });
 
-export default function CreateChat(props) {
-    const classes = useStyles();
-    const { onClose, selectedValue, open } = props;
 
+// Main component
+export default function CreateChat(props) {
+    
+    // Classes to style the component
+    const classes = useStyles();
+    // Deconstructing the props
+    const { onClose, open } = props;
+
+    // State to manage the list of users
     const [usersState, setUsersState] = useState({ users: [] });
-    const [newChatState, setNewChatState] = useState({
+
+    // Used when opening and closing the component
+    const initialNewChatState = {
         private: true,
         chat_name: '',
         selectedUser: ''
-    });
+    }
+    // State to manage the new Chat configuration.    
+    const [newChatState, setNewChatState] = useState(initialNewChatState);
 
+    // Fetch the users list from the server
     useEffect(() => {
         const fetchData = async () => {
             const result = await APIKit.get('/users/');
-
             setUsersState({ users: result.data });
         };
         fetchData();
     }, []);
 
+    // Helper function to execute everytime the component is closed
     const handleClose = () => {
-        onClose(selectedValue);
+        // We excecute the external function passed trhough the props
+        onClose();
+        console.log(newChatState);
+        // Reset the chat configuration state
+        setNewChatState(initialNewChatState);
     };
 
+    // Function to handle the new chat creation
+    const handleCreateNewChat = () => {
+
+    };
+
+    // Function excecuted when a user is selected from the list
     const handleListItemClick = (user) => {
         setNewChatState({
             ...newChatState,
             selectedUser: user.id
         });
-
-        console.log(newChatState.selectedUser)
     };
 
-    return (
-        <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
-            <DialogTitle id="create-chat-dialog-title">Create a new Chat</DialogTitle>
-            <DialogContent>
-                <FormControlLabel
-                    control={
-                    <Checkbox
-                        checked={newChatState.private}
-                        // onChange={handlePrivateChange}
-                        name="private"
-                        color="primary"
-                    />
-                    }
-                    label="Private"
-                />
+    // Function executed when the users select or unselect 
+    // the Private checkbox
+    const handleChangePrivate = (e) => {
+        setNewChatState({
+            ...newChatState,
+            private: e.target.checked
+        })
+    }
+
+    // Function to handle the input events to change the Chat name
+    const handleChangeChatName = (e) => {
+        setNewChatState({
+            ...newChatState,
+            chat_name: e.target.value
+        })
+    }
+
+    // If the chat is 'private', then the 'chat_name' must not be specified
+    // In that case we hide this component. On the other hand, if the chat
+    // is not 'private', the Chat name must be specified
+    const renderChatNameInput = () => {
+        if (!newChatState.private) {
+            return (
                 <TextField
                     margin="dense"
-                    id="chat_name"
+                    id="chat-name"
                     label="Chat Name"
                     type="text"
                     fullWidth
-                    disabled={true}
+                    autoFocus
+                    required
+                    value={newChatState.chat_name}
+                    onChange={handleChangeChatName}
                 />
-            </DialogContent>
+            );
+        }
+        return null;
+    }
+
+    return (
+        <Dialog onClose={handleClose} 
+                aria-labelledby="simple-dialog-title" 
+                open={open}
+                fullWidth
+                maxWidth="xs">
+
+            <DialogTitle id="create-chat-dialog-title">Create a new Chat</DialogTitle>
+
             <DialogContent>
+
+                <FormControlLabel 
+                    control={
+                        <Checkbox checked={newChatState.private}                        
+                                name="private"
+                                color="primary"
+                                onChange={handleChangePrivate} />
+                        }
+                    label="Private" />
+                                  
+                { renderChatNameInput() }
+
+            </DialogContent>
+
+            <DialogContent>
+
                 <List>
                     {usersState.users.map((user) => (
-                        <ListItem 
-                            button 
-                            onClick={() => handleListItemClick(user)} key={user.id}
-                            className={user.id === newChatState.selectedUser ? classes.selectedUser : null}
-                        >
+                        <ListItem button 
+                                  onClick={() => handleListItemClick(user)} key={user.id}
+                                  className={user.id === newChatState.selectedUser ? classes.selectedUser : null}>
+                            
                             <ListItemAvatar>
                                 <Avatar className={classes.avatar}>
                                     <PersonIcon />
                                 </Avatar>
                             </ListItemAvatar>
+
                             <ListItemText primary={user.username} />
+
                         </ListItem>
                     ))}
                 </List>
-            </DialogContent>           
+
+            </DialogContent>
+
+            <DialogActions>
+
+                <Button autoFocus onClick={handleClose} color="secondary">
+                    Cancel
+                </Button>
+
+                <Button onClick={handleClose} color="primary" autoFocus>
+                    Create
+                </Button>
+
+            </DialogActions>     
+                
         </Dialog>
     );
 }
 
 CreateChat.propTypes = {
     onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-    selectedValue: PropTypes.string.isRequired,
+    open: PropTypes.bool.isRequired
 };

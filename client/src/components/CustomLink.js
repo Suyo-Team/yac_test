@@ -30,4 +30,5 @@ CustomLink.propTypes = {
 CustomLink.defaultProps = {
     onClick: () => {}
 };
+
 export default withRouter(CustomLink);
