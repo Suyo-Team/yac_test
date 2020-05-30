@@ -4,14 +4,23 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useRouteMatch } from 'react-router-dom';
 import CustomLink from '../CustomLink';
 
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import PersonIcon from '@material-ui/icons/Person';
+import Avatar from '@material-ui/core/Avatar';
+import { blue } from '@material-ui/core/colors';
+
 const useStyles = makeStyles((theme) => ({
     chatItem: {
-        borderBottom: "solid 1px grey",
         '&:hover': {
-            backgroundColor: 'lightgrey',
+            backgroundColor: '#ececec',
             cursor: 'pointer'
-        },
-        padding: '5px 10px'
+        }
+    },
+    avatar: {
+        backgroundColor: blue[100],
+        color: blue[600],
     }
 }));
 
@@ -20,13 +29,16 @@ export default function ChatItem(props) {
     const match = useRouteMatch();
 
     return (
-        <CustomLink tag={Grid} 
+        <CustomLink tag={ListItem}
                     to={`${match.url}/${props.id}`}
-                    container
-                    justity="center"
                     key={props.id} 
                     className={classes.chatItem}>
-            <h3>{props.chat_name}</h3>
+            <ListItemAvatar>
+              <Avatar className={classes.avatar}>
+                <PersonIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={props.chat_name} />
         </CustomLink>
     );
 }

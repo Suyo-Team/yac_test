@@ -3,19 +3,14 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
 import AddCircleRounded from '@material-ui/icons/AddCircleRounded';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    useRouteMatch
-  } from "react-router-dom";
 
 import APIKit from '../APIKit';
 
 import ChatItem from './ChatItem';
 import { getUser } from '../CheckUserAuthenticated';
-import ChatRoom from '../chatroom/ChatRoom';
+import CreateChat from '../dialogs/CreateChat';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -35,29 +30,11 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '4px 4px 0 0'
     },
     chatsList: {
+        width: '100%',
         overflowY: 'auto',
         borderRadius: '0 0 4px 4px'
     }
 }));
-
-
-// export default function Chats(props) {
-
-//     let match = useRouteMatch();
-
-//     return (
-//         <Router>                
-//             <Switch>
-//                 <Route path={`${match.path}/:chatRoomId`} exact>
-//                     <ChatRoom socket={props.socket} />
-//                 </Route>
-//                 <Route path={match.path} exact>
-//                     <ChatsInnerComponent socket={props.socket} />
-//                 </Route>
-//             </Switch>
-//         </Router>
-//     );
-// }
 
 export default function Chats(props) {
     const classes = useStyles();
@@ -87,6 +64,19 @@ export default function Chats(props) {
         <ChatItem id={chatItem.id} key={chatItem.id} chat_name={chatItem.chat_name}/>
     );
 
+
+    const [open, setOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState('');
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = (value) => {
+      setOpen(false);
+      setSelectedValue(value);
+    };
+
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
@@ -101,15 +91,17 @@ export default function Chats(props) {
                         My chats
                     </Grid>
                     <Grid item>
-                        <IconButton color="primary">
+                        <IconButton color="primary" onClick={handleClickOpen}>
                             <AddCircleRounded />
                         </IconButton>
                     </Grid>
                 </Grid>
-                <Grid container className={classes.chatsList}>
+                <List className={classes.chatsList}>
                     {chatsList}
-                </Grid>
+                </List>
             </div>
+
+            <CreateChat selectedValue={selectedValue} open={open} onClose={handleClose} />
         </Container>
     );
 }
