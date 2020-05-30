@@ -9,6 +9,7 @@ import SingUp from './components/signup/SignUp';
 import SignIn from './components/signin/SignIn';
 import SignOut from './components/signout/SignOut';
 import Chats from './components/chats/Chats';
+import ChatRoom from './components/chatroom/ChatRoom';
 import CheckUserAuthenticated from './components/CheckUserAuthenticated';
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
@@ -39,6 +40,9 @@ function App() {
             </Route>
             <Route path="/chats" exact>
               <Chats socket={chatSocket} />
+            </Route>
+            <Route path="/chats/:chatRoomId" exact>
+              <ChatRoom socket={chatSocket} />
             </Route>
             <Route path="/" exact>
               <h1>Should be redirected to login if user's not authenticated yet</h1>

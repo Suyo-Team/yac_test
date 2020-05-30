@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-
+import { useRouteMatch } from 'react-router-dom';
 import CustomLink from '../CustomLink';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,10 +17,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChatItem(props) {
     const classes = useStyles();
+    const match = useRouteMatch();
 
     return (
         <CustomLink tag={Grid} 
-                    to={`/chats/${props.id}/`}
+                    to={`${match.url}/${props.id}`}
                     container
                     justity="center"
                     key={props.id} 

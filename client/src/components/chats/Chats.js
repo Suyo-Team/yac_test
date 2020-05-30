@@ -41,25 +41,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+// export default function Chats(props) {
+
+//     let match = useRouteMatch();
+
+//     return (
+//         <Router>                
+//             <Switch>
+//                 <Route path={`${match.path}/:chatRoomId`} exact>
+//                     <ChatRoom socket={props.socket} />
+//                 </Route>
+//                 <Route path={match.path} exact>
+//                     <ChatsInnerComponent socket={props.socket} />
+//                 </Route>
+//             </Switch>
+//         </Router>
+//     );
+// }
+
 export default function Chats(props) {
-
-    let match = useRouteMatch();
-
-    return (
-        <Router>                
-            <Switch>
-                <Route path={`${match.path}/:chatRoomId`}>
-                    <ChatRoom socket={props.socket} />
-                </Route>
-                <Route path={match.path} >
-                    <ChatsInnerComponent socket={props.socket} />
-                </Route>
-            </Switch>
-        </Router>
-    );
-}
-
-function ChatsInnerComponent(props) {
     const classes = useStyles();
 
     const user = getUser();

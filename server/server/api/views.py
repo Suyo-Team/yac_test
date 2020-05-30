@@ -89,7 +89,7 @@ class ChatViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """
-        We are overriding this method to confirm that a chat_message was sent
+        We are overriding this method to confirm that a chat_name was sent
         on the body of the request if the chat is not private
         """
         serializer = self.get_serializer(data=request.data)
@@ -122,6 +122,26 @@ class ChatMessageViewSet(viewsets.GenericViewSet,
         if self.action in  ['list', 'retrieve']:
             return ChatMessageDisplaySerializer
         return self.serializer_class
+
+    def create(self, request, *args, **kwargs):
+        """
+        We are overriding this method to confirm that a chat message is not sent to a chat
+        by a user that does not belong to that chat.
+        """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        chat = serializer.validated_data['chat']
+        users_in_chat = chat.users.values_list('id', flat=True).all()
+        if request.user.id not in users_in_chat:
+            return Response(
+                {'error': 'You do not belong to this chat'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
