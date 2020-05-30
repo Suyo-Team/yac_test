@@ -57,7 +57,22 @@ export default function Chats(props) {
 
     socket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        console.log(data);
+        
+        // if (data.event === 'new_message') {
+
+        //     if (data.chat.toString() === chatRoomId) {
+                
+        //         delete data.type
+        //         delete data.event
+
+        //         setChatMessagesState({
+        //             messages: [
+        //                 ...chatMessagesState.messages,
+        //                 data
+        //             ]
+        //         });
+        //     }
+        // }
     };
 
     const chatsList = chatsState.chats.map(chatItem => 

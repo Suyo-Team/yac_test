@@ -76,16 +76,16 @@ class ChatViewSet(viewsets.ModelViewSet):
         For 'list' and 'retrieve' we'll use the ChatDisplaySerializer, for the rest of 
         actions we'll stick with the default serializer_class
         """
-        if self.action in  ['retrieve']:
+        if self.action in ['retrieve']:
             return ChatDisplaySerializer
         return self.serializer_class
 
     def get_queryset(self):
         """ 
         Ensure we only retrieve the chats where the current 
-        user has participation on 
+        user has participation on
         """
-        return self.request.user.user_chats.all()
+        return self.request.user.user_chats.prefetch_related('users', 'chat_messages').all()
 
     def create(self, request, *args, **kwargs):
         """
