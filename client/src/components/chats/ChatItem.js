@@ -20,7 +20,7 @@ export default function ChatItem(props) {
 
     return (
         <CustomLink tag={Grid} 
-                    to='/chatroom'
+                    to={`/chats/${props.id}/`}
                     container
                     justity="center"
                     key={props.id} 

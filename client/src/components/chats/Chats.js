@@ -1,13 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleRounded from '@material-ui/icons/AddCircleRounded';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    useRouteMatch
+  } from "react-router-dom";
 
-import CheckUserAuthenticated, { getUser } from '../../components/CheckUserAuthenticated';
+import APIKit from '../APIKit';
 
 import ChatItem from './ChatItem';
+import { getUser } from '../CheckUserAuthenticated';
+import ChatRoom from '../chatroom/ChatRoom';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -32,24 +40,41 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const getChats = () => {
+
+}
+
 export default function Chats() {
+
+    let match = useRouteMatch();
+
+    return (
+        <Router>                
+            <Switch>
+                <Route path={`${match.path}/:chatRoomId`} component={ChatRoom} />
+                <Route path={match.path} component={ChatsInnerComponent} />
+            </Switch>
+        </Router>
+    );
+}
+
+function ChatsInnerComponent() {
     const classes = useStyles();
 
     const user = getUser();
 
     const [chatsState, setChatsState] = useState({
-        chats: [
-            {id: 1, chat_name: 'Chat de Prueba 1'},
-            {id: 2, chat_name: 'Chat de Prueba 2'},
-            {id: 3, chat_name: 'Chat de Prueba 3'},
-            {id: 4, chat_name: 'Chat de Prueba 4'},
-            {id: 5, chat_name: 'Chat de Prueba 5'},
-            {id: 6, chat_name: 'Chat de Prueba 6'},
-            {id: 7, chat_name: 'Chat de Prueba 7'},
-            {id: 8, chat_name: 'Chat de Prueba 8'},
-            {id: 9, chat_name: 'Chat de Prueba 9'},
-        ]
+        chats: []
     });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await APIKit.get('/chats/');
+
+            setChatsState({chats: result.data});
+        };
+        fetchData();
+    }, []);
 
     const chatsList = chatsState.chats.map(chatItem => 
         <ChatItem id={chatItem.id} key={chatItem.id} chat_name={chatItem.chat_name}/>

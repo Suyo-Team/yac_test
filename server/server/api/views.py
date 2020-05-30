@@ -76,9 +76,8 @@ class ChatViewSet(viewsets.ModelViewSet):
         For 'list' and 'retrieve' we'll use the ChatDisplaySerializer, for the rest of 
         actions we'll stick with the default serializer_class
         """
-        if self.action in  ['list', 'retrieve']:
+        if self.action in  ['retrieve']:
             return ChatDisplaySerializer
-
         return self.serializer_class
 
     def get_queryset(self):

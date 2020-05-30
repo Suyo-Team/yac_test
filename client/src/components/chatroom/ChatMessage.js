@@ -1,5 +1,4 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -11,12 +10,13 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        padding: '5px',
+        padding: '10px',
         textAlign: 'right'
     },
     chatMessageContainer: {
         padding: '10px',
-        minHeight: '50px'
+        display: 'flex',
+        justifyContent: 'flex-end'
     }
 }));
 
@@ -24,15 +24,9 @@ export default function ChatMessage(props) {
     
     const classes = useStyles();
 
-    const checkMessageUser = () => {
-        return "flex-end"
-    }
-
     return (
-        <Grid container justify={checkMessageUser()} className={classes.chatMessageContainer}>
-            <Grid item className={classes.chatMessage}>
-                {props.message}
-            </Grid>
-        </Grid>
+        <div key={props.key} className={classes.chatMessageContainer}>
+            <div className={classes.chatMessage}>{props.message} by {props.user} at {props.created}</div>
+        </div>
     );
 }

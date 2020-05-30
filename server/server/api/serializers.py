@@ -79,17 +79,14 @@ class ChatMessageNestedSerializer(serializers.ModelSerializer):
         fields = ['id', 'created', 'user', 'text']
 
 
-class ChatDisplaySerializer(serializers.ModelSerializer):
-    """
-    Serializer used to display and retrieve the chats information only 
-    """
-    chat_messages = ChatMessageNestedSerializer(many=True, read_only=True)
-    users = UserSerializer(many=True, read_only=True)
+class ChatSerializer(serializers.ModelSerializer):
+    """ Serializer used to create or edit a Chat instance """
+    
     chat_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Chat
-        fields = ['id', 'chat_name', 'private', 'users', 'chat_messages']
+        fields = ['id', 'chat_name', 'private', 'users']
 
     def get_chat_name(self, obj):
         """
@@ -112,10 +109,16 @@ class ChatDisplaySerializer(serializers.ModelSerializer):
 
         return chat_name if chat_name else f'chat_{obj.id}'
 
-
-class ChatSerializer(serializers.ModelSerializer):
-    """ Serializer used to create or edit a Chat instance """
+class ChatDisplaySerializer(ChatSerializer):
+    """
+    Serializer used to display and retrieve the chats information only 
+    """
+    chat_messages = ChatMessageNestedSerializer(many=True, read_only=True)
+    users = UserSerializer(many=True, read_only=True)
     
     class Meta:
         model = Chat
-        fields = ['id', 'chat_name', 'private', 'users']
+        fields = ['id', 'chat_name', 'private', 'users', 'chat_messages']
+
+    
+

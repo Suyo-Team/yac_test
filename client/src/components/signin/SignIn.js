@@ -48,13 +48,11 @@ export default function SignIn() {
   const submitLoginHandler = async (e) => {
     e.preventDefault();
     
-    console.log(formState);
-
-    const onSuccess = ({data}) => {
-      // Set Web Token on success
-      setClientToken(data.token);
+    const onSuccess = ({data}) => {      
       // set a cookie
       cookies.set('user', data.user);
+      cookies.set('token', data.token);
+      // setClientToken(data.token);
       history.push('/chats');
     };
 

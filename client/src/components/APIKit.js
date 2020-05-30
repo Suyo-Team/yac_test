@@ -12,6 +12,7 @@ export const setClientToken = token => {
     config.headers.Authorization = `Token ${token}`;
     return config;
   });
+  console.log(token);
 };
 
 export default APIKit;

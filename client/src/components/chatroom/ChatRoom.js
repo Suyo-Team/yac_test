@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 // import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +9,8 @@ import GroupAddRounded from '@material-ui/icons/GroupAddRounded';
 import Send from '@material-ui/icons/Send';
 import TextField from '@material-ui/core/TextField';
 import useStayScrolled from 'react-stay-scrolled';
+import { useParams } from "react-router-dom";
+import APIKit from '../APIKit';
 
 import CustomLink from '../CustomLink';
 import ChatMessage from './ChatMessage';
@@ -33,7 +35,13 @@ const useStyles = makeStyles((theme) => ({
     chatMessages: {
         overflowY: 'auto',
         height: '100%',
+        width: '100%',
         padding: '5px 10px',
+        display: 'flex',
+        height: '100%',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        flexWrap: 'nowrap'
     },
     chatSubmit: {
         borderRadius: '0 0 4px 4px',
@@ -51,6 +59,10 @@ const useStyles = makeStyles((theme) => ({
 export default function ChatRoom(props) {
     const classes = useStyles();
 
+    let { chatRoomId } = useParams();
+
+    console.log(chatRoomId);
+
     const inputMessage = useRef(null);
     const chatMessagesRef = useRef();
 
@@ -61,16 +73,30 @@ export default function ChatRoom(props) {
     });
 
     const [chatMessagesState, setChatMessagesState] = useState({
-        messages: [
-            {message: 'Hola'},
-            {message: 'Hola 2'},
-            {message: 'Hola 3'},
-            {message: 'Hola 4'},
-            {message: 'Hola 5'},
-            {message: 'Hola 6'},
-            {message: 'Hola 7'},
-        ]
+        messages: []
     });
+
+    const [chatState, setChatState] = useState({
+        id: null,
+        chat_name: '',
+        private: true,
+        users: [],
+    });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await APIKit.get(`/chats/${chatRoomId}`);            
+
+            setChatMessagesState({messages: result.data.chat_messages});
+            setChatState({
+                id: result.data.id,
+                chat_name: result.data.chat_name,
+                private: result.data.private,
+                users: result.data.users
+            })
+        };
+        fetchData();
+    }, []);
 
     useLayoutEffect(() => {
             stayScrolled();
@@ -80,7 +106,7 @@ export default function ChatRoom(props) {
     const onChangeMessageHandler = (e) => {
         setMessageState({
             message: e.target.value
-        });        
+        });
     }
 
     const onKeyPressHandler = (e) => {
@@ -89,24 +115,37 @@ export default function ChatRoom(props) {
         }
     }
 
-    const submitMessageHandler = (e) => {
-        setChatMessagesState({
-            messages: [
-                ...chatMessagesState.messages,
-                {message: messageState.message}
-            ]
-        });
+    const submitMessageHandler = async (e) => {
 
-        setMessageState({
-            message: ''
-        });
-
-        inputMessage.current.focus();
+        if (messageState.message.length === 0) {
+            window.alert('Messages cannot be empty strings');
+        } else {
+            const payload = {
+                chat: chatRoomId,
+                text: messageState.message
+            }
+            const new_message = await APIKit.post('/messages/', payload);
+            
+            setChatMessagesState({
+                messages: [
+                    ...chatMessagesState.messages,
+                    new_message.data
+                ]
+            });
+    
+            setMessageState({message: ''});
+            inputMessage.current.focus();
+        }
     }
 
     const renderChatMessages = () => {
         return chatMessagesState.messages.map(message => 
-            <ChatMessage message={message.message} />
+            <ChatMessage 
+                message={message.text} 
+                key={message.id} 
+                user={message.user.username}
+                created={message.created}
+            />
         );
     }
 
@@ -125,7 +164,7 @@ export default function ChatRoom(props) {
                         </CustomLink>
                     </Grid>
                     <Grid item>
-                        {props.chat_name}
+                        {chatState.chat_name}
                     </Grid>
                     <Grid item>
                         <IconButton color="primary">
@@ -134,9 +173,11 @@ export default function ChatRoom(props) {
                     </Grid>
                 </Grid>
 
-                <Grid container className={classes.chatMessages} ref={chatMessagesRef}>
+                <div className={classes.chatMessages} 
+                    ref={chatMessagesRef}>
+
                     {renderChatMessages()}
-                </Grid>
+                </div>
 
                 <Grid container className={classes.chatSubmit} justify="space-between">
                     <TextField 
