@@ -5,6 +5,7 @@ const initialState = {
   token: null,
   error: null,
   login_error: null,
+  error_register: null
 };
 
 
@@ -13,7 +14,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.LOGIN_START:
       return { ...state, login_error: false};
     case actionTypes.REGISTER_START:
-      return { ...state};
+      return { ...state, error_register: false};
     case actionTypes.LOGIN_SUCCESS:
       setSession(action.logindata);
       return { ...state, token: action.logindata };
@@ -23,7 +24,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.LOGIN_FAIL:
       return { ...state, login_error: true, error: action.logindata };
     case actionTypes.REGISTER_FAIL:
-      return { ...state, error: action.payload };
+      return { ...state, error_register: true, error: action.payload };
     case actionTypes.LOGOUT:
       destroySessions();
       return { ...state };

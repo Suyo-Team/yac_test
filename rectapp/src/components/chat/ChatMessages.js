@@ -41,7 +41,7 @@ const ChatMessages = ({ data }) => {
   }, []);
 
   const SendMessageFunction = (e) => {
-    if( message_send != ''){
+    if( message_send !== ''){
       socket.emit("mensajeEnviar", sendMessage);
       setMessage({
         ...sendMessage,
@@ -51,7 +51,7 @@ const ChatMessages = ({ data }) => {
   };
 
   const handleTest = (e) => {
-    if (e.charCode === 13 && message_send != '') {
+    if (e.charCode === 13 && message_send !== '') {
       SendMessageFunction();
     }
   };

@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { authSignUp } from "../../reduxSaga/actions/auth.actions";
+import React from "react";
+import { useDispatch,useSelector } from "react-redux";
+import { authSignUp} from "../../reduxSaga/actions/auth.actions";
 import { useFormik } from "formik";
 import validationSchema from "./ValidationSchemas/ValidationSignUp";
-import { apiCall } from "../../services/services.config";
 
 /*Compoenents */
 import ErrorField from "../ErrorField";
 
 const FormSignUp = () => {
   const dispatch = useDispatch();
-  const [usernameIsValid, setUsernameIsValid] = useState(null);
-
+  const state = useSelector((state) => state);
+  const { error_register, error } = state.auth; // Validación
+  
   const formik = useFormik({
     validationSchema,
     initialValues: {
@@ -22,11 +22,6 @@ const FormSignUp = () => {
     },
     onSubmit: (values) => {
       const { username, email, password, passwordConfirmation } = values;
-
-      apiCall("exist/", { username, email }, null, "POST")
-        .then((response) => {
-          setUsernameIsValid(response.data.length !== 0);
-          if (usernameIsValid) {
             dispatch(
               authSignUp({
                 username,
@@ -35,12 +30,8 @@ const FormSignUp = () => {
                 passwordConfirmation,
               })
             );
-          }
-        })
-        .catch((error) => {
-          setUsernameIsValid(false);
-        });
-    },
+    }
+
   });
 
   const {
@@ -54,11 +45,8 @@ const FormSignUp = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {usernameIsValid && (
-        <div className="alert alert-danger">
-          Username y/o correo electronico ya existe
-        </div>
-      )}
+ 
+
 
       <div className="form-group">
         <label className="mt-1">Ingrese su usuario</label>
@@ -71,7 +59,7 @@ const FormSignUp = () => {
           onBlur={handleBlur}
           value={values.username}
         />
-        <ErrorField touched={touched.username} message={errors.username} />
+        {error_register && (<ErrorField touched={touched.username} message={error.response.data.username && (error.response.data.username[0])} />)}
 
         <label className="mt-1">Ingrese su correo electronico</label>
         <input
@@ -83,7 +71,8 @@ const FormSignUp = () => {
           onBlur={handleBlur}
           value={values.email}
         />
-        <ErrorField touched={touched.email} message={errors.email} />
+
+        {error_register && (<ErrorField touched={touched.email} message={error.response.data.email && (error.response.data.email[0])} />)}
 
         <label className="mt-1">Ingrese su contraseña</label>
         <input
