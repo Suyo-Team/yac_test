@@ -11,7 +11,7 @@ import Container from '@material-ui/core/Container';
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import Cookies from 'universal-cookie';
 
-import APIKit, { setClientToken } from '../APIKit';
+import APIKit from '../APIKit';
 
 const useStyles = makeStyles((theme) => ({
   paper: {

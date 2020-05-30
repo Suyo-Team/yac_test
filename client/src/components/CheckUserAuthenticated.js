@@ -14,7 +14,6 @@
 import { useHistory, useLocation } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { setClientToken } from './APIKit';
-import axios from 'axios';
 
 export default function CheckUserAuthenticated(props) {
 

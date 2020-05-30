@@ -1,5 +1,4 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
-// import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -14,6 +13,7 @@ import APIKit from '../APIKit';
 
 import CustomLink from '../CustomLink';
 import ChatMessage from './ChatMessage';
+import { getUser } from '../CheckUserAuthenticated';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         padding: '5px 10px',
         display: 'flex',
-        height: '100%',
         flexDirection: 'column',
         flexWrap: 'nowrap'
     },
@@ -60,6 +59,7 @@ export default function ChatRoom(props) {
 
     let { chatRoomId } = useParams();
     
+    const user = getUser();
     const socket = props.socket;
 
     const inputMessage = useRef(null);
@@ -133,9 +133,7 @@ export default function ChatRoom(props) {
 
     socket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        console.log(data.event);
-        console.log(data.chat.toString(), typeof data.chat.toString());
-        console.log(chatRoomId, typeof chatRoomId);
+
         if (data.event === 'new_message') {
             if (data.chat.toString() === chatRoomId) {
                 
@@ -154,10 +152,11 @@ export default function ChatRoom(props) {
 
     const renderChatMessages = () => {
         return chatMessagesState.messages.map(message => 
-            <ChatMessage 
+            <ChatMessage
                 message={message.text} 
                 key={message.id} 
-                user={message.user.username}
+                user={message.user}
+                activeUser={user}
                 created={message.created}
             />
         );
