@@ -40,28 +40,30 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const getChats = () => {
 
-}
-
-export default function Chats() {
+export default function Chats(props) {
 
     let match = useRouteMatch();
 
     return (
         <Router>                
             <Switch>
-                <Route path={`${match.path}/:chatRoomId`} component={ChatRoom} />
-                <Route path={match.path} component={ChatsInnerComponent} />
+                <Route path={`${match.path}/:chatRoomId`}>
+                    <ChatRoom socket={props.socket} />
+                </Route>
+                <Route path={match.path} >
+                    <ChatsInnerComponent socket={props.socket} />
+                </Route>
             </Switch>
         </Router>
     );
 }
 
-function ChatsInnerComponent() {
+function ChatsInnerComponent(props) {
     const classes = useStyles();
 
     const user = getUser();
+    const socket = props.socket;
 
     const [chatsState, setChatsState] = useState({
         chats: []
@@ -75,6 +77,11 @@ function ChatsInnerComponent() {
         };
         fetchData();
     }, []);
+
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        console.log(data);
+    };
 
     const chatsList = chatsState.chats.map(chatItem => 
         <ChatItem id={chatItem.id} key={chatItem.id} chat_name={chatItem.chat_name}/>

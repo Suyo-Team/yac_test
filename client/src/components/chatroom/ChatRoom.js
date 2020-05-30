@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         height: '100%',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
         flexWrap: 'nowrap'
     },
     chatSubmit: {
@@ -60,8 +59,8 @@ export default function ChatRoom(props) {
     const classes = useStyles();
 
     let { chatRoomId } = useParams();
-
-    console.log(chatRoomId);
+    
+    const socket = props.socket;
 
     const inputMessage = useRef(null);
     const chatMessagesRef = useRef();
@@ -93,7 +92,7 @@ export default function ChatRoom(props) {
                 chat_name: result.data.chat_name,
                 private: result.data.private,
                 users: result.data.users
-            })
+            });
         };
         fetchData();
     }, []);
@@ -124,19 +123,34 @@ export default function ChatRoom(props) {
                 chat: chatRoomId,
                 text: messageState.message
             }
-            const new_message = await APIKit.post('/messages/', payload);
             
-            setChatMessagesState({
-                messages: [
-                    ...chatMessagesState.messages,
-                    new_message.data
-                ]
-            });
+            await APIKit.post('/messages/', payload);            
     
             setMessageState({message: ''});
             inputMessage.current.focus();
         }
     }
+
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        console.log(data.event);
+        console.log(data.chat.toString(), typeof data.chat.toString());
+        console.log(chatRoomId, typeof chatRoomId);
+        if (data.event === 'new_message') {
+            if (data.chat.toString() === chatRoomId) {
+                
+                delete data.type
+                delete data.event
+
+                setChatMessagesState({
+                    messages: [
+                        ...chatMessagesState.messages,
+                        data
+                    ]
+                });
+            }
+        }        
+    };
 
     const renderChatMessages = () => {
         return chatMessagesState.messages.map(message => 

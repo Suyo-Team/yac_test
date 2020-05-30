@@ -35,7 +35,6 @@ export default function CheckUserAuthenticated(props) {
         }
     }
     
-    console.log('here')
     setClientToken(token_cookie);
 
     return props.children
