@@ -85,7 +85,7 @@ class ChatViewSet(viewsets.ModelViewSet):
         """
         if self.action in ['retrieve']:
             return ChatDisplaySerializer
-        elif self.action in ['create', 'update']:
+        elif self.action in ['create', 'update', 'partial_update']:
             return ChatCreateSerializer
         return self.serializer_class
 
@@ -128,7 +128,7 @@ class ChatViewSet(viewsets.ModelViewSet):
             chats_in_common = anfitrion_chats.intersection(guest_chats)
             
             if len(chats_in_common) > 0:
-                # This mean this two users already have a private conversation
+                # This mean these two users already have a private conversation
                 # There must be only one, but just in case, we get the first one
                 redirect_to_chat = list(chats_in_common)[0]
                 return Response(
@@ -212,3 +212,26 @@ class ChatMessageViewSet(viewsets.GenericViewSet,
         Ensures only messages that the current user has created
         """
         return ChatMessage.objects.filter(user=self.request.user)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def registration_view(request):
+
+    serializer = RegistrationSerializer(data=request.data)
+    data = {}
+    status_code = status.HTTP_400_BAD_REQUEST
+    if serializer.is_valid():
+        new_user = serializer.save()
+        data['response'] = "Successfully registered a new user"
+        data['user'] = {
+            'id': new_user.pk,
+            'username': new_user.username,
+            'email': new_user.email
+        }
+        data['token'] = new_user.auth_token.key
+        status_code = status.HTTP_201_CREATED
+    else:
+        data = serializer.errors
+    
+    return Response(data, status=status_code)

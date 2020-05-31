@@ -73,7 +73,6 @@ export default function CreateChat(props) {
             const result = await APIKit.get('/users/');
 
             // We need to remove the current user from the list
-            // It will throw a M2M error on the server OperationalError
             const filtered_users = result.data.filter(u => u.id !== user.id)
             if (mounted) setUsersState({ users: filtered_users });
         };
@@ -95,6 +94,7 @@ export default function CreateChat(props) {
 
     // Function to handle the new chat creation
     const handleCreateNewChat = async () => {
+        
         const selected_user_id = newChatState.selectedUser.id
         const payload = {
             ...newChatState,

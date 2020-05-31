@@ -20,6 +20,7 @@ import APIKit from '../APIKit';
 import CustomLink from '../CustomLink';
 import ChatMessage from './ChatMessage';
 import { getUser } from '../CheckUserAuthenticated';
+import AddUserToChat from '../dialogs/AddUserToChat';
 
 
 // Styles
@@ -104,7 +105,7 @@ export default function ChatRoom(props) {
         id: null,
         chat_name: '',
         private: true,
-        users: [],
+        users: []
     });
 
     // Fecthignt he chat information via API
@@ -122,7 +123,7 @@ export default function ChatRoom(props) {
                     private: result.data.private,
                     users: result.data.users
                 });
-            }
+            }            
         };        
         fetchData();
         
@@ -131,6 +132,7 @@ export default function ChatRoom(props) {
         };
         
     }, []);
+
 
     // Stay chat messages list component scrolled to bottom 
     // according to the messages list length
@@ -224,13 +226,22 @@ export default function ChatRoom(props) {
     const renderAddUserButton = () => {
         if (!chatState.private) {
             return (
-                <IconButton color="primary">
+                <IconButton color="primary"
+                            onClick={handleClickOpen}>
                     <GroupAddRounded />
                 </IconButton>
             );
         }
         return null;
     }
+
+    // Dialog Add User State
+    // State used to manage whether the dialog is opened or not
+    const [open, setOpen] = useState(false);
+    // When clicking the button to open the dialog
+    const handleClickOpen = () => setOpen(true);
+    // When dialog is closed
+    const handleClose = () => setOpen(false);
 
     return (
         <Container component="main" maxWidth="xs">
@@ -286,6 +297,10 @@ export default function ChatRoom(props) {
                 </Grid>              
 
             </div>
+
+            <AddUserToChat open={open}          
+                           onClose={handleClose} 
+                           users={ chatState.users.map(u => u.id) } />
             
         </Container>
     );
