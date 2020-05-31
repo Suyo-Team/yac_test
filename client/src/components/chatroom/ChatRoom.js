@@ -109,18 +109,27 @@ export default function ChatRoom(props) {
 
     // Fecthignt he chat information via API
     useEffect(() => {
+        let mounted = true;
+
         const fetchData = async () => {
             const result = await APIKit.get(`/chats/${chatRoomId}`);            
 
-            setChatMessagesState({messages: result.data.chat_messages});
-            setChatState({
-                id: result.data.id,
-                chat_name: result.data.chat_name,
-                private: result.data.private,
-                users: result.data.users
-            });
-        };
+            if (mounted) {
+                setChatMessagesState({messages: result.data.chat_messages});
+                setChatState({
+                    id: result.data.id,
+                    chat_name: result.data.chat_name,
+                    private: result.data.private,
+                    users: result.data.users
+                });
+            }
+        };        
         fetchData();
+        
+        return () => {
+            mounted = false;
+        };
+        
     }, []);
 
     // Stay chat messages list component scrolled to bottom 

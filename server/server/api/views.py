@@ -108,6 +108,34 @@ class ChatViewSet(viewsets.ModelViewSet):
                 {'error': 'You need to specify a chat name'},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+        # Now, we also check if the users are the same
+        anfitrion, guest = serializer.validated_data['users']
+        if anfitrion == guest:
+            return Response(
+                {'error': 'You cannot start a chat with yourself'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Now, we check if, in case the chat is set to 'private', there is 
+        # any chat already created between the two users
+        if private:
+            anfitrion_chats = set(anfitrion.user_chats.filter(private=True))
+            guest_chats = set(guest.user_chats.filter(private=True))
+            chats_in_common = anfitrion_chats.intersection(guest_chats)
+            
+            if len(chats_in_common) > 0:
+                # This mean this two users already have a private conversation
+                # There must be only one, but just in case, we get the first one
+                redirect_to_chat = list(chats_in_common)[0]
+                return Response(
+                    {
+                        'redirect_to': redirect_to_chat.id, 
+                        'message': 'You laready have a private conversation with that user'
+                    },
+                    status=status.HTTP_302_FOUND
+                )
+
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

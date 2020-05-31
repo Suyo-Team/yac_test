@@ -53,7 +53,7 @@ export default function Chats(props) {
 
     const match = useRouteMatch();
     const history = useHistory();
-    
+
     // State to manage the user's chats list
     const [chatsState, setChatsState] = useState({
         chats: []
@@ -61,12 +61,23 @@ export default function Chats(props) {
 
     // Fetch the list of chats fromt eh server
     useEffect(() => {
+        let mounted = true;
+
         const fetchData = async () => {
             const result = await APIKit.get('/chats/');
-
-            setChatsState({chats: result.data});
+            
+            // Add an attribute 'unread' to every chat
+            let chats_list = result.data.map(chat => {
+                chat.unread = 0
+                return chat
+            });
+            if (mounted) setChatsState({chats: chats_list});
         };
         fetchData();
+
+        return () => {
+            mounted = false;
+        };
     }, []);
 
     // When receiving a message from the server via a socket
@@ -77,11 +88,21 @@ export default function Chats(props) {
         // If event is 'new_chat'
         if (data.event === 'new_chat') {
             // Then we check if the current user is included in the new created chat
-            if (data.users.includes(user.id)) {  
+            if (data.users.includes(user.id)) {
                 // Now we redirect the user to that new chat room just created
-                console.log(`${match.url}/${data.id}`)
                 history.push(`${match.url}/${data.id}`);  
             }
+        } else if (data.event === 'new_message') {
+            // Then we look up the chat where the message was sent
+            // and increase in 1 the 'unread' counter
+            let new_chats_state = chatsState.chats.map(chat => {
+                if (chat.id === data.chat) {
+                    chat.unread += 1
+                }
+                return chat
+            });
+
+            setChatsState({chats: new_chats_state});
         }
     };
 

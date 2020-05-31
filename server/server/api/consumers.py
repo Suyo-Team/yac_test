@@ -21,10 +21,8 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         Called when a connection to web socket is established. If user is
         anonymous, we reject the connection, otherwise we accept it.
         """
-        print(1)
         self.user = self.scope.get('user', None)
         if self.user.is_anonymous:
-            print(2)
             await self.close()
         else:
             await self.accept()

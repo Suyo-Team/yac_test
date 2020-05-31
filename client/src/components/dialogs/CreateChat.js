@@ -6,6 +6,7 @@
 
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
@@ -49,6 +50,9 @@ export default function CreateChat(props) {
     // Deconstructing the props
     const { onClose, open, user } = props;
 
+    const match = useRouteMatch();
+    const history = useHistory();
+
     // State to manage the list of users
     const [usersState, setUsersState] = useState({ users: [] });
 
@@ -63,15 +67,22 @@ export default function CreateChat(props) {
 
     // Fetch the users list from the server
     useEffect(() => {
+        let mounted = true;
+
         const fetchData = async () => {
             const result = await APIKit.get('/users/');
 
             // We need to remove the current user from the list
             // It will throw a M2M error on the server OperationalError
             const filtered_users = result.data.filter(u => u.id !== user.id)
-            setUsersState({ users: filtered_users });
+            if (mounted) setUsersState({ users: filtered_users });
         };
         fetchData();
+
+        return () => {
+            mounted = false;
+        };
+        
     }, []);
 
     // Helper function to execute everytime the component is closed
@@ -90,7 +101,18 @@ export default function CreateChat(props) {
             users: [selected_user_id, user.id]
         }
 
-        await APIKit.post('/chats/', payload); 
+        await APIKit.post('/chats/', payload)
+            .catch(error => {
+                if (error.response) {
+                    if (error.response.status === 400) {
+                        console.log(error.response.error);
+                    } else if (error.response.status === 302) {
+                        // Redirect to the chat
+                        const redirect_to = error.response.data.redirect_to;
+                        history.push(`${match.url}/${redirect_to}`);
+                    }
+                }
+            });
 
         handleClose();
     };

@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     chatMessage: {
         width: '70%',
         borderRadius: '5px',
-        backgroundColor: '#4765d0',
+        backgroundColor: '#133bca',
         color: 'white',
         display: 'flex',
         flexDirection: 'column',
@@ -25,19 +25,22 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'right'
     },
     chatMessageContainer: {
-        padding: '2px',
+        padding: '2px 10px',
         display: 'flex',
-        justifyContent: 'flex-end'
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        alignItems: 'flex-end'
     },
     messageNotMe: {
-        backgroundColor: '#d04760',
+        backgroundColor: '#d00a4a',
         textAlign: 'left'
     },
     messageContainerNotMe: {
-        justifyContent: 'flex-start'
+        alignItems: 'flex-start'
     },
     auxMessage: {
-        fontSize: '11px'      
+        fontSize: '10px',
+        color: 'grey'    
     }
 }));
 
@@ -71,17 +74,21 @@ export default function ChatMessage(props) {
     }
     let {messageClasses, messageContainerClasses} = getMessageClasses();
 
+    const renderAuxMessage = () => {
+        const userName = props.activeUser.username === props.user.username ? 'Me' : props.user.username
+        return (
+            <span>
+                <span style={{fontWeight: 'bolder'}}>{userName}</span> {formatDate(props.created)}
+            </span>
+        )
+    }
     return (
-        <div key={props.key} className={messageContainerClasses}>
-
+        <div key={props.key} className={messageContainerClasses}>            
             <div className={messageClasses}>  
-
                 <span>{props.message}</span>
-
-                <span className={classes.auxMessage}>
-                    by <span style={{fontWeight: 'bolder'}}>{props.user.username}</span> {formatDate(props.created)}
-                </span>
-
+            </div>
+            <div className={classes.auxMessage}>
+                {renderAuxMessage()}
             </div>
 
         </div>
