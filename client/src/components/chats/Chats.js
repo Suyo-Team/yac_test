@@ -7,6 +7,7 @@ import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import AddCircleRounded from '@material-ui/icons/AddCircleRounded';
+import { blue } from '@material-ui/core/colors';
 
 import APIKit from '../APIKit';
 import ChatItem from './ChatItem';
@@ -29,9 +30,10 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: '0 0 15px lightgray'
     },
     chatsListHeader: {
-        borderBottom: "solid 2px grey",
+        borderBottom: "solid 5px",
+        borderBottomColor: blue[100],
         padding: '5px 10px',
-        background: 'black',
+        background: blue[600],
         color: 'white',
         borderRadius: '4px 4px 0 0'
     },
@@ -39,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         overflowY: 'auto',
         borderRadius: '0 0 4px 4px'
+    },
+    newChatButton: {
+        color: blue[100]
     }
 }));
 
@@ -169,13 +174,13 @@ export default function Chats(props) {
                       alignItems="center"
                       className={classes.chatsListHeader}>
 
-                    <Grid item><h2>{user.username}</h2></Grid>
+                    <Grid item>{user.username}</Grid>
 
-                    <Grid item><h3>My chats</h3></Grid>
+                    <Grid item><strong>My chats</strong></Grid>
 
                     <Grid item>
 
-                        <IconButton color="primary" 
+                        <IconButton className={classes.newChatButton}
                                     onClick={handleClickOpen}>
                             <AddCircleRounded />
                         </IconButton>

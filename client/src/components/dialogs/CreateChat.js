@@ -38,6 +38,11 @@ const useStyles = makeStyles({
         '&:hover': {
             backgroundColor: blue[100]
         }
+    },
+    errorMessage: {
+        color: 'red',
+        fontWeight: 'bold',
+        fontStyle: 'italic'
     }
 });
 
@@ -64,6 +69,11 @@ export default function CreateChat(props) {
     }
     // State to manage the new Chat configuration.    
     const [newChatState, setNewChatState] = useState(initialNewChatState);
+    // State to validate the chat configuration
+    const [validChat, setValidChat] = useState({
+        valid: true,
+        errorMessage: ""
+    });
 
     // Fetch the users list from the server
     useEffect(() => {
@@ -92,32 +102,72 @@ export default function CreateChat(props) {
         onClose();
         // Reset the chat configuration state
         setNewChatState(initialNewChatState);
+        setValidChat({valid: true, errorMessage: ""});
     };
+
+    // Helper function that returns true if the chat config is valid
+    // and false otherwise.
+    const checkValidNewChatConfig = () => {
+        // Chat config will be ok if:
+        // 1) It's private and a user is selected
+        // 2) It's public, a user is selected and a chat name is specified
+        const {chat_name, selectedUser} = newChatState;
+
+        if (Object.entries(selectedUser).length === 0) {
+            return [false, "You must select a user from the list"];
+        }
+
+        if (!newChatState.private && chat_name.trim() === '') {
+            return [false, "You must specify a name for the chat"];
+        }
+
+        return [true, ""];
+    }
+
+    const renderInvalidChatError = () => {
+        if (!validChat.valid) {
+            return (
+                <DialogContent className={classes.errorMessage}>
+                    {validChat.errorMessage}
+                </DialogContent>
+            );
+        }
+        return null;
+    }
 
     // Function to handle the new chat creation
     const handleCreateNewChat = async () => {
         
-        const selected_user_id = newChatState.selectedUser.id
-        const payload = {
-            ...newChatState,
-            users: [selected_user_id, user.id]
-        }
+        const [chat_is_valid, error_message] = checkValidNewChatConfig();
 
-        await APIKit.post('/chats/', payload)
-            .catch(error => {
-                if (error.response) {
-                    if (error.response.status === 400) {
-                        console.log(error.response.error);
-                    } else if (error.response.status === 302) {  // found
-                        // Redirect to the chat
-                        // A PRIVATE chat between the two users was found
-                        const redirect_to = error.response.data.redirect_to;
-                        history.push(`${match.url}/${redirect_to}`);
+        setValidChat({
+            valid: chat_is_valid,
+            errorMessage: error_message
+        });
+        
+        if (chat_is_valid) {
+            const selected_user_id = newChatState.selectedUser.id
+            const payload = {
+                ...newChatState,
+                users: [selected_user_id, user.id]
+            }
+
+            await APIKit.post('/chats/', payload)
+                .catch(error => {
+                    if (error.response) {
+                        if (error.response.status === 400) {
+                            console.log(error.response.error);
+                        } else if (error.response.status === 302) {  // found
+                            // Redirect to the chat
+                            // A PRIVATE chat between the two users was found
+                            const redirect_to = error.response.data.redirect_to;
+                            history.push(`${match.url}/${redirect_to}`);
+                        }
                     }
-                }
-            });
+                });
 
-        handleClose();
+            handleClose();
+        }
     };
 
     // Function excecuted when a user is selected from the list
@@ -181,7 +231,7 @@ export default function CreateChat(props) {
     }
 
     return (
-        <Dialog onClose={handleClose} 
+        <Dialog onClose={handleClose}
                 aria-labelledby="simple-dialog-title" 
                 open={open}
                 fullWidth
@@ -196,9 +246,9 @@ export default function CreateChat(props) {
                 <FormControlLabel 
                     control={
                         <Checkbox checked={newChatState.private}                        
-                                name="private"
-                                color="primary"
-                                onChange={handleChangePrivate} />
+                                  name="private"
+                                  color="primary"
+                                  onChange={handleChangePrivate} />
                         }
                     label="Private" />
                                   
@@ -226,6 +276,8 @@ export default function CreateChat(props) {
                 </List>
 
             </DialogContent>
+
+            { renderInvalidChatError() }
 
             <DialogActions>
 

@@ -15,6 +15,7 @@ import GroupAddRounded from '@material-ui/icons/GroupAddRounded';
 import Send from '@material-ui/icons/Send';
 import TextField from '@material-ui/core/TextField';
 import useStayScrolled from 'react-stay-scrolled';
+import { blue } from '@material-ui/core/colors';
 
 import APIKit from '../APIKit';
 import CustomLink from '../CustomLink';
@@ -37,9 +38,10 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: '0 0 15px lightgray'
     },
     chatRoomHeader: {
-        borderBottom: "solid 2px grey",
+        borderBottom: "solid 5px",
+        borderBottomColor: blue[100],
         padding: '5px 10px',
-        background: 'black',
+        background: blue[600],
         color: 'white',
         borderRadius: '4px 4px 0 0'
     },
@@ -65,6 +67,9 @@ const useStyles = makeStyles((theme) => ({
     },
     addUserButtonContainer: {
         minWidth: '35px'
+    },
+    addUserButton: {
+        color: blue[100]
     }
 }));
 
@@ -244,7 +249,7 @@ export default function ChatRoom(props) {
     const renderAddUserButton = () => {
         if (!chatState.private) {
             return (
-                <IconButton color="primary"
+                <IconButton className={classes.addUserButton}
                             onClick={handleClickOpen}>
                     <GroupAddRounded />
                 </IconButton>
@@ -279,7 +284,7 @@ export default function ChatRoom(props) {
                         </CustomLink>
                     </Grid>
 
-                    <Grid item>{chatState.chat_name}</Grid>
+                    <Grid item><strong>{chatState.chat_name}</strong></Grid>
 
                     <Grid item className={classes.addUserButtonContainer}>
                         { renderAddUserButton() }

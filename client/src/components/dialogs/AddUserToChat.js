@@ -33,6 +33,11 @@ const useStyles = makeStyles({
         '&:hover': {
             backgroundColor: blue[100]
         }
+    },
+    errorMessage: {
+        color: 'red',
+        fontWeight: 'bold',
+        fontStyle: 'italic'
     }
 });
 
@@ -52,6 +57,11 @@ export default function AddUserToChat(props) {
     // State to manage the new user to be added
     const initialNewUserState = {newUser: {}};
     const [newUserState, setNewUserState] = useState(initialNewUserState);
+    // State to validate the new user configuration
+    const [validNewUser, setValidNewUser] = useState({
+        valid: true,
+        errorMessage: ""
+    });
 
     // Fetch the users list from the server
     useEffect(() => {
@@ -79,22 +89,54 @@ export default function AddUserToChat(props) {
         onClose();
         // Reset the chat configuration state
         setNewUserState(initialNewUserState);
+        setValidNewUser({valid: true, errorMessage: ""});
     };
+
+    // Helper function that returns true if the new user config is valid
+    // and false otherwise.
+    const checkValidNewUserConfig = () => {
+        const {newUser} = newUserState;
+
+        if (Object.entries(newUser).length === 0) {
+            return [false, "You must select a user from the list"];
+        }
+
+        return [true, ""];
+    }
+
+    const renderInvalidNewUserError = () => {
+        if (!validNewUser.valid) {
+            return (
+                <DialogContent className={classes.errorMessage}>
+                    {validNewUser.errorMessage}
+                </DialogContent>
+            );
+        }
+        return null;
+    }
 
     // Function to handle the new chat creation
     const handleAddNewUser = async () => {
+        const [new_user_is_valid, error_message] = checkValidNewUserConfig();
 
-        const payload = {
-            users:[
-                ...users,
-                newUserState.newUser.id
-            ],
-            event: "new_user_added"
+        setValidNewUser({
+            valid: new_user_is_valid,
+            errorMessage: error_message
+        });
+
+        if (new_user_is_valid) {
+            const payload = {
+                users:[
+                    ...users,
+                    newUserState.newUser.id
+                ],
+                event: "new_user_added"
+            }
+            // Patch to -> chats/{chat_id}
+            await APIKit.patch(`${match.url}/`, payload);
+
+            handleClose();
         }
-        // Patch to -> chats/{chat_id}
-        await APIKit.patch(`${match.url}/`, payload);
-
-        handleClose();
     };
 
     // Function excecuted when a user is selected from the list
@@ -130,6 +172,8 @@ export default function AddUserToChat(props) {
                     ))}
                 </List>
             </DialogContent>
+            
+            { renderInvalidNewUserError() }
 
             <DialogActions>
 
