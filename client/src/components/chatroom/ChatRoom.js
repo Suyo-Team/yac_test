@@ -22,6 +22,8 @@ import ChatMessage from './ChatMessage';
 import { getUser } from '../CheckUserAuthenticated';
 import AddUserToChat from '../dialogs/AddUserToChat';
 
+import PropTypes from 'prop-types';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -320,4 +322,10 @@ export default function ChatRoom(props) {
             
         </Container>
     );
+}
+
+
+
+ChatRoom.propTypes = {
+    socket: PropTypes.instanceOf(ReconnectingWebSocket).isRequired
 }

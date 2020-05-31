@@ -16,10 +16,14 @@ let APIKit = axios.create({
 
 // Set Web Token in Client to be included in all calls
 export const setClientToken = token => {
-  APIKit.interceptors.request.use(function(config) {
-    config.headers.Authorization = `Token ${token}`;
-    return config;
-  });
+  if (token) {
+    APIKit.defaults.headers.common['Authorization'] = `Token ${token}`;
+  }
+};
+
+// Remove Web Token in Client
+export const removeClientToken = () => {
+  delete APIKit.defaults.headers.common['Authorization'];
 };
 
 

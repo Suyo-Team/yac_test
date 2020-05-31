@@ -13,6 +13,9 @@ import ChatItem from './ChatItem';
 import { getUser } from '../CheckUserAuthenticated';
 import CreateChat from '../dialogs/CreateChat';
 
+import PropTypes from 'prop-types';
+import ReconnectingWebSocket from 'reconnecting-websocket';
+
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -68,7 +71,6 @@ export default function Chats(props) {
         const fetchData = async () => {
             const result = await APIKit.get('/chats/');
             
-            console.log(result.data)
             // Add an attribute 'unread' to every chat
             let chats_list = result.data.map(chat => {
                 chat.unread = 0
@@ -192,4 +194,9 @@ export default function Chats(props) {
 
         </Container>
     );
+}
+
+
+Chats.propTypes = {
+    socket: PropTypes.instanceOf(ReconnectingWebSocket).isRequired
 }

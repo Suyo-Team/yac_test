@@ -13,7 +13,7 @@
 
 import { useHistory, useLocation } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-import APIKit, { setClientToken } from './APIKit';
+import { setClientToken } from './APIKit';
 
 export default function CheckUserAuthenticated(props) {
     // Checks for user information in the cookies, including the token if
@@ -50,14 +50,12 @@ export default function CheckUserAuthenticated(props) {
     // As axios loses some headers when pages are reloaded, we set
     // the token authorization header in axios to include it in subsecuent 
     // API calls
-    console.log(token_cookie);
-    console.log(user_cookie);
     if (token_cookie) {
         setClientToken(token_cookie);
     }
 
     // Return the wrapped component
-    return props.children    
+    return props.children   
 }
 
 export function getUser() {

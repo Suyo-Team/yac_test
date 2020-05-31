@@ -4,6 +4,7 @@
 
 import { useHistory } from 'react-router-dom';
 import { removeUser, removeToken } from '../CheckUserAuthenticated';
+import { removeClientToken } from '../APIKit';
 
 export default function SignOut() {
 
@@ -12,6 +13,9 @@ export default function SignOut() {
     // Remove the cookies
     removeUser();
     removeToken();
+
+    // Remove the header
+    removeClientToken();
 
     // Redirect to login page
     history.push('/login');

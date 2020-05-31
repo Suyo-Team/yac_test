@@ -11,6 +11,8 @@ import PersonIcon from '@material-ui/icons/Person';
 import Avatar from '@material-ui/core/Avatar';
 import { blue } from '@material-ui/core/colors';
 
+import PropTypes from 'prop-types';
+
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -53,4 +55,12 @@ export default function ChatItem(props) {
 
         </CustomLink>              
     );
+}
+
+
+ChatItem.propTypes = {
+    id: PropTypes.number.isRequired,
+    key: PropTypes.number.isRequired,
+    chat_name: PropTypes.string.isRequired,
+    unread: PropTypes.number.isRequired,
 }
