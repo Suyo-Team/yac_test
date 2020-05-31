@@ -56,7 +56,6 @@ export default function AddUserToChat(props) {
     // Fetch the users list from the server
     useEffect(() => {
         let mounted = true;
-
         // We'll only make the api call to retrieve the list of users when the
         // dialog is opened ('open' is set to true true)
         if (open) {
@@ -68,10 +67,10 @@ export default function AddUserToChat(props) {
             };
             fetchData();
         }
+        // Clean up the effect
         return () => {
             mounted = false;
-        };
-        
+        };        
     }, [open]);
 
     // Helper function to execute everytime the component is closed
@@ -85,13 +84,15 @@ export default function AddUserToChat(props) {
     // Function to handle the new chat creation
     const handleAddNewUser = async () => {
 
-        const payload = [
-            ...users,
-            newUserState.newUser.id
-        ]
-
+        const payload = {
+            users:[
+                ...users,
+                newUserState.newUser.id
+            ],
+            event: "new_user_added"
+        }
         // Patch to -> chats/{chat_id}
-        await APIKit.patch(`${match.url}`, payload);
+        await APIKit.patch(`${match.url}/`, payload);
 
         handleClose();
     };
@@ -105,7 +106,7 @@ export default function AddUserToChat(props) {
                 open={open}
                 fullWidth
                 maxWidth="xs">
-            
+
             <DialogTitle id="add-user-dialog-title">
                 Add User to the Chat
             </DialogTitle>
@@ -128,7 +129,6 @@ export default function AddUserToChat(props) {
                         </ListItem>
                     ))}
                 </List>
-
             </DialogContent>
 
             <DialogActions>
@@ -153,5 +153,5 @@ export default function AddUserToChat(props) {
 AddUserToChat.propTypes = {
     onClose: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
-    users: PropTypes.array.isRequired
+    users: PropTypes.arrayOf(PropTypes.number).isRequired
 };

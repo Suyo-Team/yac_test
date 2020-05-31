@@ -206,14 +206,30 @@ export default function ChatRoom(props) {
                     ]
                 });
             }
-        }        
+        } else if (data.event === 'new_user_added') {
+            // We should keep track of this, serialized data
+            // can be changed overtime in the server
+            
+            // If the user was added to this specific chat room
+            if (data.id.toString() === chatRoomId) {               
+                // Delete some attributes in the object
+                // that should not be stored in the state
+                delete data.type
+                delete data.event
+                
+                setChatState({
+                    ...chatState,
+                    users: data.users
+                });
+            }
+        }
     };
 
     // Helper function to map the messages list and generate 
     // a list of ChatMessage components
     const renderChatMessages = () => {
         return chatMessagesState.messages.map(message => 
-            <ChatMessage message={message.text} 
+            <ChatMessage message={message.text}
                          key={message.id} 
                          user={message.user}
                          activeUser={user}

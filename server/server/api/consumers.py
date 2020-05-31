@@ -11,7 +11,10 @@ class ChannelsGroups(TextChoices):
 
 class ChatConsumer(AsyncJsonWebsocketConsumer):
     """
-    Consumer that will listen and notify whenever a new message is created
+    Consumer that will listen and notify whenever a new message is created.
+
+    We are splitting all the type of messages so we can have more flexibility
+    in the future
     """
 
     groups = [ChannelsGroups.NEW_MESSAGES]
@@ -41,4 +44,10 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         has been created, so we can send it back to the clients
         """
         # the 'event' will already contain the serialized chat data
+        await self.send_json(event)
+
+    async def new_user_added(self, event):
+        """
+        Receive the list of users currently in the chat, alongside the chat id
+        """        
         await self.send_json(event)

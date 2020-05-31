@@ -59,13 +59,16 @@ export default function Chats(props) {
         chats: []
     });
 
-    // Fetch the list of chats fromt eh server
+    // State to keep trak of the unread messages
+
+    // Fetch the list of chats from the server
     useEffect(() => {
         let mounted = true;
 
         const fetchData = async () => {
             const result = await APIKit.get('/chats/');
             
+            console.log(result.data)
             // Add an attribute 'unread' to every chat
             let chats_list = result.data.map(chat => {
                 chat.unread = 0
@@ -103,7 +106,36 @@ export default function Chats(props) {
             });
 
             setChatsState({chats: new_chats_state});
-        }
+
+        } else if (data.event === 'new_user_added') {
+            // We should keep track of this, serialized data
+            // can be changed overtime in the server            
+            console.log(data)
+                        
+            // the received 'data' object will contain the chat
+            // information where the user was added to, plus the users
+            // that belong to that chat, but that list must
+            // contain only the user's ids, which is not the case. Users list
+            // come as a list of objects with user info.
+            // Let's normalized that list
+            const new_users_list = data.users.map(u => u.id)
+            // Now, let's check if the user that was added to some chat
+            // was the current user, so we can render the new chat in its screen
+            if (new_users_list.includes(user.id)) {
+                // Delete some attributes in the object
+                // that should not be stored in the state
+                delete data.type
+                delete data.event
+                data.users = new_users_list
+                
+                setChatsState({
+                    chats: [
+                        ...chatsState.chats,
+                        data
+                    ]
+                })
+            }
+        } 
     };
 
     // Helper function to map the list of chats into a list of 

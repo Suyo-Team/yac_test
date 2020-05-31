@@ -7,6 +7,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 
 
 // Styles
@@ -93,4 +94,13 @@ export default function ChatMessage(props) {
 
         </div>
     );
+}
+
+
+ChatMessage.propTypes = {
+    message: PropTypes.string.isRequired,
+    key: PropTypes.number.isRequired,
+    user: PropTypes.object.isRequired,
+    activeUser: PropTypes.object.isRequired,
+    created: PropTypes.string.isRequired
 }

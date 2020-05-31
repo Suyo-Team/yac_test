@@ -82,9 +82,16 @@ class ChatMessageNestedSerializer(serializers.ModelSerializer):
 class ChatCreateSerializer(serializers.ModelSerializer):
     """ Serializer used to create or edit a Chat instance """
     
+    # This field will help us to know which event was triggered
+    # on the client, i.e. When the user creates a new chat, or, when
+    # a user is added to a new chat. Both api calls are made to the same
+    # routers, so we need to differentiate them in some fashion in order
+    # to send the appropiate message to the client via a channel layer
+    event = serializers.CharField(required=False)
+
     class Meta:
         model = Chat
-        fields = ['id', 'chat_name', 'private', 'users']
+        fields = ['id', 'chat_name', 'private', 'users', 'event']
 
 
 class ChatSerializer(ChatCreateSerializer):

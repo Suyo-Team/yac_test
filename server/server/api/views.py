@@ -156,7 +156,7 @@ class ChatViewSet(viewsets.ModelViewSet):
         """
         chat_instane = serializer.save()
         # First we serialize the instane again
-        s = ChatSerializer(chat_instane)  # chat instance serialized
+        s = ChatSerializer(chat_instane, context={'request': self.request})  # chat instance serialized
         chat_data = s.data
         chat_data['type'] = 'new.chat'
         chat_data['event'] = 'new_chat'
@@ -167,6 +167,35 @@ class ChatViewSet(viewsets.ModelViewSet):
             ChannelsGroups.NEW_MESSAGES,
             chat_data
         )
+    
+    def perform_update(self, serializer):
+        """
+        Here we need to catch the event sent in the request, so we can handle and
+        send the coorect message to the client
+        """
+        chat_instance = serializer.save()
+        event = serializer.validated_data.get('event', '')        
+        if event:
+            chat_data = {}
+            if event == 'new_user_added':
+                # First we serialize the instane again
+                s = ChatSerializer(chat_instance, context={'request': self.request})
+                chat_data = s.data
+                chat_data['event'] = event
+                chat_data['type'] = event.replace('_', '.')
+                chat_data['users'] = []
+                for user in chat_instance.users.all():
+                    u_serialized = UserSerializer(user)
+                    chat_data['users'].append(u_serialized.data)
+
+            # Then we send the message
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                ChannelsGroups.NEW_MESSAGES,
+                chat_data
+            )
+
+
 
 class ChatMessageViewSet(viewsets.GenericViewSet, 
                          mixins.RetrieveModelMixin,

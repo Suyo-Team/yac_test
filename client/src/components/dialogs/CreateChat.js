@@ -67,22 +67,24 @@ export default function CreateChat(props) {
 
     // Fetch the users list from the server
     useEffect(() => {
-        let mounted = true;
+        let mounted = true;        
+        // We only fetch the data when the dialog is opened
+        if (open) {
+            const fetchData = async () => {
+                const result = await APIKit.get('/users/');
 
-        const fetchData = async () => {
-            const result = await APIKit.get('/users/');
-
-            // We need to remove the current user from the list
-            const filtered_users = result.data.filter(u => u.id !== user.id)
-            if (mounted) setUsersState({ users: filtered_users });
-        };
-        fetchData();
-
+                // We need to remove the current user from the list
+                const filtered_users = result.data.filter(u => u.id !== user.id)
+                if (mounted) setUsersState({ users: filtered_users });
+            };
+            fetchData();
+        }
+        // Clean up teh effect
         return () => {
             mounted = false;
         };
         
-    }, []);
+    }, [open]);
 
     // Helper function to execute everytime the component is closed
     const handleClose = () => {
