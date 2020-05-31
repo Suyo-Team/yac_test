@@ -59,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
     },
     submitMessageButton: {
         width: '15%'
+    },
+    addUserButtonContainer: {
+        minWidth: '35px'
     }
 }));
 
@@ -207,12 +210,25 @@ export default function ChatRoom(props) {
         );
     }
 
+    // Function that renders the add user button only when
+    // the chat is public ('private' is false)
+    const renderAddUserButton = () => {
+        if (!chatState.private) {
+            return (
+                <IconButton color="primary">
+                    <GroupAddRounded />
+                </IconButton>
+            );
+        }
+        return null;
+    }
+
     return (
         <Container component="main" maxWidth="xs">
 
             <div className={classes.paper}>
 
-                <Grid container 
+                <Grid container
                       justify="space-between"
                       alignItems="center"
                       className={classes.chatRoomHeader}>
@@ -227,10 +243,8 @@ export default function ChatRoom(props) {
 
                     <Grid item>{chatState.chat_name}</Grid>
 
-                    <Grid item>
-                        <IconButton color="primary">
-                            <GroupAddRounded />
-                        </IconButton>
+                    <Grid item className={classes.addUserButtonContainer}>
+                        { renderAddUserButton() }
                     </Grid>
 
                 </Grid>

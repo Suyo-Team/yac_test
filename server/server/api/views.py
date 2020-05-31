@@ -7,11 +7,15 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 from api.serializers import (
-    UserSerializer, RegistrationSerializer, ChatSerializer,
+    UserSerializer, RegistrationSerializer, ChatSerializer, ChatCreateSerializer,
     ChatMessageSerializer, ChatDisplaySerializer, ChatMessageDisplaySerializer
 )
 from api.models import Chat, ChatMessage
+from api.consumers import ChannelsGroups
 
 class CustomAuthToken(ObtainAuthToken):
     """ We need to get the just logged-in user information, besides the token """
@@ -78,6 +82,8 @@ class ChatViewSet(viewsets.ModelViewSet):
         """
         if self.action in ['retrieve']:
             return ChatDisplaySerializer
+        elif self.action in ['create', 'update']:
+            return ChatCreateSerializer
         return self.serializer_class
 
     def get_queryset(self):
@@ -105,7 +111,31 @@ class ChatViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+    def perform_create(self, serializer):
+        """
+        We're overriding this method to send a message via channels to the client.
 
+        The reason we are doing it here and not in a signal as we did with messages
+        is because the post_save signal is executed before the users are stored
+        in the m2m table.
+
+        After performing serializer.save() in this method, it will return the chat 
+        instane with all the users already stored in the database.
+        """
+        chat_instane = serializer.save()
+        # First we serialize the instane again
+        s = ChatSerializer(chat_instane)  # chat instance serialized
+        chat_data = s.data
+        chat_data['type'] = 'new.chat'
+        chat_data['event'] = 'new_chat'
+
+        # Then we send the message
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            ChannelsGroups.NEW_MESSAGES,
+            chat_data
+        )
 
 class ChatMessageViewSet(viewsets.GenericViewSet, 
                          mixins.RetrieveModelMixin,

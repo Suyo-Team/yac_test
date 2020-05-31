@@ -1,7 +1,7 @@
 import React from 'react';
+import { useRouteMatch } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { useRouteMatch } from 'react-router-dom';
 import CustomLink from '../CustomLink';
 import Badge from '@material-ui/core/Badge';
 import ListItem from '@material-ui/core/ListItem';

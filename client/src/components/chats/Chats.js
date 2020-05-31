@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -50,6 +51,9 @@ export default function Chats(props) {
     // socket to handle messages sent and received to and from teh server
     const socket = props.socket;
 
+    const match = useRouteMatch();
+    const history = useHistory();
+    
     // State to manage the user's chats list
     const [chatsState, setChatsState] = useState({
         chats: []
@@ -70,7 +74,15 @@ export default function Chats(props) {
     // i.e. if it's a 'new_message' event or a 'new_chat' event, etc.
     socket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        console.log(data);
+        // If event is 'new_chat'
+        if (data.event === 'new_chat') {
+            // Then we check if the current user is included in the new created chat
+            if (data.users.includes(user.id)) {  
+                // Now we redirect the user to that new chat room just created
+                console.log(`${match.url}/${data.id}`)
+                history.push(`${match.url}/${data.id}`);  
+            }
+        }
     };
 
     // Helper function to map the list of chats into a list of 
@@ -121,7 +133,9 @@ export default function Chats(props) {
 
             </div>
 
-            <CreateChat open={open} onClose={handleClose} />
+            <CreateChat open={open} 
+                        onClose={handleClose} 
+                        user={user} />
 
         </Container>
     );

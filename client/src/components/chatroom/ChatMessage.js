@@ -1,7 +1,15 @@
+/**
+ * Component to render the messages in the chat
+ * 
+ * It will render differently depending onn which user sent the message, 
+ * either the current user, or one of the other users in the chatroom
+ */
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 
+
+// Styles
 const useStyles = makeStyles((theme) => ({
     chatMessage: {
         width: '70%',
@@ -13,11 +21,11 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: 'nowrap',
         justifyContent: 'flex-end',
         alignItems: 'space-between',
-        padding: '10px',
+        padding: '5px',
         textAlign: 'right'
     },
     chatMessageContainer: {
-        padding: '10px',
+        padding: '2px',
         display: 'flex',
         justifyContent: 'flex-end'
     },
@@ -33,14 +41,20 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+
+// Main Component
 export default function ChatMessage(props) {
     
+    // Classes to style the component
     const classes = useStyles();
 
+    // Function to format the date of creation of the message
+    // We're using Moment js to give it a freadly and intuitive format
     const formatDate = dateString => {
         return moment(dateString).calendar();
     }
 
+    // Defines the classes for the message depending on the user that sent it
     const getMessageClasses = () => {
         let messageClassesList = classes.chatMessage
         let messageContainerClassesList = classes.chatMessageContainer
@@ -55,17 +69,21 @@ export default function ChatMessage(props) {
             messageContainerClasses: messageContainerClassesList
         }
     }
-
     let {messageClasses, messageContainerClasses} = getMessageClasses();
 
     return (
         <div key={props.key} className={messageContainerClasses}>
-            <div className={messageClasses}>               
+
+            <div className={messageClasses}>  
+
                 <span>{props.message}</span>
+
                 <span className={classes.auxMessage}>
                     by <span style={{fontWeight: 'bolder'}}>{props.user.username}</span> {formatDate(props.created)}
                 </span>
+
             </div>
+
         </div>
     );
 }

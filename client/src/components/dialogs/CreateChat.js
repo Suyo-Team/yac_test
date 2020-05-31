@@ -47,7 +47,7 @@ export default function CreateChat(props) {
     // Classes to style the component
     const classes = useStyles();
     // Deconstructing the props
-    const { onClose, open } = props;
+    const { onClose, open, user } = props;
 
     // State to manage the list of users
     const [usersState, setUsersState] = useState({ users: [] });
@@ -56,7 +56,7 @@ export default function CreateChat(props) {
     const initialNewChatState = {
         private: true,
         chat_name: '',
-        selectedUser: ''
+        selectedUser: {}
     }
     // State to manage the new Chat configuration.    
     const [newChatState, setNewChatState] = useState(initialNewChatState);
@@ -65,7 +65,11 @@ export default function CreateChat(props) {
     useEffect(() => {
         const fetchData = async () => {
             const result = await APIKit.get('/users/');
-            setUsersState({ users: result.data });
+
+            // We need to remove the current user from the list
+            // It will throw a M2M error on the server OperationalError
+            const filtered_users = result.data.filter(u => u.id !== user.id)
+            setUsersState({ users: filtered_users });
         };
         fetchData();
     }, []);
@@ -74,21 +78,28 @@ export default function CreateChat(props) {
     const handleClose = () => {
         // We excecute the external function passed trhough the props
         onClose();
-        console.log(newChatState);
         // Reset the chat configuration state
         setNewChatState(initialNewChatState);
     };
 
     // Function to handle the new chat creation
-    const handleCreateNewChat = () => {
+    const handleCreateNewChat = async () => {
+        const selected_user_id = newChatState.selectedUser.id
+        const payload = {
+            ...newChatState,
+            users: [selected_user_id, user.id]
+        }
 
+        await APIKit.post('/chats/', payload); 
+
+        handleClose();
     };
 
     // Function excecuted when a user is selected from the list
     const handleListItemClick = (user) => {
         setNewChatState({
             ...newChatState,
-            selectedUser: user.id
+            selectedUser: user
         });
     };
 
@@ -131,14 +142,29 @@ export default function CreateChat(props) {
         return null;
     }
 
+    // Function to create the label for the 'create' button
+    // Will dinamically update depending on the chat configuration
+    const renderCreateButtonLabel = () => {        
+        const is_private = newChatState.private ? 'private' : 'public';
+        let button_label = `Create a new ${is_private} chat`;
+        
+        if (Object.entries(newChatState.selectedUser).length !== 0){
+            button_label += ` with ${newChatState.selectedUser.username}`;
+        }
+
+        return button_label
+    }
+
     return (
         <Dialog onClose={handleClose} 
                 aria-labelledby="simple-dialog-title" 
                 open={open}
                 fullWidth
                 maxWidth="xs">
-
-            <DialogTitle id="create-chat-dialog-title">Create a new Chat</DialogTitle>
+            
+            <DialogTitle id="create-chat-dialog-title">
+                New Chat Room
+            </DialogTitle>
 
             <DialogContent>
 
@@ -156,12 +182,11 @@ export default function CreateChat(props) {
             </DialogContent>
 
             <DialogContent>
-
                 <List>
                     {usersState.users.map((user) => (
                         <ListItem button 
                                   onClick={() => handleListItemClick(user)} key={user.id}
-                                  className={user.id === newChatState.selectedUser ? classes.selectedUser : null}>
+                                  className={user.id === newChatState.selectedUser.id ? classes.selectedUser : null}>
                             
                             <ListItemAvatar>
                                 <Avatar className={classes.avatar}>
@@ -183,8 +208,11 @@ export default function CreateChat(props) {
                     Cancel
                 </Button>
 
-                <Button onClick={handleClose} color="primary" autoFocus>
-                    Create
+                <Button onClick={handleCreateNewChat} 
+                        color="primary"
+                        variant="outlined"
+                        autoFocus>
+                    {renderCreateButtonLabel()}
                 </Button>
 
             </DialogActions>     

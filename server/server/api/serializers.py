@@ -79,10 +79,19 @@ class ChatMessageNestedSerializer(serializers.ModelSerializer):
         fields = ['id', 'created', 'user', 'text']
 
 
-class ChatSerializer(serializers.ModelSerializer):
+class ChatCreateSerializer(serializers.ModelSerializer):
     """ Serializer used to create or edit a Chat instance """
     
+    class Meta:
+        model = Chat
+        fields = ['id', 'chat_name', 'private', 'users']
+
+
+class ChatSerializer(ChatCreateSerializer):
+    """ Serializer used to display details, retrieve only """
+    
     chat_name = serializers.SerializerMethodField()
+    users = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Chat
