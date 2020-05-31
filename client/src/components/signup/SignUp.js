@@ -7,7 +7,8 @@
  */
 
 import React, { useState } from 'react';
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useHistory } from "react-router-dom";
+import Cookies from 'universal-cookie';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -19,6 +20,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import APIKit, { setClientToken } from '../APIKit';
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -48,6 +50,9 @@ export default function SignUp() {
 	// Classes to style the component
 	const classes = useStyles();
 
+	const cookies = new Cookies();
+	const history = useHistory();
+
 	// Signup form state, this will be sent to the server via API to handler the 
 	// user registration
 	const [formState, setFormState] = useState({
@@ -75,6 +80,27 @@ export default function SignUp() {
 		setValidPasswordsState({
 			validPasswords: validPasswords
 		})
+
+		// Sign up handlers
+		const onSuccess = ({ data }) => {
+			// set cookies with user info and token
+			cookies.set('user', data.user);
+			cookies.set('token', data.token);
+			setClientToken(data.token);
+			// Redirect to the Chats page
+			history.push('/chats');
+		};
+		// Informative function for debuging
+		const onFailure = error => {
+			console.log(error && error.response);
+		};
+
+		if (validPasswordsState.validPasswords) {
+			// Make the API post request to register
+			APIKit.post('/register/', formState)
+				.then(onSuccess)
+				.catch(onFailure);
+		}
 	}
 
 	// Global input change hanldler for all the inputs in the form

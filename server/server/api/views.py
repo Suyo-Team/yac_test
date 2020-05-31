@@ -57,8 +57,11 @@ def registration_view(request):
     if serializer.is_valid():
         new_user = serializer.save()
         data['response'] = "Successfully registered a new user"
-        data['email'] = new_user.email
-        data['username'] = new_user.username
+        data['user'] = {
+            'id': new_user.pk,
+            'username': new_user.username,
+            'email': new_user.email
+        }
         data['token'] = new_user.auth_token.key
         status_code = status.HTTP_201_CREATED
     else:

@@ -19,7 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import APIKit from '../APIKit';
+import APIKit, { setClientToken } from '../APIKit';
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -65,7 +65,7 @@ export default function SignIn() {
 			// set cookies with user info and token
 			cookies.set('user', data.user);
 			cookies.set('token', data.token);
-
+			setClientToken(data.token);
 			// Redirect to the Chats page
 			history.push('/chats');
 		};

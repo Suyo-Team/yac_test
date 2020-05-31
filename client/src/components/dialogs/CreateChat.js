@@ -106,8 +106,9 @@ export default function CreateChat(props) {
                 if (error.response) {
                     if (error.response.status === 400) {
                         console.log(error.response.error);
-                    } else if (error.response.status === 302) {
+                    } else if (error.response.status === 302) {  // found
                         // Redirect to the chat
+                        // A PRIVATE chat between the two users was found
                         const redirect_to = error.response.data.redirect_to;
                         history.push(`${match.url}/${redirect_to}`);
                     }

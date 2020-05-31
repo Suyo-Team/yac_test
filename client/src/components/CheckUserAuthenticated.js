@@ -50,9 +50,11 @@ export default function CheckUserAuthenticated(props) {
     // As axios loses some headers when pages are reloaded, we set
     // the token authorization header in axios to include it in subsecuent 
     // API calls
+    console.log(token_cookie);
+    console.log(user_cookie);
     if (token_cookie) {
         setClientToken(token_cookie);
-    }    
+    }
 
     // Return the wrapped component
     return props.children    
