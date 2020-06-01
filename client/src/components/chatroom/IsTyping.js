@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { blue } from '@material-ui/core/colors';
 import PropTypes from 'prop-types';
-import ReconnectingWebSocket from 'reconnecting-websocket';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +42,7 @@ export default function IsTyping(props) {
                 // If the item is not the first one, then we need to add commas
                 if (i > 0) {
                     // If it's the last one we add 'and' instead of a comma
-                    label += i === arr[arr.length - 1] ? 'and ' : ', '
+                    label += i === arr.length - 1 ? ' and ' : ', '
                 }
                 // Add the username
                 label += el.username
@@ -51,7 +50,7 @@ export default function IsTyping(props) {
 
             // If there are more than one user typing then whe add the plural 'are'
             // otherwise we add the singular 'is'
-            label += typing_list.length > 1 ? 'are ' : 'is '
+            label += typing_list.length > 1 ? ' are' : ' is'
             label += ' typing ...'
 
             return label;

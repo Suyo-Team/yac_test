@@ -273,7 +273,7 @@ export default function ChatRoom(props) {
         } else if (event === 'user_typing' || event === 'user_stopped_typing')
             // Only add the user to the list if it's not the active user
             // and if it's on the current chat
-            if (data.chat.toString() === chatRoomId && data.id !== user.id ) {
+            if (data.chat.toString() === chatRoomId && data.id !== user.id) {
                 if (event === 'user_typing') {                
                     setIsTypingState([
                         ...isTypingState,
