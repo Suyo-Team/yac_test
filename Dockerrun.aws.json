@@ -21,7 +21,7 @@
             "image": "edraobdu/yac-nginx",
             "hostname": "nginx",
             "essential": true,
-            "memory": 128,
+            "memory": 512,
             "portMappings": [
                 {
                     "hostPort": 80,
