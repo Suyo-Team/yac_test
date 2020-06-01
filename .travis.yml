@@ -1,0 +1,32 @@
+sudo: required
+language: python
+python:
+  	- "3.7"
+services:
+  	- docker
+script:
+  	- docker-compose -f docker-compose-dev.yml run app sh -c "python manage.py test"
+
+after_success:
+    - docker build -t edraobdu/yac-client ./client
+    - docker build -t edraobdu/yac-server ./server
+
+    # Log in to the docekr CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    # Take those images and push them to docker hub
+    - docker push edraobdu/yac-client
+    - docker push edraobdu/yac-server
+
+# deploy:
+#     edge: true
+#     provider: elasticbeanstalk
+#     region: us-west-1
+#     app: multi-docker
+#     env: MultiDocker-env
+#     bucket_name: elasticbeanstalk-us-west-1-306476627547
+#     bucket_path: docker-multi
+#     on:
+#         branch: master
+#     access_key_id: $AWS_ACCESS_KEY
+#     secret_access_key: $AWS_SECRET_KEY

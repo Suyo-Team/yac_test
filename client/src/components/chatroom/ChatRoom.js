@@ -123,14 +123,14 @@ export default function ChatRoom(props) {
     const checkIsTyping = () => {       
         let timestamp = new Date().getTime();
         const difference = timestamp - lastTypedTime;
-        if (isTyping && difference > 1000) {
+        if (isTyping && difference > 700) {
             setIsTyping(false);
             setLastTypedTime(null);
         }
     }
     useInterval(() => {
         checkIsTyping();
-    }, isTyping ? 1000 : null);
+    }, isTyping ? 500 : null);
 
     // Now, we can use an effect to broadcast a message vi websocket
     // to inform the user stoped or started typing
@@ -184,6 +184,8 @@ export default function ChatRoom(props) {
     const onKeyPressHandler = (e) => {
         if (e.key === 'Enter') {
             submitMessageHandler();
+            setIsTyping(false);
+            setLastTypedTime(null);
         } else {
             // 'typing' function
             // We'll calculate the time between the last time the user

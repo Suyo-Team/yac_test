@@ -10,25 +10,18 @@ services:
         image: 'redis:latest'
     client:
         stdin_open: true
-        build:
-            context: ./client
-        volumes:
-            - /app/node_modules
-            - ./client:/app 
+        image: 'edraobdu/yac-client'
         ports: 
             - "3000:3000"
     server:
-        build:
-            context: ./server
-        restart: on-failure
+        image: 'edraobdu/yac-server'
+        restart: always
         ports:
             - "8000:8000"
-        volumes:
-            - ./server/server:/server
         command: >
             sh -c "python manage.py wait_for_db &&
                    python manage.py migrate &&
-                   python manage.py runserver 0.0.0.0:8000"
+                   daphne -b 0.0.0.0 -p 8000 server.asgi:application"
         environment:
             - DB_HOST=db
             - DB_NAME=server
