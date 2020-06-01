@@ -21,6 +21,7 @@ class CustomAuthToken(ObtainAuthToken):
     """ We need to get the just logged-in user information, besides the token """
 
     def post(self, request, *args, **kwargs):
+        print('login')
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -50,7 +51,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 def registration_view(request):
-
+    
     serializer = RegistrationSerializer(data=request.data)
     data = {}
     status_code = status.HTTP_400_BAD_REQUEST
@@ -66,7 +67,7 @@ def registration_view(request):
         status_code = status.HTTP_201_CREATED
     else:
         data = serializer.errors
-    
+
     return Response(data, status=status_code)
 
 
@@ -241,26 +242,3 @@ class ChatMessageViewSet(viewsets.GenericViewSet,
         Ensures only messages that the current user has created
         """
         return ChatMessage.objects.filter(user=self.request.user)
-
-
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-def registration_view(request):
-
-    serializer = RegistrationSerializer(data=request.data)
-    data = {}
-    status_code = status.HTTP_400_BAD_REQUEST
-    if serializer.is_valid():
-        new_user = serializer.save()
-        data['response'] = "Successfully registered a new user"
-        data['user'] = {
-            'id': new_user.pk,
-            'username': new_user.username,
-            'email': new_user.email
-        }
-        data['token'] = new_user.auth_token.key
-        status_code = status.HTTP_201_CREATED
-    else:
-        data = serializer.errors
-    
-    return Response(data, status=status_code)
