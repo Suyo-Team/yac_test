@@ -26,6 +26,8 @@ import AddUserToChat from '../dialogs/AddUserToChat';
 import PropTypes from 'prop-types';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
+import { useInterval } from '../utils';
+
 // Styles
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -115,6 +117,29 @@ export default function ChatRoom(props) {
         users: []
     });
 
+    // State to handle the 'is typing' event
+    const [isTyping, setIsTyping] = useState(false);
+    const [lastTypedTime, setLastTypedTime] = useState(null);
+    const checkIsTyping = () => {       
+        let timestamp = new Date().getTime();
+        const difference = timestamp - lastTypedTime;
+        if (isTyping && difference > 1000) {
+            setIsTyping(false);
+            setLastTypedTime(null);
+        }
+    }
+    useInterval(() => {
+        checkIsTyping();
+    }, isTyping ? 1000 : null);
+
+    // Now, we can use an effect to broadcast a message vi websocket
+    // to inform the user stoped or started typing
+    useEffect(() => {
+        let ws_event = isTyping ? 'user_typing' : 'user_stopped_typing'
+        // Here socket.send
+    }, [isTyping]);
+
+
     // Fecthignt he chat information via API
     useEffect(() => {
         let mounted = true;
@@ -140,7 +165,6 @@ export default function ChatRoom(props) {
         
     }, []);
 
-
     // Stay chat messages list component scrolled to bottom 
     // according to the messages list length
     useLayoutEffect(() => {
@@ -160,6 +184,15 @@ export default function ChatRoom(props) {
     const onKeyPressHandler = (e) => {
         if (e.key === 'Enter') {
             submitMessageHandler();
+        } else {
+            // 'typing' function
+            // We'll calculate the time between the last time the user
+            // pressed a key and the current time
+            // if it's longer than certain amount of time, we can 
+            // say that 'the user stopped typing'.
+            if (!isTyping) setIsTyping(true);
+            const timestamp = new Date().getTime();
+            setLastTypedTime(timestamp);
         }
     }
 
@@ -284,7 +317,7 @@ export default function ChatRoom(props) {
                         </CustomLink>
                     </Grid>
 
-                    <Grid item><strong>{chatState.chat_name}</strong></Grid>
+                    <Grid item><strong>{isTyping ? 'is typing ...' : chatState.chat_name}</strong></Grid>
 
                     <Grid item className={classes.addUserButtonContainer}>
                         { renderAddUserButton() }
@@ -308,7 +341,7 @@ export default function ChatRoom(props) {
                                value={messageState.message}
                                autoFocus
                                onChange={onChangeMessageHandler}
-                               onKeyPress={onKeyPressHandler}                       
+                               onKeyPress={onKeyPressHandler}                     
                                inputRef={inputMessage} />
 
                     <IconButton color="primary" 
