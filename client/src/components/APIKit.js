@@ -10,7 +10,7 @@ import axios from 'axios';
 
 // Create axios client, pre-configured with baseURL
 let APIKit = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: 'http://yactest-env.eba-pdhg7uqt.us-east-2.elasticbeanstalk.com:8000',
   timeout: 10000,
 });
 
