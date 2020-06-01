@@ -18,15 +18,15 @@ after_success:
     - docker push edraobdu/yac-client
     - docker push edraobdu/yac-server
 
-# deploy:
-#     edge: true
-#     provider: elasticbeanstalk
-#     region: us-west-1
-#     app: multi-docker
-#     env: MultiDocker-env
-#     bucket_name: elasticbeanstalk-us-west-1-306476627547
-#     bucket_path: docker-multi
-#     on:
-#         branch: master
-#     access_key_id: $AWS_ACCESS_KEY
-#     secret_access_key: $AWS_SECRET_KEY
+deploy:
+    edge: true
+    provider: elasticbeanstalk
+    region: us-east-2
+    app: yac-test
+    env: YacTest-env
+    bucket_name: elasticbeanstalk-us-east-2-665773185947
+    bucket_path: test-yac
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY

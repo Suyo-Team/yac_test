@@ -1,0 +1,32 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "edraobdu/yac-client",
+            "hostname": "client",
+            "essential": false,
+            "memory": 128,
+            "portMappings": [
+                {
+                    "hostPort": 3000,
+                    "containerPort": 3000
+                }
+            ],
+            "links": ["server"]
+        },
+        {
+            "name": "server",
+            "image": "edraobdu/yac-server",
+            "hostname": "server",
+            "essential": true,
+            "memory": 128,
+            "portMappings": [
+                {
+                    "hostPort": 8000,
+                    "containerPort": 8000
+                }
+            ]
+        }
+    ]
+}
