@@ -1,11 +1,11 @@
 sudo: required
 language: python
 python:
-  	- "3.7"
+    - "3.7"
 services:
-  	- docker
+    - docker
 script:
-  	- docker-compose -f docker-compose-dev.yml run app sh -c "python manage.py test"
+    - docker-compose -f docker-compose-dev.yml run app sh -c "python manage.py test"
 
 after_success:
     - docker build -t edraobdu/yac-client ./client
