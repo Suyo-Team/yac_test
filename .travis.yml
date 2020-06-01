@@ -4,6 +4,8 @@ python:
     - "3.7"
 services:
     - docker
+before_script:
+    - pip install docker-compose
 script:
     - docker-compose -f docker-compose-dev.yml run app sh -c "python manage.py test"
 
