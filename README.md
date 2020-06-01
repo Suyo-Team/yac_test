@@ -1,5 +1,7 @@
 
-# Description
+# Yac - Yet Another Chat
+
+![Travis (.org)](https://img.shields.io/travis/edraobdu/yac_test?logo=travis&style=flat-square) 
 
 yac, yet another chat, is a chat application, fast and simple, running on docker containers.
 
