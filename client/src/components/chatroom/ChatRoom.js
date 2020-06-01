@@ -4,7 +4,7 @@ import React, {
     useLayoutEffect, 
     useEffect 
 } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, useRouteMatch } from "react-router-dom";
 
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,6 +27,7 @@ import PropTypes from 'prop-types';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import { useInterval } from '../utils';
+import IsTyping from './IsTyping';
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -120,6 +121,10 @@ export default function ChatRoom(props) {
     // State to handle the 'is typing' event
     const [isTyping, setIsTyping] = useState(false);
     const [lastTypedTime, setLastTypedTime] = useState(null);
+    // State that will contain the list of all the users that are
+    // typing on a specific chat
+    const [isTypingState, setIsTypingState] = useState([]);
+
     const checkIsTyping = () => {       
         let timestamp = new Date().getTime();
         const difference = timestamp - lastTypedTime;
@@ -137,6 +142,13 @@ export default function ChatRoom(props) {
     useEffect(() => {
         let ws_event = isTyping ? 'user_typing' : 'user_stopped_typing'
         // Here socket.send
+        socket.send(JSON.stringify({
+            'event': ws_event,
+            'type': ws_event.replace('_', '.'),
+            'id': user.id,
+            'username': user.username,
+            'chat': chatRoomId
+        }));
     }, [isTyping]);
 
 
@@ -228,18 +240,18 @@ export default function ChatRoom(props) {
     socket.onmessage = function(e) {
         // Parse the data to JSON
         const data = JSON.parse(e.data);
+        const event = data.event
+        // Delete some attributes in the object
+        // that should not be stored in the state
+        delete data.type
+        delete data.event
 
         // If event is 'new_message'
-        if (data.event === 'new_message') {
+        if (event === 'new_message') {
             // then we check that the chat id of the message that is being received
             // matches the current chat room. If so, we added to the messages state, and
             // therefore, it's being rendered to the screen
-            if (data.chat.toString() === chatRoomId) {                
-                // Delete some attributes in the object
-                // that should not be stored in the state
-                delete data.type
-                delete data.event
-
+            if (data.chat.toString() === chatRoomId) { 
                 setChatMessagesState({
                     messages: [
                         ...chatMessagesState.messages,
@@ -247,22 +259,33 @@ export default function ChatRoom(props) {
                     ]
                 });
             }
-        } else if (data.event === 'new_user_added') {
+        } else if (event === 'new_user_added') {
             // We should keep track of this, serialized data
             // can be changed overtime in the server
             
             // If the user was added to this specific chat room
-            if (data.id.toString() === chatRoomId) {               
-                // Delete some attributes in the object
-                // that should not be stored in the state
-                delete data.type
-                delete data.event
-                
+            if (data.id.toString() === chatRoomId) {                
                 setChatState({
                     ...chatState,
                     users: data.users
                 });
             }
+        } else if (event === 'user_typing' || event === 'user_stopped_typing')
+            // Only add the user to the list if it's not the active user
+            // and if it's on the current chat
+            if (data.chat.toString() === chatRoomId && data.id !== user.id ) {
+                if (event === 'user_typing') {                
+                    setIsTypingState([
+                        ...isTypingState,
+                        data
+                    ])
+                } else if (event === 'user_stopped_typing') {
+                    setIsTypingState(
+                        isTypingState.filter(el => {
+                            return el.id !== data.id
+                        })
+                    )
+                }
         }
     };
 
@@ -318,7 +341,7 @@ export default function ChatRoom(props) {
                         </CustomLink>
                     </Grid>
 
-                    <Grid item><strong>{isTyping ? 'is typing ...' : chatState.chat_name}</strong></Grid>
+                    <Grid item><strong>{chatState.chat_name}</strong></Grid>
 
                     <Grid item className={classes.addUserButtonContainer}>
                         { renderAddUserButton() }
@@ -330,6 +353,10 @@ export default function ChatRoom(props) {
                      ref={chatMessagesRef}>
                     {renderChatMessages()}
                 </div>
+
+                <IsTyping chat={chatRoomId} 
+                          activeUser={user.id}
+                          typingList={isTypingState} />
 
                 <Grid container 
                       className={classes.chatSubmit}

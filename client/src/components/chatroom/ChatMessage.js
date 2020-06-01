@@ -13,7 +13,8 @@ import PropTypes from 'prop-types';
 // Styles
 const useStyles = makeStyles((theme) => ({
     chatMessage: {
-        width: '70%',
+        width: 'auto',
+        maxWidth: '70%',
         borderRadius: '5px',
         backgroundColor: '#133bca',
         color: 'white',

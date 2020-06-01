@@ -51,3 +51,25 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         Receive the list of users currently in the chat, alongside the chat id
         """        
         await self.send_json(event)
+
+
+    async def user_typing(self, event):
+        """
+        Receive an object containing the user_id, username, and chat_id of a 
+        user typing in some chat room 
+        """
+        print(1, event)
+        await self.send_json(event)
+
+    async def user_stopped_typing(self, event):
+        """
+        Receive an object containing the user_id, username, and chat_id of a 
+        user that stopped typing in some chat room 
+        """
+        print(2, event)
+        await self.send_json(event)
+
+    async def receive_json(self, content, **kwargs):
+        print(content)
+        
+        await self.send_json(content)
