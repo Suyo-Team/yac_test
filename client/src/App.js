@@ -15,7 +15,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 function App() {
 
 	// Web socket to handle connections and messages throuh channels to the server
-	const chatSocket = new ReconnectingWebSocket('ws://localhost:8000/ws/chat/');
+	const chatSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/chat/`);
 
 	// Some informative functions for debuging
 	chatSocket.onclose = function (e) {

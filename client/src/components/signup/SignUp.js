@@ -97,7 +97,7 @@ export default function SignUp() {
 
 		if (validPasswordsState.validPasswords) {
 			// Make the API post request to register
-			APIKit.post('/register/', formState)
+			APIKit.post('/api/register/', formState)
 				.then(onSuccess)
 				.catch(onFailure);
 		}

@@ -81,7 +81,7 @@ export default function CreateChat(props) {
         // We only fetch the data when the dialog is opened
         if (open) {
             const fetchData = async () => {
-                const result = await APIKit.get('/users/');
+                const result = await APIKit.get('/api/users/');
 
                 // We need to remove the current user from the list
                 const filtered_users = result.data.filter(u => u.id !== user.id)
@@ -152,7 +152,7 @@ export default function CreateChat(props) {
                 users: [selected_user_id, user.id]
             }
 
-            await APIKit.post('/chats/', payload)
+            await APIKit.post('/api/chats/', payload)
                 .catch(error => {
                     if (error.response) {
                         if (error.response.status === 400) {

@@ -6,27 +6,29 @@
             "image": "edraobdu/yac-client",
             "hostname": "client",
             "essential": false,
-            "memory": 128,
-            "portMappings": [
-                {
-                    "hostPort": 3000,
-                    "containerPort": 3000
-                }
-            ],
-            "links": ["server"]
+            "memory": 128
+            
         },
         {
             "name": "server",
             "image": "edraobdu/yac-server",
             "hostname": "server",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "nginx",
+            "image": "edraobdu/yac-nginx",
+            "hostname": "nginx",
             "essential": true,
             "memory": 128,
             "portMappings": [
                 {
-                    "hostPort": 8000,
-                    "containerPort": 8000
+                    "hostPort": 80,
+                    "containerPort": 80
                 }
-            ]
+            ],
+            "links": ["client", "server"]
         }
     ]
 }

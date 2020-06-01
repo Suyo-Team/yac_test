@@ -74,7 +74,7 @@ export default function Chats(props) {
         let mounted = true;
 
         const fetchData = async () => {
-            const result = await APIKit.get('/chats/');
+            const result = await APIKit.get('/api/chats/');
             
             // Add an attribute 'unread' to every chat
             let chats_list = result.data.map(chat => {
@@ -116,8 +116,7 @@ export default function Chats(props) {
 
         } else if (data.event === 'new_user_added') {
             // We should keep track of this, serialized data
-            // can be changed overtime in the server            
-            console.log(data)
+            // can be changed overtime in the server
                         
             // the received 'data' object will contain the chat
             // information where the user was added to, plus the users

@@ -76,7 +76,7 @@ export default function SignIn() {
 		};
 
 		// Make the API post request to login
-		APIKit.post('/login/', formState)
+		APIKit.post('/api/login/', formState)
 			.then(onSuccess)
 			.catch(onFailure);
 	}

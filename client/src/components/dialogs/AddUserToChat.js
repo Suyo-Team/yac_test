@@ -70,7 +70,7 @@ export default function AddUserToChat(props) {
         // dialog is opened ('open' is set to true true)
         if (open) {
             const fetchData = async () => {
-                const result = await APIKit.get('/users/');
+                const result = await APIKit.get('/api/users/');
                 // We need to remove the all the users already in the chat
                 const filtered_users = result.data.filter(u => !users.includes(u.id))
                 if (mounted) setUsersState({ users: filtered_users });
@@ -132,8 +132,8 @@ export default function AddUserToChat(props) {
                 ],
                 event: "new_user_added"
             }
-            // Patch to -> chats/{chat_id}
-            await APIKit.patch(`${match.url}/`, payload);
+            // Patch to -> /api/chats/{chat_id}
+            await APIKit.patch(`/api/${match.url}/`, payload);
 
             handleClose();
         }

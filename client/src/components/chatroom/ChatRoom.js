@@ -145,8 +145,7 @@ export default function ChatRoom(props) {
         let mounted = true;
 
         const fetchData = async () => {
-            const result = await APIKit.get(`/chats/${chatRoomId}`);            
-
+            const result = await APIKit.get(`/api/chats/${chatRoomId}/`);
             if (mounted) {
                 setChatMessagesState({messages: result.data.chat_messages});
                 setChatState({
@@ -155,7 +154,7 @@ export default function ChatRoom(props) {
                     private: result.data.private,
                     users: result.data.users
                 });
-            }            
+            }
         };        
         fetchData();
         
@@ -210,7 +209,7 @@ export default function ChatRoom(props) {
                 text: messageState.message
             }
             
-            await APIKit.post('/messages/', payload);            
+            await APIKit.post('/api/messages/', payload);      
     
             setMessageState({message: ''});
             inputMessage.current.focus();
