@@ -11,4 +11,6 @@ app_name = 'api'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('register/', views.registration_view, name='register'),
+    path('login/', views.CustomAuthToken.as_view(), name='login'),
 ]

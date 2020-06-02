@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-	BrowserRouter as Router,
 	Switch,
 	Route
 } from "react-router-dom";
@@ -9,13 +8,20 @@ import SignIn from './components/signin/SignIn';
 import SignOut from './components/signout/SignOut';
 import Chats from './components/chats/Chats';
 import ChatRoom from './components/chatroom/ChatRoom';
-import CheckUserAuthenticated from './components/CheckUserAuthenticated';
+
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import CheckUserAuthenticated, { getToken } from './components/CheckUserAuthenticated';
 
 function App() {
 
+	const token = getToken()
+	const defWebSocketUrl = (tk) => {
+		let auth_token = tk ? `?token=${tk}` : ''
+		return `ws://${window.location.host}/ws/chat/${auth_token}`
+	}
+
 	// Web socket to handle connections and messages throuh channels to the server
-	const chatSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/chat/`);
+	const chatSocket = new ReconnectingWebSocket(defWebSocketUrl(token));
 
 	// Some informative functions for debuging
 	chatSocket.onclose = function (e) {
@@ -26,35 +32,28 @@ function App() {
 	};
 
 	return (
-		<Router>
+		
+		<Switch>
 
-			<CheckUserAuthenticated redirect='/chats'>
+			<Route path="/login" exact><SignIn /></Route>
 
-				<Switch>
+			<Route path="/logout" exact><SignOut /></Route>
 
-					<Route path="/login" exact><SignIn /></Route>
+			<Route path="/register" exact><SingUp /></Route>
 
-					<Route path="/logout" exact><SignOut /></Route>
+			<Route path="/chats" exact>
+				<Chats socket={chatSocket} />
+			</Route>
 
-					<Route path="/register" exact><SingUp /></Route>
+			<Route path="/chats/:chatRoomId" exact>
+				<ChatRoom socket={chatSocket} />
+			</Route>
 
-					<Route path="/chats" exact>
-						<Chats socket={chatSocket} />
-					</Route>
-
-					<Route path="/chats/:chatRoomId" exact>
-						<ChatRoom socket={chatSocket} />
-					</Route>
-
-					<Route path="/" exact>
-						<h1>Should be redirected to login if user's not authenticated yet</h1>
-					</Route>
-					
-				</Switch>
-
-			</CheckUserAuthenticated>
-
-		</Router>
+			<Route path="/" exact>
+				<h1>Should be redirected to login if user's not authenticated yet</h1>
+			</Route>
+			
+		</Switch>
 	);
 }
 

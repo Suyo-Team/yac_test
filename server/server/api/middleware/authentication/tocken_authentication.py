@@ -9,12 +9,16 @@ from channels.auth import AuthMiddlewareStack
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import AnonymousUser
 from channels.db import database_sync_to_async
+from urllib.parse import parse_qs
 
 @database_sync_to_async
 def get_user(token_key):
+    print('here')
     try:
+        print(1)
         return Token.objects.get(key=token_key).user
     except Token.DoesNotExist:
+        print(2)
         return AnonymousUser()
 
 
@@ -39,11 +43,10 @@ class TokenAuthMiddlewareInstance:
         self.inner = self.middleware.inner
 
     async def __call__(self, receive, send):
-        headers = dict(self.scope['headers'])
-        if b'authorization' in headers:
-            token_name, token_key = headers[b'authorization'].decode().split()
-            if token_name == 'Token':
-                self.scope['user'] = await get_user(token_key)
+        # get the token from the url
+        token = parse_qs(self.scope["query_string"].decode("utf8")).get("token")
+        if token:
+            self.scope['user'] = await get_user(token[0])
         inner = self.inner(self.scope)
         return await inner(receive, send)
 

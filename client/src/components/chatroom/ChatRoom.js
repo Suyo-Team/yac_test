@@ -144,7 +144,7 @@ export default function ChatRoom(props) {
         // Here socket.send
         socket.send(JSON.stringify({
             'event': ws_event,
-            'type': ws_event.replace('_', '.'),
+            'type': ws_event.replace(/_/g, '.'),
             'id': user.id,
             'username': user.username,
             'chat': chatRoomId
@@ -245,7 +245,6 @@ export default function ChatRoom(props) {
         // that should not be stored in the state
         delete data.type
         delete data.event
-
         // If event is 'new_message'
         if (event === 'new_message') {
             // then we check that the chat id of the message that is being received
@@ -286,7 +285,7 @@ export default function ChatRoom(props) {
                         })
                     )
                 }
-        }
+            }
     };
 
     // Helper function to map the messages list and generate 

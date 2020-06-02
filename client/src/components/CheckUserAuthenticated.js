@@ -55,13 +55,13 @@ export default function CheckUserAuthenticated(props) {
     }
 
     // Return the wrapped component
-    return props.children   
+    return props.children
 }
 
 export function getUser() {
     // gets the user information from the cookie
     const cookies = new Cookies();
-    return cookies.get('user');    
+    return cookies.get('user');  
 }
 
 export function removeUser() {

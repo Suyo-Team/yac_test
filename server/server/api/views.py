@@ -20,8 +20,10 @@ from api.consumers import ChannelsGroups
 class CustomAuthToken(ObtainAuthToken):
     """ We need to get the just logged-in user information, besides the token """
 
+    permission_classes = [permissions.AllowAny] 
+
     def post(self, request, *args, **kwargs):
-        print('login')
+        print('login', '==============================0')
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -51,7 +53,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 def registration_view(request):
-    
+    print('register', '------------------->')
     serializer = RegistrationSerializer(data=request.data)
     data = {}
     status_code = status.HTTP_400_BAD_REQUEST

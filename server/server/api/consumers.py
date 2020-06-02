@@ -58,7 +58,6 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         Receive an object containing the user_id, username, and chat_id of a 
         user typing in some chat room 
         """
-        print(1, event)
         await self.send_json(event)
 
     async def user_stopped_typing(self, event):
@@ -66,10 +65,11 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         Receive an object containing the user_id, username, and chat_id of a 
         user that stopped typing in some chat room 
         """
-        print(2, event)
         await self.send_json(event)
 
     async def receive_json(self, content, **kwargs):
-        print(content)
         
-        await self.send_json(content)
+        await self.channel_layer.group_send(
+            ChannelsGroups.NEW_MESSAGES,
+            content
+        )
