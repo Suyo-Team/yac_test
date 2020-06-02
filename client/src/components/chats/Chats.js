@@ -59,9 +59,6 @@ export default function Chats(props) {
     // socket to handle messages sent and received to and from teh server
     const socket = props.socket;
 
-    const match = useRouteMatch();
-    const history = useHistory();
-
     // State to manage the user's chats list
     const [chatsState, setChatsState] = useState({
         chats: []
@@ -99,8 +96,17 @@ export default function Chats(props) {
         if (data.event === 'new_chat') {
             // Then we check if the current user is included in the new created chat
             if (data.users.includes(user.id)) {
-                // Now we redirect the user to that new chat room just created
-                history.push(`${match.url}/${data.id}`);  
+                delete data.event
+                delete data.type
+
+                data['unread'] = 0
+
+                setChatsState({
+                    chats: [
+                        ...chatsState.chats,
+                        data
+                    ]
+                });
             }
         } else if (data.event === 'new_message') {
             // Then we look up the chat where the message was sent

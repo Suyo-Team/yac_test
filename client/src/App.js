@@ -23,11 +23,11 @@ function App() {
 
 					<Route path="/register" exact><SingUp /></Route>
 					
-					<Route path="/chats" exact><Chat /></Route>
+					<Route path="/chats"><Chat /></Route>
 
 					<Route path="/" exact>
 						<h1>Should be redirected to login if user's not authenticated yet</h1>
-					</Route>					
+					</Route>			
 				</Switch>
 			</CheckUserAuthenticated>
 		</Router>

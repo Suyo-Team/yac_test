@@ -2,7 +2,8 @@ import React from 'react';
 import {
     BrowserRouter as Router,
 	Switch,
-	Route
+    Route,
+    useRouteMatch
 } from "react-router-dom";
 import Chats from './chats/Chats';
 import ChatRoom from './chatroom/ChatRoom';
@@ -11,6 +12,8 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import CheckUserAuthenticated, { getToken } from './CheckUserAuthenticated';
 
 function Chat() {
+
+    const match = useRouteMatch();
 
 	const token = getToken()
 	const defWebSocketUrl = (tk) => {
@@ -35,11 +38,11 @@ function Chat() {
 		
                 <Switch>
 
-                    <Route path="/chats" exact>
+                    <Route path={`${match.path}`} exact>
                         <Chats socket={chatSocket} />
                     </Route>
 
-                    <Route path="/chats/:chatRoomId" exact>
+                    <Route path={`${match.path}/:chatRoomId`} exact>
                         <ChatRoom socket={chatSocket} />
                     </Route>
                     
