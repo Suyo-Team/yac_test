@@ -28,6 +28,8 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import { useInterval } from '../utils';
 import IsTyping from './IsTyping';
+import DisplayResultOrError from '../DisplayResultOrError';
+import ChatMessagesList from './ChatMessagesList';
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -118,6 +120,14 @@ export default function ChatRoom(props) {
         users: []
     });
 
+    // State to manage the 'is loading' status of the retrieved messages
+    const [messagesLoading, setMessagesLoading] = useState(true);
+    // State to manage the 'errors' from the server
+    const [somethingWentWrong, setSomethingWentWrong] = useState({
+        code: null,
+        errorMessage: ''
+    });
+
     // State to handle the 'is typing' event
     const [isTyping, setIsTyping] = useState(false);
     const [lastTypedTime, setLastTypedTime] = useState(null);
@@ -166,6 +176,7 @@ export default function ChatRoom(props) {
                     private: result.data.private,
                     users: result.data.users
                 });
+                setMessagesLoading(false);
             }
         };        
         fetchData();
@@ -348,10 +359,15 @@ export default function ChatRoom(props) {
 
                 </Grid>
 
+                
                 <div className={classes.chatMessages} 
                      ref={chatMessagesRef}>
-                    {renderChatMessages()}
-                </div>
+
+                    <ChatMessagesList isLoading={messagesLoading} 
+                                      somethingWentWrong={somethingWentWrong} 
+                                      messagesList={chatMessagesState.messages}
+                                      user={user}/>
+                </div>               
 
                 <IsTyping chat={chatRoomId} 
                           activeUser={user.id}

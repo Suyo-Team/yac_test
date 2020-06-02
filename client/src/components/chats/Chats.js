@@ -13,6 +13,7 @@ import APIKit from '../APIKit';
 import ChatItem from './ChatItem';
 import { getUser } from '../CheckUserAuthenticated';
 import CreateChat from '../dialogs/CreateChat';
+import DisplayResultOrError from '../DisplayResultOrError';
 
 import PropTypes from 'prop-types';
 import ReconnectingWebSocket from 'reconnecting-websocket';
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     },
     chatsList: {
         width: '100%',
+        height: '100%',
         overflowY: 'auto',
         borderRadius: '0 0 4px 4px'
     },
@@ -63,6 +65,13 @@ export default function Chats(props) {
     const [chatsState, setChatsState] = useState({
         chats: []
     });
+    // State to manage the 'is loading' status of the retrieved chats
+    const [chatsLoading, setChatsLoading] = useState(true);
+    // State to manage the 'errors' from the server
+    const [somethingWentWrong, setSomethingWentWrong] = useState({
+        code: null,
+        errorMessage: ''
+    });
 
     // State to keep trak of the unread messages
 
@@ -78,7 +87,10 @@ export default function Chats(props) {
                 chat.unread = 0
                 return chat
             });
-            if (mounted) setChatsState({chats: chats_list});
+            if (mounted) {
+                setChatsState({chats: chats_list});
+                setChatsLoading(false);
+            }        
         };
         fetchData();
 
@@ -194,7 +206,10 @@ export default function Chats(props) {
 
                 </Grid>
 
-                <List className={classes.chatsList}>{chatsList}</List>
+                <DisplayResultOrError isLoading={chatsLoading}
+                                      somethingWentWrong={somethingWentWrong}>
+                    <List className={classes.chatsList}>{chatsList}</List>
+                </DisplayResultOrError>
 
             </div>
 
