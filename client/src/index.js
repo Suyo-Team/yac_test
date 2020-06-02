@@ -1,23 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route
-} from "react-router-dom";
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import CheckUserAuthenticated from './components/CheckUserAuthenticated';
-
 ReactDOM.render(
 	<React.StrictMode>
-		<Router>
-			<CheckUserAuthenticated redirect='/chats'>
-				<App />
-			</CheckUserAuthenticated>
-		</Router>
+		<App />
 	</React.StrictMode>,
 	document.getElementById('root')
 );
