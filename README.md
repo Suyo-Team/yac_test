@@ -11,7 +11,11 @@ There are three ways to run this proyect:
 
 1. See the proyect running in production in the [following link to AWS](http://yactest-env.eba-pdhg7uqt.us-east-2.elasticbeanstalk.com/)
 
-2. To run it locally, you need to have DOCKER  installed in your machine. After you've installed docker, clone this repo, go to the root directory, and run:
+2. To run it locally, you need to have DOCKER  installed in your machine. After you've installed docker, you need to install ```docker-compose```, you can use 'pip' for this pourpose:
+    
+    ```pip install docker-compose```
+
+    Then, clone this repo, go to the root directory, and run:
 
     ```docker-compose up```
 

@@ -67,7 +67,6 @@ def registration_view(request):
         status_code = status.HTTP_201_CREATED
     else:
         data = serializer.errors
-
     return Response(data, status=status_code)
 
 
