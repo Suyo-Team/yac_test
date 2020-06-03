@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { useRouteMatch, useHistory } from 'react-router-dom';
-
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
-import AddCircleRounded from '@material-ui/icons/AddCircleRounded';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { blue } from '@material-ui/core/colors';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 import APIKit from '../APIKit';
 import ChatItem from './ChatItem';
@@ -17,6 +17,7 @@ import DisplayResultOrError from '../DisplayResultOrError';
 
 import PropTypes from 'prop-types';
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import CustomLink from '../CustomLink';
 
 
 // Styles
@@ -28,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
       minHeight: '300px',
       height: '500px',
       borderRadius: '4px',
-      boxShadow: '0 0 15px lightgray'
+      boxShadow: '0 0 15px lightgray',
+      position: 'relative'
     },
     chatsListHeader: {
         borderBottom: "solid 5px",
@@ -46,6 +48,12 @@ const useStyles = makeStyles((theme) => ({
     },
     newChatButton: {
         color: blue[100]
+    },
+    fab: {
+        position: 'absolute',
+        bottom: theme.spacing(2),
+        right: theme.spacing(2),
+        backgroundColor: blue[600]
     }
 }));
 
@@ -181,6 +189,7 @@ export default function Chats(props) {
     // When dialog is closed
     const handleClose = () => setOpen(false);
 
+
     return (
         <Container component="main" maxWidth="xs">
 
@@ -197,9 +206,8 @@ export default function Chats(props) {
 
                     <Grid item>
 
-                        <IconButton className={classes.newChatButton}
-                                    onClick={handleClickOpen}>
-                            <AddCircleRounded />
+                        <IconButton className={classes.newChatButton}>
+                            <CustomLink tag={ExitToAppIcon} to='/logout' />
                         </IconButton>
                         
                     </Grid>
@@ -210,6 +218,13 @@ export default function Chats(props) {
                                       somethingWentWrong={somethingWentWrong}>
                     <List className={classes.chatsList}>{chatsList}</List>
                 </DisplayResultOrError>
+
+                <Fab color="primary" 
+                     aria-label="add"
+                     className={classes.fab}
+                     onClick={handleClickOpen}>
+                    <AddIcon />
+                </Fab>
 
             </div>
 

@@ -31,19 +31,15 @@ export default function DisplayResultOrError(props){
     // Also, will display a 'loading' while the request is made
     const renderResults = () => {
         if (isLoading) {
-            return <CircularProgress />
+            return <div className={classes.container}><CircularProgress /></div>
         } else if (somethingWentWrong.code) {
-            return somethingWentWrong.message
+            return <div className={classes.container}>SomethingWentWrong.message</div>
         } else {
             return props.children
         }
     }
 
-    return (
-        <div className={classes.container}>
-            { renderResults() }
-        </div>
-    );
+    return renderResults()
 }
 
 DisplayResultOrError.propTypes = {

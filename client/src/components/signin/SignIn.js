@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
 // Main component
 export default function SignIn() {
 
+	console.log(3)
 	// Classes to style the component
 	const classes = useStyles();
 

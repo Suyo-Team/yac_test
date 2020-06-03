@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Chats from './chats/Chats';
 import ChatRoom from './chatroom/ChatRoom';
-
+import Container from '@material-ui/core/Container';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import CheckUserAuthenticated, { getToken } from './CheckUserAuthenticated';
 
@@ -36,19 +36,19 @@ function Chat() {
         <Router>
 			<CheckUserAuthenticated redirect='/chats'>
 		
-                <Switch>
+				<Switch>
 
-                    <Route path={`${match.path}`} exact>
-                        <Chats socket={chatSocket} />
-                    </Route>
+					<Route path={`${match.path}`} exact>
+						<Chats socket={chatSocket} />
+					</Route>
 
-                    <Route path={`${match.path}/:chatRoomId`} exact>
-                        <ChatRoom socket={chatSocket} />
-                    </Route>
-                    
-                </Switch>
+					<Route path={`${match.path}/:chatRoomId`} exact>
+						<ChatRoom socket={chatSocket} />
+					</Route>
+					
+				</Switch>
 
-            </CheckUserAuthenticated>
+			</CheckUserAuthenticated>
         </Router>
 	);
 }

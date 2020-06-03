@@ -26,7 +26,9 @@ export default function ChatMessagesList(props) {
         } else {
             return (
                 <DisplayResultOrError isLoading={isLoading}
-                                      somethingWentWrong={somethingWentWrong} />
+                                      somethingWentWrong={somethingWentWrong}>
+                    {null}
+                </DisplayResultOrError>
             );
         } 
     }
