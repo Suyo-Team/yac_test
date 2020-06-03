@@ -176,6 +176,10 @@ export default function CreateChat(props) {
                             history.push(`${match.url}/${redirect_to}`);
                         }
                     }
+                })
+                .then((response) => {
+                    // redirects to the new created chat id
+                    history.push(`${match.url}/${response.data.id}`);
                 });
 
             handleClose();

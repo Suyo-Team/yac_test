@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: "solid 5px",
         borderBottomColor: blue[100],
         padding: '5px 10px',
-        background: blue[600],
+        background: blue[900],
         color: 'white',
         borderRadius: '4px 4px 0 0'
     },
@@ -74,6 +74,9 @@ const useStyles = makeStyles((theme) => ({
         minWidth: '35px'
     },
     addUserButton: {
+        color: blue[100]        
+    },
+    backToChats: {
         color: blue[100]
     }
 }));
@@ -346,7 +349,7 @@ export default function ChatRoom(props) {
                     <Grid item>
                         <CustomLink tag={IconButton} 
                                     to='/chats' 
-                                    color="secondary">
+                                    className={classes.backToChats}>
                             <ArrowBackRounded />
                         </CustomLink>
                     </Grid>

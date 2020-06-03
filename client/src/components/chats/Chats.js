@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: "solid 5px",
         borderBottomColor: blue[100],
         padding: '5px 10px',
-        background: blue[600],
+        background: blue[900],
         color: 'white',
         borderRadius: '4px 4px 0 0'
     },
@@ -53,7 +53,10 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         bottom: theme.spacing(2),
         right: theme.spacing(2),
-        backgroundColor: blue[600]
+        backgroundColor: blue[600],
+        '&:hover': {
+            backgroundColor: blue[900]
+        }
     }
 }));
 
@@ -175,7 +178,6 @@ export default function Chats(props) {
     const chatsList = chatsState.chats.map(chatItem => 
         <ChatItem 
             id={chatItem.id}
-            key={chatItem.id}
             chat_name={chatItem.chat_name}
             unread={chatItem.unread}
         />
