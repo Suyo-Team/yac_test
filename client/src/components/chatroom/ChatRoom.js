@@ -28,6 +28,8 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import { useInterval } from '../utils';
 import IsTyping from './IsTyping';
+import DisplayResultOrError from '../DisplayResultOrError';
+import ChatMessagesList from './ChatMessagesList';
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: "solid 5px",
         borderBottomColor: blue[100],
         padding: '5px 10px',
-        background: blue[600],
+        background: blue[900],
         color: 'white',
         borderRadius: '4px 4px 0 0'
     },
@@ -72,6 +74,9 @@ const useStyles = makeStyles((theme) => ({
         minWidth: '35px'
     },
     addUserButton: {
+        color: blue[100]        
+    },
+    backToChats: {
         color: blue[100]
     }
 }));
@@ -116,6 +121,14 @@ export default function ChatRoom(props) {
         chat_name: '',
         private: true,
         users: []
+    });
+
+    // State to manage the 'is loading' status of the retrieved messages
+    const [messagesLoading, setMessagesLoading] = useState(true);
+    // State to manage the 'errors' from the server
+    const [somethingWentWrong, setSomethingWentWrong] = useState({
+        code: null,
+        errorMessage: ''
     });
 
     // State to handle the 'is typing' event
@@ -166,6 +179,7 @@ export default function ChatRoom(props) {
                     private: result.data.private,
                     users: result.data.users
                 });
+                setMessagesLoading(false);
             }
         };        
         fetchData();
@@ -335,7 +349,7 @@ export default function ChatRoom(props) {
                     <Grid item>
                         <CustomLink tag={IconButton} 
                                     to='/chats' 
-                                    color="secondary">
+                                    className={classes.backToChats}>
                             <ArrowBackRounded />
                         </CustomLink>
                     </Grid>
@@ -348,10 +362,15 @@ export default function ChatRoom(props) {
 
                 </Grid>
 
+                
                 <div className={classes.chatMessages} 
                      ref={chatMessagesRef}>
-                    {renderChatMessages()}
-                </div>
+
+                    <ChatMessagesList isLoading={messagesLoading} 
+                                      somethingWentWrong={somethingWentWrong} 
+                                      messagesList={chatMessagesState.messages}
+                                      user={user}/>
+                </div>               
 
                 <IsTyping chat={chatRoomId} 
                           activeUser={user.id}

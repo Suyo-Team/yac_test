@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
 // Main component
 export default function SignIn() {
 
+	console.log(3)
 	// Classes to style the component
 	const classes = useStyles();
 
@@ -76,7 +77,7 @@ export default function SignIn() {
 		};
 
 		// Make the API post request to login
-		APIKit.post('/api/login/', formState)
+		await APIKit.post('/api/login/', formState)
 			.then(onSuccess)
 			.catch(onFailure);
 	}

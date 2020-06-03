@@ -60,7 +60,6 @@ export default function ChatItem(props) {
 
 ChatItem.propTypes = {
     id: PropTypes.number.isRequired,
-    key: PropTypes.number.isRequired,
     chat_name: PropTypes.string.isRequired,
     unread: PropTypes.number.isRequired,
 }

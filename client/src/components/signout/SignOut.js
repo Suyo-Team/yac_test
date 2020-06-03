@@ -18,7 +18,7 @@ export default function SignOut() {
     removeClientToken();
 
     // Redirect to login page
-    history.push('/login');
+    history.push('/login');    
 
     return null;
 }

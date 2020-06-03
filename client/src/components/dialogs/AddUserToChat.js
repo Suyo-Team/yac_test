@@ -21,6 +21,7 @@ import Button from '@material-ui/core/Button';
 import { blue } from '@material-ui/core/colors';
 
 import APIKit from '../APIKit';
+import DisplayResultOrError from '../DisplayResultOrError';
 
 // Sytles
 const useStyles = makeStyles({
@@ -63,6 +64,14 @@ export default function AddUserToChat(props) {
         errorMessage: ""
     });
 
+    // State to manage the 'is loading' status of the retrieved chats
+    const [usersLoading, setUsersLoading] = useState(true);
+    // State to manage the 'errors' from the server
+    const [somethingWentWrong, setSomethingWentWrong] = useState({
+        code: null,
+        errorMessage: ''
+    });
+
     // Fetch the users list from the server
     useEffect(() => {
         let mounted = true;
@@ -73,7 +82,10 @@ export default function AddUserToChat(props) {
                 const result = await APIKit.get('/api/users/');
                 // We need to remove the all the users already in the chat
                 const filtered_users = result.data.filter(u => !users.includes(u.id))
-                if (mounted) setUsersState({ users: filtered_users });
+                if (mounted) {
+                    setUsersState({ users: filtered_users });
+                    setUsersLoading(false);
+                };
             };
             fetchData();
         }
@@ -154,23 +166,26 @@ export default function AddUserToChat(props) {
             </DialogTitle>
 
             <DialogContent>
-                <List>
-                    {usersState.users.map((user) => (
-                        <ListItem button 
-                                  onClick={() => handleListItemClick(user)} key={user.id}
-                                  className={user.id === newUserState.newUser.id ? classes.selectedUser : null}>
-                            
-                            <ListItemAvatar>
-                                <Avatar className={classes.avatar}>
-                                    <PersonIcon />
-                                </Avatar>
-                            </ListItemAvatar>
+                <DisplayResultOrError isLoading={usersLoading} 
+                                      somethingWentWrong={somethingWentWrong}>
+                    <List>
+                        {usersState.users.map((user) => (
+                            <ListItem button 
+                                    onClick={() => handleListItemClick(user)} key={user.id}
+                                    className={user.id === newUserState.newUser.id ? classes.selectedUser : null}>
+                                
+                                <ListItemAvatar>
+                                    <Avatar className={classes.avatar}>
+                                        <PersonIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
 
-                            <ListItemText primary={user.username} />
+                                <ListItemText primary={user.username} />
 
-                        </ListItem>
-                    ))}
-                </List>
+                            </ListItem>
+                        ))}
+                    </List>
+                </DisplayResultOrError>
             </DialogContent>
             
             { renderInvalidNewUserError() }

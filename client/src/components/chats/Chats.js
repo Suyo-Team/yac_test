@@ -1,21 +1,23 @@
 import React, {useState, useEffect} from 'react';
-import { useRouteMatch, useHistory } from 'react-router-dom';
-
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
-import AddCircleRounded from '@material-ui/icons/AddCircleRounded';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { blue } from '@material-ui/core/colors';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 import APIKit from '../APIKit';
 import ChatItem from './ChatItem';
 import { getUser } from '../CheckUserAuthenticated';
 import CreateChat from '../dialogs/CreateChat';
+import DisplayResultOrError from '../DisplayResultOrError';
 
 import PropTypes from 'prop-types';
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import CustomLink from '../CustomLink';
 
 
 // Styles
@@ -27,23 +29,34 @@ const useStyles = makeStyles((theme) => ({
       minHeight: '300px',
       height: '500px',
       borderRadius: '4px',
-      boxShadow: '0 0 15px lightgray'
+      boxShadow: '0 0 15px lightgray',
+      position: 'relative'
     },
     chatsListHeader: {
         borderBottom: "solid 5px",
         borderBottomColor: blue[100],
         padding: '5px 10px',
-        background: blue[600],
+        background: blue[900],
         color: 'white',
         borderRadius: '4px 4px 0 0'
     },
     chatsList: {
         width: '100%',
+        height: '100%',
         overflowY: 'auto',
         borderRadius: '0 0 4px 4px'
     },
     newChatButton: {
         color: blue[100]
+    },
+    fab: {
+        position: 'absolute',
+        bottom: theme.spacing(2),
+        right: theme.spacing(2),
+        backgroundColor: blue[600],
+        '&:hover': {
+            backgroundColor: blue[900]
+        }
     }
 }));
 
@@ -63,6 +76,13 @@ export default function Chats(props) {
     const [chatsState, setChatsState] = useState({
         chats: []
     });
+    // State to manage the 'is loading' status of the retrieved chats
+    const [chatsLoading, setChatsLoading] = useState(true);
+    // State to manage the 'errors' from the server
+    const [somethingWentWrong, setSomethingWentWrong] = useState({
+        code: null,
+        errorMessage: ''
+    });
 
     // State to keep trak of the unread messages
 
@@ -78,7 +98,10 @@ export default function Chats(props) {
                 chat.unread = 0
                 return chat
             });
-            if (mounted) setChatsState({chats: chats_list});
+            if (mounted) {
+                setChatsState({chats: chats_list});
+                setChatsLoading(false);
+            }        
         };
         fetchData();
 
@@ -155,7 +178,6 @@ export default function Chats(props) {
     const chatsList = chatsState.chats.map(chatItem => 
         <ChatItem 
             id={chatItem.id}
-            key={chatItem.id}
             chat_name={chatItem.chat_name}
             unread={chatItem.unread}
         />
@@ -168,6 +190,7 @@ export default function Chats(props) {
     const handleClickOpen = () => setOpen(true);
     // When dialog is closed
     const handleClose = () => setOpen(false);
+
 
     return (
         <Container component="main" maxWidth="xs">
@@ -185,16 +208,25 @@ export default function Chats(props) {
 
                     <Grid item>
 
-                        <IconButton className={classes.newChatButton}
-                                    onClick={handleClickOpen}>
-                            <AddCircleRounded />
+                        <IconButton className={classes.newChatButton}>
+                            <CustomLink tag={ExitToAppIcon} to='/logout' />
                         </IconButton>
                         
                     </Grid>
 
                 </Grid>
 
-                <List className={classes.chatsList}>{chatsList}</List>
+                <DisplayResultOrError isLoading={chatsLoading}
+                                      somethingWentWrong={somethingWentWrong}>
+                    <List className={classes.chatsList}>{chatsList}</List>
+                </DisplayResultOrError>
+
+                <Fab color="primary" 
+                     aria-label="add"
+                     className={classes.fab}
+                     onClick={handleClickOpen}>
+                    <AddIcon />
+                </Fab>
 
             </div>
 
