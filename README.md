@@ -1,3 +1,6 @@
+# Host
+http://157.245.224.22:3000/
+
 # yac
 Yet Another Chat
 
