@@ -1,5 +1,5 @@
 const DNS = {
-    host: "http://localhost:4000",
+    host: "http://157.245.224.22:4000",
 }
 
 

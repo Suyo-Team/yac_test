@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import moment from 'moment'
 import { apiUser } from '../api'
 import SocketIO from 'socket.io-client';
-const ENDPOINT = "http://localhost:4000/";
+const ENDPOINT = "http://157.245.224.22:4000/";
 let socket = ""
 function Chat(props) {
     const [message, setMessage] = useState("")
