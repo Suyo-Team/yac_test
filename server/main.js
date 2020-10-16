@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const http = require('http');
 const socketio = require('socket.io');
 const cors = require('cors')
+const moment = require('moment')
 const formatMessage = require('./utils/messages');
 const {
     userJoin,
@@ -36,26 +37,27 @@ app.use('/api', indexRoutes);
 // const server = app.listen(app.get('port'), () => console.log('Server On'));
 
 
-const botName = 'ChatFriend';
+const botName = 'Chat IRC';
 
 const io = socketio(server);
 
 // Run when client connects
 io.on('connection', socket => {
-    socket.on('joinRoom', ({ username, room }) => {
-        const user = userJoin(socket.id, username, room);
+    socket.on('joinRoom', ({ id_user, username, room }) => {
+        const user = userJoin(socket.id, id_user, username, room);
+        let created_at = moment().format('YYYY-MM-DD HH:mm:ss')
 
         socket.join(user.room);
 
         // Welcome current user
-        socket.emit('message', formatMessage(botName, `Welcome to ${user.room}!`));
+        socket.emit('message', formatMessage(0, botName, `Welcome to ${user.room}!`, created_at));
 
         // Broadcast when a user connects
         socket.broadcast
             .to(user.room)
             .emit(
                 'message',
-                formatMessage(botName, `${user.username} has joined the chat`)
+                formatMessage(0, botName, `${user.username} has joined the chat`, created_at)
             );
 
         // Send users and room info
@@ -67,19 +69,22 @@ io.on('connection', socket => {
 
     // Listen for chatMessage
     socket.on('chatMessage', msg => {
-        const user = getCurrentUser(socket.id);
+        let created_at = moment().format('YYYY-MM-DD HH:mm:ss')
 
-        io.to(user.room).emit('message', formatMessage(user.username, msg));
+        const user = getCurrentUser(socket.id);
+        io.to(user.room).emit('message', formatMessage(user.id_user, user.username, msg, created_at));
     });
 
     // Runs when client disconnects
     socket.on('disconnect', () => {
+        let created_at = moment().format('YYYY-MM-DD HH:mm:ss')
+
         const user = userLeave(socket.id);
 
         if (user) {
             io.to(user.room).emit(
                 'message',
-                formatMessage(botName, `${user.username} has left the chat`)
+                formatMessage(0, botName, `${user.username} has left the chat`, created_at)
             );
 
             // Send users and room info

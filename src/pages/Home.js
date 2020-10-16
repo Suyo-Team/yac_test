@@ -21,7 +21,7 @@ function Home(props) {
                     {rooms.map((roommap, index) => (<p key={index} className="text-white p-2" style={{ cursor: "pointer", background: (roommap === room) ? "rgba(0,0,0,.3)" : "transparent" }} onClick={() => setRoom(roommap)}>{roommap}</p>))}
                 </div>
                 {
-                    (room !== "") && <Chat user={props.user.user_name} room={room} />
+                    (room !== "") && <Chat user={props.user} room={room} />
                 }
             </div>
 

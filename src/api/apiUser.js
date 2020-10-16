@@ -1,7 +1,7 @@
 import * as Routes from './apiRutas';
 import axios from 'axios';
 
-const { LOGIN, REGISTER, CHAT } = Routes.ROUTES
+const { LOGIN, REGISTER, GETCHAT, SETCHAT } = Routes.ROUTES
 
 
 export async function apiLogin(user) {
@@ -17,7 +17,13 @@ export async function apiRegister(user) {
 }
 
 export async function getChat() {
-    const { data } = await axios.get(CHAT)
+    const { data } = await axios.get(GETCHAT)
 
+    return data
+}
+
+
+export async function setChat(message) {
+    const { data } = await axios.post(SETCHAT, message)
     return data
 }

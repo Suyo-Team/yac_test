@@ -34,7 +34,7 @@ function Login(props) {
                 <div className="col-md-6">
                     <form onSubmit={__onSubmit}>
                         <div className="form-group">
-                            <h3 style={{ color: "white" }}>ChatFri</h3>
+                            <h3 style={{ color: "white" }}>Chat IRC</h3>
                         </div>
                         {
                             (flag.error) &&
