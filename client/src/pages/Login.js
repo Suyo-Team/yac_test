@@ -33,7 +33,7 @@ function Login(props) {
     props.sendLogin(form.username, form.password);
   };
   if (isLoggedIn(props.login.authToken))
-    return <Redirect from={props.location} to="/" />;
+    return <Redirect to="/" />;
   return (
     <Grid
       container

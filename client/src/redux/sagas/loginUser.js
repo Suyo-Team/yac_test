@@ -15,7 +15,7 @@ function* postLogin(action) {
     );
     yield put({
       type: LOGGEDIN_SUCCESSFUL,
-      payload: { authToken: user.data.authToken },
+      payload: { authToken: user.data.apiToken },
     });
   } catch (e) {
     yield put({ type: LOGGEDIN_FAILED, payload: { error: e.message } });

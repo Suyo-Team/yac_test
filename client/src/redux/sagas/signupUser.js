@@ -13,10 +13,10 @@ function* postSignup(action) {
       action.payload.username,
       action.payload.password
     );
-    console.log(user)
+    
     yield put({
       type: SIGNUP_SUCCESSFUL,
-      payload: { authToken: user.data.authToken },
+      payload: { authToken: user.data.apiToken },
     });
   } catch (e) {
     yield put({ type: SIGNUP_FAILED, payload: { error: e.message } });

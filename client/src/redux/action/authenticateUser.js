@@ -16,8 +16,6 @@ export function sendLogin(username, password) {
 }
 
 export function sendSignup(username, password) {
-  console.log(username);
-  console.log(password);
   return {
     type: SEND_SIGNUP,
     payload: {

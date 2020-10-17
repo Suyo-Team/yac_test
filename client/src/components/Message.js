@@ -8,7 +8,6 @@ const PaddedDiv = styled("div")(({ theme }) => ({
 
 export default function Message({ message, align }) {
   const justify = align === "right" ? "flex-start" : "flex-end";
-    console.log(justify);
   return (
     <PaddedDiv>
       <Grid container justify={justify}>

@@ -10,13 +10,17 @@ import Chat from "./pages/Chat";
 import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
 
+import { isLoggedIn as loggedIn } from "./utils";
+import store from "./redux/store";
+
 /*
  * Returns true if the user is logged in, false otherwise
  * Note: In a development environment it will always return true
  */
 const isLoggedIn = Boolean(
   // TODO: Conditional to know if it is logged in or not
-  process.env.NODE_ENV === "development" || false
+  process.env.NODE_ENV === "development" ||
+    loggedIn(store.getState().login.authToken)
 );
 
 /*
