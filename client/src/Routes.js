@@ -6,16 +6,18 @@ import {
   Redirect,
 } from "react-router-dom";
 // TODO: delete
-import Chat from "./pages/Chat"
+import Chat from "./pages/Chat";
+import Login from "./pages/Login";
+import SignUp from "./pages/Signup";
 
 /*
  * Returns true if the user is logged in, false otherwise
  * Note: In a development environment it will always return true
  */
 const isLoggedIn = Boolean(
-    // TODO: Conditional to know if it is logged in or not
-    process.env.NODE_ENV === "development" || false
-)
+  // TODO: Conditional to know if it is logged in or not
+  process.env.NODE_ENV === "development" || false
+);
 
 /*
  * It creates a valid Route if the user is logged, it will redirect the user to
@@ -41,21 +43,15 @@ export default function Routes() {
   return (
     <Router>
       <Switch>
-        <PrivateRoute path="/success" component={Success} />
-        <Route path="/">
-          <Home />
+        <PrivateRoute path="/" component={Chat} />
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/signup">
+          <SignUp />
         </Route>
       </Switch>
     </Router>
   );
 }
 
-function Home(){
-    return <h1> Home </h1>
-}
-
-function Success() {
-  return <Chat>
-        <h2>Success Chat</h2>
-        </Chat>
-}
