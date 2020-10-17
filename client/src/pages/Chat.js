@@ -8,7 +8,7 @@ import ListUsers from "../components/ListUsers";
  */
 function Chat() {
   return (
-    <Grid container spacing={5}>
+    <Grid container spacing={0}>
       <Grid item xs={10}>
         <ChatSpace />
       </Grid>
