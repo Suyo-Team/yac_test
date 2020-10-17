@@ -11,12 +11,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/*
+ * Field space containing the users input for the chat
+ */
 export default function SendField() {
   const classes = useStyles();
   return (
     <TextField
       className={classes.textField}
       multiline
+      rows="2"
       variant="outlined"
       InputProps={{
         endAdornment: (

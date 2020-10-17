@@ -9,7 +9,7 @@ import SendField from "./SendField";
 const useStyles = makeStyles({
   informationBox: {
     overflowY: "scroll",
-    height: "75vh",
+    height: "83vh",
   },
 });
 
@@ -17,52 +17,12 @@ export default function ChatSpace(props) {
   const messages = [
     {
       from: "yo",
-      message: "hey, do you like doctor house?",
+      message: "hey, do you like doctor house?,",
       datetime: "2020-10-17T05:36:50.054Z",
     },
     {
       from: "snubb123",
-      message: "I'm actually is House MD",
-      datetime: "2020-10-17T05:36:53.054Z",
-    },
-    {
-      from: "yo",
-      message: "hey, do you like doctor house?",
-      datetime: "2020-10-17T05:36:50.054Z",
-    },
-    {
-      from: "snubb123",
-      message: "I'm actually is House MD",
-      datetime: "2020-10-17T05:36:53.054Z",
-    },
-    {
-      from: "yo",
-      message: "hey, do you like doctor house?",
-      datetime: "2020-10-17T05:36:50.054Z",
-    },
-    {
-      from: "snubb123",
-      message: "I'm actually is House MD",
-      datetime: "2020-10-17T05:36:53.054Z",
-    },
-    {
-      from: "yo",
-      message: "hey, do you like doctor house?",
-      datetime: "2020-10-17T05:36:50.054Z",
-    },
-    {
-      from: "snubb123",
-      message: "I'm actually is House MD",
-      datetime: "2020-10-17T05:36:53.054Z",
-    },
-    {
-      from: "yo",
-      message: "hey, do you like doctor house?",
-      datetime: "2020-10-17T05:36:50.054Z",
-    },
-    {
-      from: "snubb123",
-      message: "I'm actually is House MD",
+      message: "Uhmmm actually is House MD",
       datetime: "2020-10-17T05:36:53.054Z",
     },
   ];
@@ -70,7 +30,7 @@ export default function ChatSpace(props) {
   const classes = useStyles(props);
 
   return (
-    <div>
+    <>
       <div className={classes.informationBox}>
         {messages.map((message) =>
           message.from === username ? (
@@ -83,6 +43,6 @@ export default function ChatSpace(props) {
       <div>
         <SendField />
       </div>
-    </div>
+    </>
   );
 }

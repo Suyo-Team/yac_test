@@ -8,7 +8,7 @@ export default function PersonalMessage(props) {
     <Grid container={12} justify="flex-end">
       <Grid item={12}>
         <Paper variant="outlined">
-          <Message message={message} />
+          <Message message={message} align="left" />
         </Paper>
       </Grid>
     </Grid>

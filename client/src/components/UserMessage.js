@@ -8,7 +8,7 @@ export default function UserMessage(props) {
     <Grid container={12}>
       <Grid item={6}>
         <Paper variant="outlined">
-          <Message message={message} />
+          <Message message={message} align="right"/>
         </Paper>
       </Grid>
     </Grid>
