@@ -1,8 +1,10 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+
 import UserMessage from "./UserMessage";
 import PersonalMessage from "./PersonalMessage";
+import SendField from "./SendField";
+
 
 const useStyles = makeStyles({
   informationBox: {
@@ -78,7 +80,9 @@ export default function ChatSpace(props) {
           )
         )}
       </div>
-      <Grid container={12}></Grid>
+      <div>
+        <SendField />
+      </div>
     </div>
   );
 }
