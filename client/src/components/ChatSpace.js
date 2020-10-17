@@ -6,7 +6,6 @@ import UserMessage from "./UserMessage";
 import PersonalMessage from "./PersonalMessage";
 import SendField from "./SendField";
 
-
 const useStyles = makeStyles({
   informationBox: {
     overflowY: "scroll",
@@ -73,11 +72,11 @@ function ChatSpace(props) {
   return (
     <>
       <div className={classes.informationBox}>
-        {messages.map((message) =>
+        {messages.map((message, index) =>
           message.from === username ? (
-            <PersonalMessage message={message} />
+            <PersonalMessage key={index} message={message} />
           ) : (
-            <UserMessage message={message} />
+            <UserMessage key={index} message={message} />
           )
         )}
       </div>
@@ -89,10 +88,10 @@ function ChatSpace(props) {
 }
 
 const mapStateToProps = (state) => {
-    return {
-        messages: state.messages
-    }
-}
+  return {
+    messages: state.messages,
+  };
+};
 
 const wrapper = connect(mapStateToProps);
 const component = wrapper(ChatSpace);

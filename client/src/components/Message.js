@@ -8,21 +8,22 @@ const PaddedDiv = styled("div")(({ theme }) => ({
 
 export default function Message({ message, align }) {
   const justify = align === "right" ? "flex-start" : "flex-end";
+    console.log(justify);
   return (
     <PaddedDiv>
-      <Grid container={12} justify={justify}>
-        <Grid item={8}>
+      <Grid container justify={justify}>
+        <Grid item >
           <Typography variant="subtitle1"> {message.from} </Typography>
         </Grid>
       </Grid>
-      <Grid container={12}>
-        <Grid item={8}>
+      <Grid container>
+        <Grid item>
           <Typography variant="body2"> {message.message} </Typography>
         </Grid>
       </Grid>
       <Divider />
-      <Grid container={12} justify={justify}>
-        <Grid item={8}>
+      <Grid container justify={justify}>
+        <Grid item>
           <Typography variant="caption"> {message.datetime} </Typography>
         </Grid>
       </Grid>

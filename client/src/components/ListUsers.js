@@ -15,13 +15,14 @@ const useStyles = makeStyles((theme) => ({
  */
 export default function ListUsers() {
   const classes = useStyles();
+    // TODO: display a list of users fetch from the server
   return (
     <List className={classes.list}>
       <ListItem button>
-        <ListItemText> Text for 1 </ListItemText>
+        <ListItemText>User1</ListItemText>
       </ListItem>
       <ListItem button>
-        <ListItemText> Text for 2 </ListItemText>
+        <ListItemText>User2</ListItemText>
       </ListItem>
     </List>
   );

@@ -5,8 +5,8 @@ import Message from "./Message";
 export default function PersonalMessage(props) {
   const { message } = props;
   return (
-    <Grid container={12} justify="flex-end">
-      <Grid item={12}>
+    <Grid container justify="flex-end">
+      <Grid item lg={4}>
         <Paper variant="outlined">
           <Message message={message} align="left" />
         </Paper>

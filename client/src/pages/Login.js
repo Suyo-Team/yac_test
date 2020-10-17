@@ -8,9 +8,10 @@ import { Link } from "react-router-dom";
 import { styled } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import UserAuthFields from "../components/UserAuthFields";
-
 import { sendLogin } from "../redux/action/authenticateUser";
+import { isLoggedIn } from "../utils";
 
 const Paper = styled(MuiPaper)(({ theme }) => ({
   padding: theme.spacing(1),
@@ -31,6 +32,8 @@ function Login(props) {
   const handleSend = (form) => {
     props.sendLogin(form.username, form.password);
   };
+  if (isLoggedIn(props.login.authToken))
+    return <Redirect from={props.location} to="/" />;
   return (
     <Grid
       container
@@ -62,7 +65,13 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const wrapper = connect(null, mapDispatchToProps);
+const mapStateToProps = (state) => {
+  return {
+    login: state.login,
+  };
+};
+
+const wrapper = connect(mapStateToProps, mapDispatchToProps);
 const component = wrapper(Login);
 
 export default component;
