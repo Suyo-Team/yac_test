@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 
 import UserMessage from "./UserMessage";
 import PersonalMessage from "./PersonalMessage";
@@ -13,8 +14,48 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ChatSpace(props) {
+function ChatSpace(props) {
   const messages = [
+    {
+      from: "yo",
+      message: "hey, do you like doctor house?,",
+      datetime: "2020-10-17T05:36:50.054Z",
+    },
+    {
+      from: "snubb123",
+      message: "Uhmmm actually is House MD",
+      datetime: "2020-10-17T05:36:53.054Z",
+    },
+    {
+      from: "yo",
+      message: "hey, do you like doctor house?,",
+      datetime: "2020-10-17T05:36:50.054Z",
+    },
+    {
+      from: "snubb123",
+      message: "Uhmmm actually is House MD",
+      datetime: "2020-10-17T05:36:53.054Z",
+    },
+    {
+      from: "yo",
+      message: "hey, do you like doctor house?,",
+      datetime: "2020-10-17T05:36:50.054Z",
+    },
+    {
+      from: "snubb123",
+      message: "Uhmmm actually is House MD",
+      datetime: "2020-10-17T05:36:53.054Z",
+    },
+    {
+      from: "yo",
+      message: "hey, do you like doctor house?,",
+      datetime: "2020-10-17T05:36:50.054Z",
+    },
+    {
+      from: "snubb123",
+      message: "Uhmmm actually is House MD",
+      datetime: "2020-10-17T05:36:53.054Z",
+    },
     {
       from: "yo",
       message: "hey, do you like doctor house?,",
@@ -46,3 +87,14 @@ export default function ChatSpace(props) {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        messages: state.messages
+    }
+}
+
+const wrapper = connect(mapStateToProps);
+const component = wrapper(ChatSpace);
+
+export default component;

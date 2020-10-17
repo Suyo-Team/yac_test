@@ -5,7 +5,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-// TODO: delete
+
 import Chat from "./pages/Chat";
 import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
@@ -43,15 +43,14 @@ export default function Routes() {
   return (
     <Router>
       <Switch>
-        <PrivateRoute path="/" component={Chat} />
         <Route path="/login">
           <Login />
         </Route>
         <Route path="/signup">
           <SignUp />
         </Route>
+        <PrivateRoute path="/" component={Chat} />
       </Switch>
     </Router>
   );
 }
-

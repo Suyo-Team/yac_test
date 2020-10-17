@@ -6,7 +6,11 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { styled } from "@material-ui/core/styles";
+import { useForm } from "react-hook-form";
+import { connect } from "react-redux";
 import UserAuthFields from "../components/UserAuthFields";
+
+import { sendLogin } from "../redux/action/authenticateUser";
 
 const Paper = styled(MuiPaper)(({ theme }) => ({
   padding: theme.spacing(1),
@@ -22,7 +26,11 @@ const Button = styled(MuiButton)(({ theme }) => ({
   marginTop: theme.spacing(1),
 }));
 
-export default function Login() {
+function Login(props) {
+  const { handleSubmit, control } = useForm();
+  const handleSend = (form) => {
+    props.sendLogin(form.username, form.password);
+  };
   return (
     <Grid
       container
@@ -33,12 +41,12 @@ export default function Login() {
     >
       <Grid item xs={6}>
         <Paper>
-          <form>
-            <UserAuthFields />
+          <form onSubmit={handleSubmit(handleSend)}>
+            <UserAuthFields control={control} />
             <CenterLink>
               <Link to="/signup"> Sign up </Link>
             </CenterLink>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" type="submit">
               Login
             </Button>
           </form>
@@ -47,3 +55,14 @@ export default function Login() {
     </Grid>
   );
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    sendLogin: (username, password) => dispatch(sendLogin(username, password)),
+  };
+};
+
+const wrapper = connect(null, mapDispatchToProps);
+const component = wrapper(Login);
+
+export default component;
