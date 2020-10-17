@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import useUser, { userState } from '../hooks/useUser'
 import { useHistory } from 'react-router-dom'
 import { sendChat, readChats } from '../service/chat.service'
+import { signOut } from '../service/auth.service'
 import './chat.css'
 
 
@@ -21,25 +22,36 @@ export default function Chat() {
             sendChat(user.email, message)
             setMessage('')
         }
-
     }
 
     useEffect(() => {
-        let unsubcrite
+        let unsubscribe
         if(user){
-            unsubcrite = readChats((mss) => {
+            unsubscribe = readChats((mss) => {
                 setChats(mss)
                 setLoadingMessages(false)
+                let elem = document.getElementById('chat-messages')
+                elem.scrollTop = elem.scrollHeight
             })            
         }
-        return () => unsubcrite && unsubcrite()
+        return () => unsubscribe && unsubscribe()
     }, [user])
+
+    const closeSession = () => {
+        signOut().then(() => {
+            history.replace('/')
+        })
+    }
 
     return (
         <>
+            
             <div className='chat'>
+                <button className='btn btn-primary' onClick={closeSession}>
+                    Sing Out
+                </button>
                 <div>
-                    <div className='chat-messages'>
+                    <div className='chat-messages' id='chat-messages'>
                         {loadingMessages && <div className='d-flex justify-content-center align-items-center'><div className='spinner-border text-primary'></div></div>}
                         {chats.map(chat => (
                             <div className='chat-message' key={chat.id}>

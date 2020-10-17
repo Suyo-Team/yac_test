@@ -17,7 +17,7 @@ function SignIn({ goToRegister }) {
             history.replace('/chat')
         })
         .catch(err => {
-            console.log(err)
+            console.log('error: ' + err)
         })
     }    
   }

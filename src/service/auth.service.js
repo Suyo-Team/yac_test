@@ -26,3 +26,7 @@ export const signUpWithEmailAndPass = (email, pass) => {
 export const signInWithEmailAndPass = (email, pass) => {
   return firebase.auth().signInWithEmailAndPassword(email, pass)
 }
+
+export const signOut = () => {
+  return firebase.auth().signOut()
+}
