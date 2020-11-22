@@ -17,15 +17,16 @@ export const getRoomMessagesApi = (roomId) => {
   return messagesRoomRef
 }
 
-export const addMessageRoomApi = (roomId) => {
+export const addMessageRoomApi = (roomId, sender, message) => {
   const messagesRoomRef = firebase
     .firestore()
     .collection('rooms')
     .doc(roomId)
     .collection('messages')
     .add({
-      name: 'Tokyo',
-      country: 'Japan',
+      message,
+      sender,
+      createAt: firebase.firestore.FieldValue.serverTimestamp(),
     })
 
   return messagesRoomRef

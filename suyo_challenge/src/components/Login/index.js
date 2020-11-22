@@ -9,14 +9,17 @@ import {
   Typography,
   Container,
 } from '@material-ui/core'
+import { useDispatch } from 'react-redux'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 /* import internal modules */
 import useStyles from './styles'
-import { loginApi } from '../../apis/users'
+import { setUser } from '../../redux/actions/user'
+import { getUserByEmailApi, loginApi } from '../../apis/users'
 
 const Login = () => {
   let history = useHistory()
+  const dispatch = useDispatch()
   const classes = useStyles()
   const [errorPassword, setErrorPassword] = useState({
     error: false,
@@ -58,6 +61,22 @@ const Login = () => {
     }
   }
 
+  const getUserByEmailFunction = (email) => {
+    getUserByEmailApi(email)
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, ' => ', doc.data())
+          dispatch(setUser(doc.data()))
+          history.push('/rooms')
+        })
+      })
+      .catch(function (error) {
+        console.log('Error getting documents: ', error)
+      })
+  }
+
   const loginValidation = (event) => {
     const { email, password } = dataUser
 
@@ -67,7 +86,7 @@ const Login = () => {
       event.preventDefault()
       loginApi(email, password)
         .then(() => {
-          history.push('/rooms')
+          getUserByEmailFunction(email)
         })
         .catch((error) => {
           // Handle Errors here.

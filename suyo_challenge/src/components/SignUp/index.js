@@ -10,14 +10,17 @@ import {
   Typography,
   Container,
 } from '@material-ui/core'
+import { useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 /* import internal modules */
 import useStyles from './styles'
+import { setUser } from '../../redux/actions/user'
 import { createUserApi, getUserApi, signUpApi } from '../../apis/users'
 
 const SignUp = () => {
+  const dispatch = useDispatch()
   let history = useHistory()
   const classes = useStyles()
   const [allowExtraEmails, setAllowExtraEmails] = useState(false)
@@ -88,11 +91,12 @@ const SignUp = () => {
       helperText: '',
     })
 
-    signUpApi(dataUser.email, dataUser.password)
+    signUpApi(email, password)
       .then(() => {
+        createUserFunction({ ...dataUser, allowExtraEmails })
         history.push('/rooms')
       })
-      .catch(function (error) {
+      .catch((error) => {
         // Handle Errors here.
         var errorCode = error.code
         var errorMessage = error.message
@@ -106,9 +110,9 @@ const SignUp = () => {
   }
 
   const createUserFunction = (userInfo) => {
-    createUserApi({ ...dataUser, allowExtraEmails })
+    createUserApi(userInfo)
       .then(() => {
-        signUpFunction(dataUser.email, dataUser.password)
+        dispatch(setUser(userInfo))
       })
       .catch((error) => {
         console.error('Error writing document: ', error)
@@ -124,10 +128,10 @@ const SignUp = () => {
           setErrorNicknameFunction(true, 'Cant be 2 people with same nickname.')
         } else {
           setErrorNicknameFunction(false, '')
-          createUserFunction({ ...dataUser, allowExtraEmails })
+          signUpFunction(dataUser.email, dataUser.password)
         }
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log('Error getting document:', error)
       })
   }

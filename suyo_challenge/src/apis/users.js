@@ -26,3 +26,12 @@ export const getUserApi = (user) => {
 
   return docRef
 }
+
+export const getUserByEmailApi = (userEmail) => {
+  const docRef = firebase
+    .firestore()
+    .collection('users')
+    .where('email', '==', userEmail)
+
+  return docRef
+}
