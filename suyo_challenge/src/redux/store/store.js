@@ -11,7 +11,7 @@ const persistConfig = {
   // configuration object for redux-persist
   key: 'root_kuepa_challenge',
   storage, // define which storage to use
-  whitelist: ['user'], // only navigation will be persisted
+  whitelist: ['user', 'rooms'], // only navigation will be persisted
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer) // create a persisted reducer

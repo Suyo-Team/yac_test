@@ -8,13 +8,14 @@ import {
   Checkbox,
   Grid,
   Typography,
+  Container,
 } from '@material-ui/core'
 import { Link, useHistory } from 'react-router-dom'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 /* import internal modules */
 import useStyles from './styles'
-import { createUser, getUser, signUp } from '../../apis/handleUsers'
+import { createUserApi, getUserApi, signUpApi } from '../../apis/users'
 
 const SignUp = () => {
   let history = useHistory()
@@ -87,9 +88,9 @@ const SignUp = () => {
       helperText: '',
     })
 
-    signUp(dataUser.email, dataUser.password)
+    signUpApi(dataUser.email, dataUser.password)
       .then(() => {
-        history.push('/home')
+        history.push('/rooms')
       })
       .catch(function (error) {
         // Handle Errors here.
@@ -105,7 +106,7 @@ const SignUp = () => {
   }
 
   const createUserFunction = (userInfo) => {
-    createUser({ ...dataUser, allowExtraEmails })
+    createUserApi({ ...dataUser, allowExtraEmails })
       .then(() => {
         signUpFunction(dataUser.email, dataUser.password)
       })
@@ -116,7 +117,7 @@ const SignUp = () => {
 
   const executeUserFlow = () => {
     /* Validation nickname exist */
-    getUser({ ...dataUser, allowExtraEmails })
+    getUserApi({ ...dataUser, allowExtraEmails })
       .get()
       .then((doc) => {
         if (doc.exists) {
@@ -149,109 +150,111 @@ const SignUp = () => {
   }
 
   return (
-    <div className={classes.paper}>
-      <Avatar className={classes.avatar}>
-        <LockOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Sign up
-      </Typography>
-      <form className={classes.form}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={12}>
-            <TextField
-              onChange={handleChange}
-              value={dataUser.nickname}
-              autoComplete="nickname"
-              name="nickname"
-              variant="outlined"
-              required
-              fullWidth
-              id="nickname"
-              label="Nickname"
-              autoFocus
-              error={errorNickname.error}
-              helperText={errorNickname.helperText}
-            />
+    <Container component="main" maxWidth="xs">
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
+        <form className={classes.form}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                onChange={handleChange}
+                value={dataUser.nickname}
+                autoComplete="nickname"
+                name="nickname"
+                variant="outlined"
+                required
+                fullWidth
+                id="nickname"
+                label="Nickname"
+                autoFocus
+                error={errorNickname.error}
+                helperText={errorNickname.helperText}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                onChange={handleChange}
+                value={dataUser.fullname}
+                variant="outlined"
+                required
+                fullWidth
+                id="fullname"
+                label="Full Name"
+                name="fullname"
+                autoComplete="lname"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                onChange={handleChange}
+                value={dataUser.email}
+                type="email"
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                error={errorEmail.error}
+                helperText={errorEmail.helperText}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                onChange={handleChange}
+                value={dataUser.password}
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                error={errorPassword.error}
+                helperText={errorPassword.helperText}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    required
+                    color="primary"
+                    onChange={handleChangeCheckbox}
+                    value={allowExtraEmails}
+                  />
+                }
+                label="I want to receive inspiration, marketing promotions and updates via email."
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={12}>
-            <TextField
-              onChange={handleChange}
-              value={dataUser.fullname}
-              variant="outlined"
-              required
-              fullWidth
-              id="fullname"
-              label="Full Name"
-              name="fullname"
-              autoComplete="lname"
-            />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={(event) => signUpValidation(event)}
+          >
+            Sign Up
+          </Button>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Link to="/login" variant="body2">
+                ¿Already have an account? Login
+              </Link>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              onChange={handleChange}
-              value={dataUser.email}
-              type="email"
-              variant="outlined"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              error={errorEmail.error}
-              helperText={errorEmail.helperText}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              onChange={handleChange}
-              value={dataUser.password}
-              variant="outlined"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              error={errorPassword.error}
-              helperText={errorPassword.helperText}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  required
-                  color="primary"
-                  onChange={handleChangeCheckbox}
-                  value={allowExtraEmails}
-                />
-              }
-              label="I want to receive inspiration, marketing promotions and updates via email."
-            />
-          </Grid>
-        </Grid>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          onClick={(event) => signUpValidation(event)}
-        >
-          Sign Up
-        </Button>
-        <Grid container justify="flex-end">
-          <Grid item>
-            <Link to="/login" variant="body2">
-              ¿Already have an account? Login
-            </Link>
-          </Grid>
-        </Grid>
-      </form>
-    </div>
+        </form>
+      </div>
+    </Container>
   )
 }
 

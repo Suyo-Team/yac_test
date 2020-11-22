@@ -1,15 +1,17 @@
 /* import external modules */
-import { Container } from '@material-ui/core'
+import { Fragment } from 'react'
 
 /* import internal modules */
 import Footer from '../Footer'
+import ButtonAppBar from '../Header'
 
 const Layout = ({ children }) => {
   return (
-    <Container component="main" maxWidth="xs">
+    <Fragment>
+      <ButtonAppBar />
       {children}
       <Footer />
-    </Container>
+    </Fragment>
   )
 }
 

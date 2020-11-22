@@ -1,17 +1,17 @@
 /* import external modules */
 import firebase from 'firebase/app'
 
-export const signUp = (email, password) => {
+export const signUpApi = (email, password) => {
   const docRef = firebase.auth().createUserWithEmailAndPassword(email, password)
   return docRef
 }
 
-export const login = (email, password) => {
+export const loginApi = (email, password) => {
   const docRef = firebase.auth().signInWithEmailAndPassword(email, password)
   return docRef
 }
 
-export const createUser = (user) => {
+export const createUserApi = (user) => {
   const docRef = firebase.firestore().collection('users').doc(user.nickname)
 
   const userDoc = docRef.set({
@@ -21,7 +21,7 @@ export const createUser = (user) => {
   return userDoc
 }
 
-export const getUser = (user) => {
+export const getUserApi = (user) => {
   const docRef = firebase.firestore().collection('users').doc(user.nickname)
 
   return docRef
