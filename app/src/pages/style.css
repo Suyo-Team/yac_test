@@ -1,0 +1,9 @@
+.chat__page__root {
+    display: grid;
+    margin: 10px;
+    border-radius: 15px;
+    grid-template-areas: 
+    "chat-new chat-content"
+    "chat-list chat-content";
+    grid-template-columns: 1fr 3.5fr;
+}

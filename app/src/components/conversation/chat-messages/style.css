@@ -1,0 +1,26 @@
+.chat__square__text{
+    border-radius: 15px;
+    width: fit-content;
+    padding: 5px;
+    color: white;
+}
+.chat__messages__root {
+    margin: 10px;
+    color: #A6B0CF;
+    display: inline-flex;
+}
+.chat__messages__avatar {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.chat__messages__text > p {
+  margin: 4px;
+  font-size: smaller;
+}
+.chat__square__time {
+    display: inline-flex;
+    align-items: center;
+}
+.chat__square__time > span {
+    font-size: smaller !important;
+}

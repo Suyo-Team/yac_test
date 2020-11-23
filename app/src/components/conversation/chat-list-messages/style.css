@@ -1,0 +1,6 @@
+.chat__list__messages__root li{
+ list-style: none;
+}
+.chat__list__messages__root ul{
+    padding-inline-start: 0;
+}
