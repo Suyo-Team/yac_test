@@ -1,7 +1,6 @@
 /* import external modules */
 import React, { useEffect, useState } from 'react'
 import {
-  Avatar,
   Button,
   TextField,
   FormControlLabel,
@@ -12,10 +11,10 @@ import {
 } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 /* import internal modules */
 import useStyles from './styles'
+import Logo from '../commons/Logo'
 import { setUser } from '../../redux/actions/user'
 import { createUserApi, getUserApi, signUpApi } from '../../apis/users'
 
@@ -132,7 +131,7 @@ const SignUp = () => {
         }
       })
       .catch((error) => {
-        console.log('Error getting document:', error)
+        console.error('Error getting document:', error)
       })
   }
 
@@ -156,9 +155,7 @@ const SignUp = () => {
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <Logo />
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>

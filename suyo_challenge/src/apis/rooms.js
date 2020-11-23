@@ -26,7 +26,7 @@ export const addMessageRoomApi = (roomId, sender, message) => {
     .add({
       message,
       sender,
-      createAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     })
 
   return messagesRoomRef

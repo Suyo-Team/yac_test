@@ -28,7 +28,7 @@ const RoomsList = () => {
         })
       })
       .catch((error) => {
-        console.log('Error getting documents: ', error)
+        console.error('Error getting documents: ', error)
       })
 
     dispatch(setRooms(roomsList))

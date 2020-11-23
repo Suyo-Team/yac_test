@@ -31,7 +31,7 @@ const SimpleCard = ({ room }) => {
           actionButtonTitle="Send"
           title={room.name}
         >
-          <Chat roomName={room.name} roomId={room.id} />
+          <Chat roomId={room.id} />
         </Modal>
       </CardActions>
     </Card>

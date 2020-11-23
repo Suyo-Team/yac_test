@@ -1,22 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* import external modules */
 import { useSelector } from 'react-redux'
-import React, { useEffect, useState } from 'react'
 import TextField from '@material-ui/core/TextField'
+import React, { useEffect, useRef, useState } from 'react'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 /* import internal modules */
 import useStyles from './styles'
+import ChatMessage from '../ChatMessage'
+import { CircularProgress } from '@material-ui/core'
 import { addMessageRoomApi, getRoomMessagesApi } from '../../apis/rooms'
 
-const Chat = ({ roomName, roomId }) => {
+const Chat = ({ roomId }) => {
+  /* Start Firebase advance */
+  const spaceMessages = useRef()
+  const messagesRoomRef = getRoomMessagesApi(roomId)
+  const query = messagesRoomRef.orderBy('createdAt')
+  const [messagesRoom] = useCollectionData(query, { idField: 'id' })
+  /* End Firebase advance */
+
   const classes = useStyles()
   const [message, setMessage] = useState('')
   const userInfo = useSelector((state) => state.user.user)
   const flagSendMessage = useSelector((state) => state.rooms.flagSendMessage)
-
-  useEffect(() => {
-    getRoomMessagesFuncion(roomId)
-  }, [])
 
   useEffect(() => {
     if (userInfo && flagSendMessage) {
@@ -28,26 +34,12 @@ const Chat = ({ roomName, roomId }) => {
     setMessage(event.target.value)
   }
 
-  const getRoomMessagesFuncion = async (roomId) => {
-    if (userInfo) {
-      await getRoomMessagesApi(roomId)
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            // console.log(doc.id, ' => ', doc.data())
-          })
-        })
-        .catch((error) => {
-          console.log('Error getting documents: ', error)
-        })
-    }
-  }
-
   const addMessageRoomFunction = (roomId, nickname, message) => {
     if (roomId && nickname && message) {
       addMessageRoomApi(roomId, nickname, message)
         .then((docRef) => {
-          console.log('Document written with ID: ', docRef.id)
+          setMessage('')
+          spaceMessages.current.scrollIntoView({ behavior: 'smooth' })
         })
         .catch((error) => {
           console.error('Error adding document: ', error)
@@ -55,19 +47,67 @@ const Chat = ({ roomName, roomId }) => {
     }
   }
 
+  /** Start Other form for detect firestore realtime changes
+   *
+   * const [messagesRoom, setMessagesRoom] = useState([])
+   *
+   * useEffect(() => {
+   *     getRoomMessagesFuncion(roomId)
+   * }, [])
+   *
+   *
+   * const getRoomMessagesFuncion = (roomId) => {
+   *   if (userInfo) {
+   *     getRoomMessagesApi(roomId).onSnapshot(
+   *       (snapshot) => {
+   *
+   *         const allMessagesRoom = []
+   *         snapshot.forEach((doc) => allMessagesRoom.push(doc.data()))
+   *
+   *         setMessagesRoom(allMessagesRoom)
+   *       },
+   *       (error) => console.error(error)
+   *     )
+   *   }
+   * }
+   *
+   * End Other form for detect firestore realtime changes
+   */
+
   return (
-    <form className={classes.root} autoComplete="off">
-      <TextField
-        id="outlined-multiline-static"
-        label="Text message"
-        multiline
-        rows={4}
-        placeholder="Text message here"
-        variant="outlined"
-        value={message}
-        onChange={handleChange}
-      />
-    </form>
+    <>
+      {messagesRoom ? (
+        messagesRoom.map((message, index) => (
+          <ChatMessage
+            key={index}
+            message={message}
+            nicknameMessage={message.sender}
+            nicknameRedux={userInfo.nickname}
+          />
+        ))
+      ) : (
+        <center>
+          <CircularProgress color="secondary" />
+        </center>
+      )}
+
+      <span ref={spaceMessages}></span>
+
+      <form className={classes.root} autoComplete="off">
+        <center>
+          <TextField
+            id="outlined-multiline-static"
+            label="Text message"
+            multiline
+            rows={4}
+            placeholder="Text message here"
+            variant="outlined"
+            value={message}
+            onChange={handleChange}
+          />
+        </center>
+      </form>
+    </>
   )
 }
 

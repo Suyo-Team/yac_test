@@ -16,7 +16,7 @@ export const createUserApi = (user) => {
 
   const userDoc = docRef.set({
     ...user,
-    createAt: firebase.firestore.FieldValue.serverTimestamp(),
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   })
   return userDoc
 }

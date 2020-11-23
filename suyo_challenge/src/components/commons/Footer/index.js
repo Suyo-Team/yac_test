@@ -7,17 +7,19 @@ import useStyles from './styles'
 const Footer = () => {
   const classes = useStyles()
   return (
-    <Typography
-      variant="body2"
-      color="textSecondary"
-      align="center"
-      className={classes.container}
-    >
-      {'Copyright © '}
-      <Link color="inherit">Suyo Chat Challenge</Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+    <center>
+      <Typography
+        variant="body2"
+        color="textSecondary"
+        align="center"
+        className={classes.container}
+      >
+        {'Copyright © '}
+        <Link color="inherit">Suyo Chat Challenge</Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    </center>
   )
 }
 

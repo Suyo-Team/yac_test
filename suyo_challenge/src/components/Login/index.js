@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import {
-  Avatar,
   Button,
   TextField,
   Grid,
@@ -10,10 +9,10 @@ import {
   Container,
 } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 /* import internal modules */
 import useStyles from './styles'
+import Logo from '../commons/Logo'
 import { setUser } from '../../redux/actions/user'
 import { getUserByEmailApi, loginApi } from '../../apis/users'
 
@@ -66,14 +65,12 @@ const Login = () => {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, ' => ', doc.data())
           dispatch(setUser(doc.data()))
           history.push('/rooms')
         })
       })
       .catch(function (error) {
-        console.log('Error getting documents: ', error)
+        console.error('Error getting documents: ', error)
       })
   }
 
@@ -103,9 +100,7 @@ const Login = () => {
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <Logo />
         <Typography component="h1" variant="h5">
           Login
         </Typography>
