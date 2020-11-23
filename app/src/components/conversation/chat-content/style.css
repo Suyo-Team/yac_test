@@ -1,0 +1,69 @@
+.chat__content__root {
+    grid-area: chat-content;
+    background-color: #262e35;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+}
+.chat__content__top {
+    flex: .6;
+    display: flex;
+    color: #b5bbcf;
+    border-bottom: 1px solid #888888;
+}
+.chat__content__top > div{
+    margin-left: 10px;
+    display: inline-flex;
+    align-items: center;
+}
+.chat__content__top h6 {
+    margin-left: 5px;
+}
+.chat__content__middle {
+    max-height: 70vh;
+    overflow-y: auto;
+    flex: 4;
+}
+
+.chat__content__bottom {
+    flex: 0.5;
+    padding: 25px;
+    display: flex;
+    position: relative;
+    border-top: 1px solid #888888;
+}
+.chat__content__bottom > div {
+    position: absolute;
+    top: -300px;
+    right: 10px;
+}
+.chat__content__bottom > form {
+    display: flex;
+    align-items: center;
+    width: 80%;
+}
+.chat__content__bottom > form > input {
+    background-color: #36404a;
+    flex: 1;
+    margin: auto;
+    padding: 8px 16px;
+    border-radius: 10px;
+    line-height: 1.5;
+    font-size: .875rem;
+    color: #b5bbcf;
+    outline: none;
+    border-color: transparent;
+    width: 70%;
+}
+.chat__content__bottom > form > svg {
+    cursor: pointer;
+    margin-left: 10px;
+    color: #9aa1b9;
+}
+.chat__content__bottom input::placeholder {
+    color: #9aa1b9;
+}
+.emoji-picker-react {
+    box-shadow: none !important;
+}
