@@ -42,7 +42,7 @@ const RoomsList = () => {
     <Fragment>
       <center>
         <Typography variant="h4" component="h2" color="textSecondary">
-          Rooms List
+          Rooms
         </Typography>
       </center>
       {renderRoomsList}

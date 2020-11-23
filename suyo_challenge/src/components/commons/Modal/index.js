@@ -1,5 +1,6 @@
 /* import external modules */
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import CloseIcon from '@material-ui/icons/Close'
 import { withStyles } from '@material-ui/core/styles'
 import MuiDialogTitle from '@material-ui/core/DialogTitle'
@@ -9,6 +10,7 @@ import { Button, Dialog, IconButton, Typography } from '@material-ui/core'
 
 /* import internal modules */
 import styles from './styles'
+import { setSendMessage } from '../../../redux/actions/rooms'
 
 const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props
@@ -41,20 +43,20 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions)
 
-const Modal = ({
-  children,
-  title,
-  addMessageRoomFunction,
-  openButtonTitle,
-  actionButtonTitle,
-}) => {
+const Modal = ({ children, title, openButtonTitle, actionButtonTitle }) => {
+  const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
     setOpen(true)
   }
+
   const handleClose = () => {
     setOpen(false)
+  }
+
+  const sendMessageRoomFunction = () => {
+    dispatch(setSendMessage())
   }
 
   return (
@@ -72,7 +74,12 @@ const Modal = ({
         </DialogTitle>
         <DialogContent dividers>{children}</DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={addMessageRoomFunction} color="primary">
+          <Button
+            variant="outlined"
+            autoFocus
+            onClick={sendMessageRoomFunction}
+            color="primary"
+          >
             {actionButtonTitle}
           </Button>
         </DialogActions>

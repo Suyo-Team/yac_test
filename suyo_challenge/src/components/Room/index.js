@@ -6,21 +6,10 @@ import { Card, CardActions, CardContent, Typography } from '@material-ui/core'
 import Chat from '../Chat'
 import useStyles from './styles'
 import Modal from '../commons/Modal'
-import { addMessageRoomApi } from '../../apis/rooms'
 
 const SimpleCard = ({ room }) => {
   const classes = useStyles()
   const bull = <span className={classes.bullet}>•</span>
-
-  const addMessageRoomFunction = (roomId) => {
-    addMessageRoomApi(roomId)
-      .then(function (docRef) {
-        console.log('Document written with ID: ', docRef.id)
-      })
-      .catch(function (error) {
-        console.error('Error adding document: ', error)
-      })
-  }
 
   return (
     <Card className={classes.root}>
@@ -41,7 +30,6 @@ const SimpleCard = ({ room }) => {
           openButtonTitle="Enter"
           actionButtonTitle="Send"
           title={room.name}
-          addMessageRoomFunction={() => addMessageRoomFunction(room.id)}
         >
           <Chat roomName={room.name} roomId={room.id} />
         </Modal>
