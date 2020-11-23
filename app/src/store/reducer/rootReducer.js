@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux';
-import { firestoreReducer } from 'redux-firestore';
-import { firebaseReducer } from 'react-redux-firebase';
+import { combineReducers } from 'redux'
+import { firestoreReducer } from 'redux-firestore'
+import { firebaseReducer } from 'react-redux-firebase'
 
-import authReducer from './authReducer';
+import authReducer from './authReducer'
 import selectedChatReducer from './selectedChatReducer'
 
 const rootReducers = combineReducers({
@@ -10,6 +10,6 @@ const rootReducers = combineReducers({
   selectedChatReducer,
   firestore: firestoreReducer,
   firebase: firebaseReducer
-});
+})
 
-export default rootReducers;
+export default rootReducers
