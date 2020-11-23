@@ -26,6 +26,7 @@ export default function JdialogCreate({ onClose, selectedValue, open, tryCreateC
         return;
     }
     tryCreateChat({name_chat: name_chat.value, last_message: description.value, url: url.value }, users)
+    onClose()
   }
   return (
     <Dialog onClose={handleClose}  aria-labelledby="simple-dialog-title" open={open}>
@@ -36,7 +37,8 @@ export default function JdialogCreate({ onClose, selectedValue, open, tryCreateC
             margin="normal"
             required
             fullWidth
-            {...name_chat}
+            value={name_chat.value}
+            onChange={name_chat.onChange}
             id="name_chat"
             label="Name Chat"
             name="chat"
@@ -48,7 +50,8 @@ export default function JdialogCreate({ onClose, selectedValue, open, tryCreateC
             margin="normal"
             required
             fullWidth
-            {...description}
+            value={description.value}
+            onChange={description.onChange}
             id="description"
             label="Description"
             name="description"
@@ -60,7 +63,8 @@ export default function JdialogCreate({ onClose, selectedValue, open, tryCreateC
             margin="normal"
             required
             fullWidth
-            {...url}
+            value={url.value}
+            onChange={url.onChange}
             id="url"
             label="Url"
             name="url"

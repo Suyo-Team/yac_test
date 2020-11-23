@@ -20,7 +20,7 @@ const mapStateProps = (state) => {
 export default compose(
     connect(mapStateProps, null),
     firestoreConnect((props) => {
-    if( JSON.stringify(props.chatSelected) ==='{}'){
+    if( JSON.stringify(props.chatSelected) ==='{}' || !props.chatSelected){
         return []
     }
     return [

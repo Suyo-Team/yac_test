@@ -24,8 +24,8 @@ function ChatContent({ chatSelected, signOut, handleSubmit, isAuth }){
         <div className='chat__content__root'>
             <div className='chat__content__top'>
                 <div>
-                    <Avatar src={chatSelected.url} />
-                    <Typography variant="h6">{chatSelected.name_chat}</Typography>
+                    <Avatar src={chatSelected && chatSelected.url} />
+                    <Typography variant="h6">{chatSelected && chatSelected.name_chat}</Typography>
                 </div>
             </div>
             <div className='chat__content__middle'>
@@ -37,7 +37,7 @@ function ChatContent({ chatSelected, signOut, handleSubmit, isAuth }){
                     handleSubmit({ message: message.value, chatInfo: chatSelected, senderInfo: isAuth })
                     message.reset()
                 }}>
-                    <input value={message.value} onChange={message.onChange} placeholder='Enter Message..' /> 
+                    <input disabled={!chatSelected} value={message.value} onChange={message.onChange} placeholder='Enter Message..' /> 
                     <EmojiEmotionsIcon onClick={() => setShowEmoji(!showEmoji)} />
                 </form>
                 <IconButton onClick={signOut} style={{color: '#b5bbcf'}} aria-label="upload picture" component="span">

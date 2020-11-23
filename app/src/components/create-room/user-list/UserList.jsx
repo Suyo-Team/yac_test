@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -16,7 +17,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserList({ users, selecteValue }) {
+const mapStateProps = (state) => {
+  return {
+      isAuth: state.authReducer.isAuth
+  };
+};
+
+
+function UserList({ users, selecteValue, isAuth }) {
   const classes = useStyles();
   const [checked, setChecked] = React.useState([1]);
 
@@ -31,33 +39,37 @@ export default function UserList({ users, selecteValue }) {
     }
 
     setChecked(newChecked);
-    selecteValue(newChecked)
+    let format = { id: isAuth.nickname, nickname: isAuth.nickname, email: isAuth.email, uid: isAuth.uid, password: 'hiddden', url: isAuth.url}
+    selecteValue([...newChecked, format])
   };
 
   return (
     <List dense className={classes.root}>
       {Array.isArray(users) && users.map((value) => {
-        const labelId = `checkbox-list-secondary-label-${value.id}`;
-        return (
-          <ListItem key={value.id} button>
-            <ListItemAvatar>
-              <Avatar
-                alt=''
-                src={value.url}
-              />
-            </ListItemAvatar>
-            <ListItemText id={labelId} primary={value.id} />
-            <ListItemSecondaryAction>
-              <Checkbox
-                edge="end"
-                onChange={handleToggle(value)}
-                checked={checked.indexOf(value) !== -1}
-                inputProps={{ 'aria-labelledby': labelId }}
-              />
-            </ListItemSecondaryAction>
-          </ListItem>
-        );
+        if(value.nickname !== isAuth.nickname){
+          const labelId = `checkbox-list-secondary-label-${value.id}`;
+          return (
+            <ListItem key={value.id} button>
+              <ListItemAvatar>
+                <Avatar
+                  alt=''
+                  src={value.url}
+                />
+              </ListItemAvatar>
+              <ListItemText id={labelId} primary={value.id} />
+              <ListItemSecondaryAction>
+                <Checkbox
+                  edge="end"
+                  onChange={handleToggle(value)}
+                  checked={checked.indexOf(value) !== -1}
+                  inputProps={{ 'aria-labelledby': labelId }}
+                />
+              </ListItemSecondaryAction>
+            </ListItem>
+          );
+        }
       })}
     </List>
   );
 }
+export default connect(mapStateProps, null)(UserList)

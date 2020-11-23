@@ -30,7 +30,7 @@ function ChatItem({id, url, name_chat, last_message, time, handleOnClick, chatSe
 {
     const classes = useStyles();
 
-    const IsActive =  id === chatSelected.id;
+    const IsActive = chatSelected &&  id === chatSelected.id;
     
     return(
     <ListItem onClick={() => handleOnClick({ id, url, name_chat, last_message, })} className={classes.item} style={{  backgroundColor: IsActive && '#36404a' }} >

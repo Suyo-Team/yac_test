@@ -115,7 +115,7 @@ export default function Register({ tryRegister }) {
               value={url.value} 
               onChange={url.onChange}
               name="url"
-              label="url"
+              label="Url imagen"
               type="text"
               id="url"
               autoComplete="current-url"
